@@ -21,15 +21,15 @@ GroupingGameView.initialize = function (employee) {
     imageObj1.onload = function() {
 	    drawImage(this);
    	};
-    imageObj1.src = 'images/egg1.png';
+    imageObj1.src = 'images/objective1/egg1.png';
 }
 
 function drawImage(imageObj) { 
 
         var stage = new Kinetic.Stage({
           container: "container",
-          width: 1000,
-          height: 500
+          width: $(window).width(),
+          height: $(window).height()
         });
         var layer = new Kinetic.Layer();
         // darth vader

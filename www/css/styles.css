@@ -23,9 +23,11 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background-color: #fff;
     overflow: hidden;
     position: relative;
+    background-image: url(../images/objective1/background.png);
+    background-repeat: no-repeat;
+	background-size: 100%;
 }
 
 .header {
@@ -203,3 +205,4 @@ h2 {
     width:100px;
     height:100px;
 }
+
