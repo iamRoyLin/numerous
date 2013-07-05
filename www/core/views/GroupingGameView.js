@@ -37,8 +37,8 @@ function drawImage(imageObj) {
           image: imageObj,
           x: stage.getWidth() / 2 - 200 / 2,
           y: stage.getHeight() / 2 - 137 / 2,
-          width: 150,
-          height: 150,
+          width: 142,
+          height: 170,
           draggable: true
         });
         // add cursor styling
