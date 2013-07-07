@@ -1,4 +1,4 @@
-var AlertUtil = function () {
+var AlertUtil = new function () {
 
 	this.debugAlert = function(input) {
 		var output = "[" + (typeof input) + "] ";
