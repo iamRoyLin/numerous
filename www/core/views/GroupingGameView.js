@@ -11,7 +11,9 @@ GroupingGameView.INITIAL_EGG_COUNT = 5;
 // size of the eggs
 GroupingGameView.INITIAL_EGG_DIMENSIONS = {width:120, height: 150};
 // destination area of the eggs
-GroupingGameView.INITIAL_EGG_RECTANGLE = {x:700, y:460, width: 180, height: 50};
+
+			
+GroupingGameView.INITIAL_EGG_RECTANGLE = {x:DimensionUtil.width() - 350, y:415, width: 150, height: 50};
 
 // As eggs reach the destination, it will be added here
 GroupingGameView.eggsAtDestination = [];
@@ -45,6 +47,11 @@ GroupingGameView.eggImageObjects = [];
 
 GroupingGameView.initialize = function (employee) {
 
+	// clear variables
+	GroupingGameView.eggsAtDestination = [];
+	GroupingGameView.eggInitialLocations = [];
+	GroupingGameView.eggImageObjects = [];
+	
 	// render the html view
 	View.render("GroupingGameView");
 	
