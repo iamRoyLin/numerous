@@ -30,6 +30,13 @@ GroupingGameView.eggDestinationLocations = [
 GroupingGameView.eggImageSources = [
 	"images/grouping_game/eggs/egg1.png",
 	"images/grouping_game/eggs/egg2.png",
+	"images/grouping_game/eggs/egg3.png",
+	"images/grouping_game/eggs/egg4.png",
+	"images/grouping_game/eggs/egg5.png",
+	"images/grouping_game/eggs/egg6.png",
+	"images/grouping_game/eggs/egg7.png",
+	"images/grouping_game/eggs/egg8.png",
+	"images/grouping_game/eggs/egg9.png"
 ];
 // As the images are loaded into memory, they will be accessible from this array
 GroupingGameView.eggImageObjects = [];
@@ -47,8 +54,8 @@ GroupingGameView.initialize = function (employee) {
 	// Setup the stage
 	GroupingGameView.stage = new Kinetic.Stage({
 		container: "container",
-		width: 1024,
-		height: 768
+		width: window.innerWidth,
+		height: window.innerHeight
 	});
 	
 	// Create the main layer and stage
@@ -57,12 +64,31 @@ GroupingGameView.initialize = function (employee) {
 	
 	// Initialise graphics components
 	GroupingGameView.drawBackground();
+	GroupingGameView.drawRabbit();
 	GroupingGameView.drawEggs();
 	GroupingGameView.drawTemp();
 }
 
 // Draws the background
 GroupingGameView.drawBackground = function() {
+	
+}
+
+// Draws the rabbit
+GroupingGameView.drawRabbit = function() {
+	var rabbitImage = new Image();
+	rabbitImage.src = "images/grouping_game/rabbit_bak.png";
+	rabbitImage.onload = function() {
+		var rabbit = new Kinetic.Image({
+			x: DimensionUtil.width() - rabbitImage.width/2.3 - 50,
+			y: 30,
+			image: rabbitImage,
+			width: rabbitImage.width/2.3,
+			height: rabbitImage.height/2.3
+		});
+		
+		GroupingGameView.mainLayer.add(rabbit);
+	}
 	
 }
 
