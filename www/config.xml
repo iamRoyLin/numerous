@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+
+
 <widget xmlns       = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "org.coenraets.employeedirectory"
@@ -14,6 +17,8 @@
     <author href="www.author.com" email="author@email.com">
         Author
     </author>
+ 
+	<preference name="orientation" value="landscape" />
  
     <feature name="http://api.phonegap.com/1.0/camera"/>
     <feature name="http://api.phonegap.com/1.0/contacts"/>
