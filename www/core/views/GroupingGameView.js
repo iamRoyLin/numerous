@@ -50,7 +50,12 @@ GroupingGameView.eggDestinationLocations = [
 GroupingGameView.sources = {};
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
+
 GroupingGameView.sources.pauseButton = "images/widgets/pause_button.png";
+GroupingGameView.sources.menuButton = "images/widgets/menu_button.png";
+GroupingGameView.sources.restartButton = "images/widgets/restart_button.png";
+GroupingGameView.sources.resumeButton = "images/widgets/resume_button.png";
+
 GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg1.png",
 	"images/grouping_game/eggs/egg2.png",
@@ -99,7 +104,11 @@ GroupingGameView.initialize = function () {
 	var loader = new PxLoader();
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
+	
 	GroupingGameView.images.pauseButton = loader.addImage(GroupingGameView.sources.pauseButton);
+	GroupingGameView.images.menuButton = loader.addImage(GroupingGameView.sources.menuButton);
+	GroupingGameView.images.restartButton = loader.addImage(GroupingGameView.sources.restartButton);
+	GroupingGameView.images.resumeButton = loader.addImage(GroupingGameView.sources.resumeButton);
 	GroupingGameView.images.eggs = [];
 	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
 		GroupingGameView.images.eggs[i] = loader.addImage(GroupingGameView.sources.eggs[i]);
@@ -166,6 +175,10 @@ GroupingGameView.drawPauseButton = function() {
 	
 	pauseButton.on('mouseover', function() {document.body.style.cursor = 'pointer'});
 	pauseButton.on('mouseout', function() {document.body.style.cursor = 'default'});	
+	
+	pauseButton.on('click', function() {
+		GroupingGameView.pause();
+	});
 	
 }
 
@@ -281,5 +294,32 @@ GroupingGameView.declineEgg = function(egg) {
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
 
+GroupingGameView.pauseOverlay = null;
 
+GroupingGameView.pause = function() {
+	if (GroupingGameView.pauseOverlay == null) {
+		GroupingGameView.pauseOverlay = new Kinetic.Rect({
+			fill: 'black',
+			opacity: 0.62
+		});
+		WidgetUtil.glue(GroupingGameView.pauseOverlay, {
+			glueTop: true,
+			glueLeft: true,
+			width: 1,
+			height: 1,
+			dx: 0,
+			dy: 0
+		});
+
+		
+		
+	}
+	GroupingGameView.backgroundLayer.add(GroupingGameView.pauseOverlay);
+	GroupingGameView.stage.draw();
+	
+}
+
+GroupingGameView.unpause = function() {
+	
+}
 
