@@ -15,11 +15,18 @@ GroupingGameView.INITIAL_EGG_DIMENSIONS = {width:60, height: 75};
 GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.82, y:0.78, width: 0.1, height: 0.05};
 GroupingGameView.INITIAL_EGG_SIZE = {width: 0.06, height: 0.093};
 
-// The areas of the belts that accepts the egg
+// The areas of the 'ones' belts that accepts the egg
 GroupingGameView.BELT_ONES_AREA = {};
 GroupingGameView.BELT_ONES_AREA.X_ARRAY =      [0.54, 0.48, 0.42, 0.36];
 GroupingGameView.BELT_ONES_AREA.Y_ARRAY =      [0.56, 0.64, 0.72, 0.80];
 GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11, 0.11];
+
+// The areas of the 'tens' belts that accepts the egg
+GroupingGameView.BELT_TENS_AREA = {};
+GroupingGameView.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
+GroupingGameView.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
+GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
+
 
 // The destination locations where eggs will be locked in to
 GroupingGameView.eggDestinationLocations = [
@@ -43,6 +50,7 @@ GroupingGameView.eggDestinationLocations = [
 GroupingGameView.sources = {};
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
+GroupingGameView.sources.pauseButton = "images/widgets/pause_button.png";
 GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg1.png",
 	"images/grouping_game/eggs/egg2.png",
@@ -91,6 +99,7 @@ GroupingGameView.initialize = function () {
 	var loader = new PxLoader();
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
+	GroupingGameView.images.pauseButton = loader.addImage(GroupingGameView.sources.pauseButton);
 	GroupingGameView.images.eggs = [];
 	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
 		GroupingGameView.images.eggs[i] = loader.addImage(GroupingGameView.sources.eggs[i]);
@@ -109,6 +118,7 @@ GroupingGameView.loaded = function () {
 	
 	GroupingGameView.drawRabbit();
 	GroupingGameView.drawBelts();
+	GroupingGameView.drawPauseButton();
 	GroupingGameView.drawEggs();
 	
 	GroupingGameView.stage.draw();
@@ -134,14 +144,30 @@ GroupingGameView.drawBelts = function() {
 	WidgetUtil.glue(belts, {
 		glueTop: true,
 		glueLeft: true,
-		width: 1,
-		height: 1,
+		width: 0.68,
+		height: 0.813,
 		dx: 0,
-		dy: 0
+		dy: 0.187
 	});
 	GroupingGameView.backgroundLayer.add(belts);
 }
 
+GroupingGameView.drawPauseButton = function() {
+	var pauseButton = new Kinetic.Image({image: GroupingGameView.images.pauseButton});
+	WidgetUtil.glue(pauseButton, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.09,
+		height: 0.12,
+		dx: 0.02,
+		dy: 0.035
+	});
+	GroupingGameView.backgroundLayer.add(pauseButton);
+	
+	pauseButton.on('mouseover', function() {document.body.style.cursor = 'pointer'});
+	pauseButton.on('mouseout', function() {document.body.style.cursor = 'default'});	
+	
+}
 
 // Draws eggs in a specified area
 GroupingGameView.drawEggs = function() {
@@ -151,7 +177,7 @@ GroupingGameView.drawEggs = function() {
 	}
 	
 	if (Env.debug) {
-		// draw out the region that is accepted
+		// draw out the region ones
 		for (var i = 0; i < GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY.length; i++) {
 			var ellipse = new Kinetic.Ellipse({
 				x: DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_ONES_AREA.X_ARRAY[i]),
@@ -159,6 +185,20 @@ GroupingGameView.drawEggs = function() {
 				radius: 
 					{x:DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY[i]), 
 					y:DimensionUtil.decimalToActualHeight(GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY[i])},
+				stroke: 'red',
+				strokeWidth: 6
+			});
+			GroupingGameView.backgroundLayer.add(ellipse);
+		}
+		
+		// draws out the region for tens
+		for (var i = 0; i < GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY.length; i++) {
+			var ellipse = new Kinetic.Ellipse({
+				x: DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_TENS_AREA.X_ARRAY[i]),
+				y: DimensionUtil.decimalToActualHeight(GroupingGameView.BELT_TENS_AREA.Y_ARRAY[i]),
+				radius: 
+					{x:DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY[i]), 
+					y:DimensionUtil.decimalToActualHeight(GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY[i])},
 				stroke: 'red',
 				strokeWidth: 6
 			});
@@ -204,32 +244,17 @@ GroupingGameView.drawNewEgg = function() {
 		if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)
 				&& (GroupingGameView.eggsAtDestination.length != 10)) {
 			GroupingGameView.acceptEgg(this);
+		} else if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)) {
+			// decline the egg and also record an error
+			GroupingGameView.declineEgg(this);
 		} else {
-			// declines the egg and animates it back to its starting position
-			// alert(this.id + ", " + GroupingGameView.eggInitialLocations[this.id].x + ", " + GroupingGameView.eggInitialLocations[this.id].y);
-			WidgetUtil.animateMove(this, 0.4, GroupingGameView.eggInitialLocations[this.id].x, GroupingGameView.eggInitialLocations[this.id].y);
+			GroupingGameView.declineEgg(this);
 		}
 	});
 	GroupingGameView.backgroundLayer.add(egg);
 	return egg;
 }
 
-
-
-
-// draws any temporary shapes
-GroupingGameView.drawTemp = function() {
-	// draws the temporary destination shape
-	var poly = new Kinetic.Polygon({
-		points: [200, 200, 400, 200, 300, 400, 100, 400],
-		fill: '#00D2FF',
-		stroke: 'black',
-		strokeWidth: 5
-	});
-
-	// add the shape to the layer
-	GroupingGameView.backgroundLayer.add(poly);
-}
 
 // accepts the egg and add it to the accepted array
 GroupingGameView.acceptEgg = function(egg) {
@@ -249,10 +274,12 @@ GroupingGameView.acceptEgg = function(egg) {
 	// create another egg in its place
 	var newEgg = GroupingGameView.drawNewEgg();
 	GroupingGameView.stage.draw();
-	
-	
 }
 
+// declines the egg and move it back to its original spot
+GroupingGameView.declineEgg = function(egg) {
+	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
+}
 
 
 
