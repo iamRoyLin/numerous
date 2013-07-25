@@ -82,6 +82,8 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.eggInitialLocations = [];
 	GroupingGameView.eggCount = 0;
 
+
+	
 	
 	// render the html view
 	View.render("GroupingGameView");
@@ -99,6 +101,10 @@ GroupingGameView.initialize = function () {
 	// Create the main layer and stage
 	GroupingGameView.backgroundLayer = new Kinetic.Layer();
 	GroupingGameView.stage.add(GroupingGameView.backgroundLayer);	
+	
+	// create the egg ones group
+	GroupingGameView.eggOnesGroup = new Kinetic.Group({ x: 0, y: 0 });
+	GroupingGameView.backgroundLayer.add(GroupingGameView.eggOnesGroup);	
 	
 	// Add images to the loader class
 	var loader = new PxLoader();
@@ -176,7 +182,7 @@ GroupingGameView.drawPauseButton = function() {
 	pauseButton.on('mouseover', function() {document.body.style.cursor = 'pointer'});
 	pauseButton.on('mouseout', function() {document.body.style.cursor = 'default'});	
 	
-	pauseButton.on('click', function() {
+	pauseButton.on('click tap', function() {
 		GroupingGameView.pause();
 	});
 	
@@ -263,6 +269,28 @@ GroupingGameView.drawNewEgg = function() {
 		} else {
 			GroupingGameView.declineEgg(this);
 		}
+		
+		if (GroupingGameView.eggsAtDestination.length == 4) {
+			var tween = new Kinetic.Tween({
+				node: GroupingGameView.eggOnesGroup, 
+				duration: 2,
+				x: 150,
+				y: 150,
+				//rotation: Math.PI * 10,
+				//opacity: 1,
+				//strokeWidth: 6,
+				scaleX: 0.8,
+				scaleY: 0.8,
+				easing: Kinetic.Easings.Linear,
+				//fillR: 0,
+				//fillG: 0,
+				//fillB: 255
+			});
+			tween.play();
+		}
+		
+		
+		
 	});
 	GroupingGameView.backgroundLayer.add(egg);
 	return egg;
@@ -276,11 +304,14 @@ GroupingGameView.acceptEgg = function(egg) {
 	// move it to the right position
 	var index = GroupingGameView.eggsAtDestination.length;
 
+	// add it to the group
+	GroupingGameView.eggOnesGroup.add(egg);
+	
 	egg.setX(DimensionUtil.decimalToActualWidth(GroupingGameView.eggDestinationLocations[index].x));
 	egg.setY(DimensionUtil.decimalToActualHeight(GroupingGameView.eggDestinationLocations[index].y));
 	
 	
-	GroupingGameView.backgroundLayer.draw();
+	GroupingGameView.stage.draw();
 	// add it to the destination array
 	GroupingGameView.eggsAtDestination.push(egg);
 	
@@ -294,15 +325,20 @@ GroupingGameView.declineEgg = function(egg) {
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
 
-GroupingGameView.pauseOverlay = null;
-
+GroupingGameView.pauseWidgets = null;
 GroupingGameView.pause = function() {
-	if (GroupingGameView.pauseOverlay == null) {
-		GroupingGameView.pauseOverlay = new Kinetic.Rect({
+
+	// lazy loading
+	if (GroupingGameView.pauseWidgets == null) {
+		GroupingGameView.pauseWidgets = {};
+		
+		// overlay
+		
+		GroupingGameView.pauseWidgets.overlay = new Kinetic.Rect({
 			fill: 'black',
 			opacity: 0.62
 		});
-		WidgetUtil.glue(GroupingGameView.pauseOverlay, {
+		WidgetUtil.glue(GroupingGameView.pauseWidgets.overlay, {
 			glueTop: true,
 			glueLeft: true,
 			width: 1,
@@ -310,16 +346,82 @@ GroupingGameView.pause = function() {
 			dx: 0,
 			dy: 0
 		});
+		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.overlay);		
 
+		// resume button
+		
+		GroupingGameView.pauseWidgets.resumeButton = new Kinetic.Image({image: GroupingGameView.images.resumeButton});
+		WidgetUtil.glue(GroupingGameView.pauseWidgets.resumeButton, {
+			glueTop: true,
+			glueLeft: true,
+			width: 0.18,
+			height: 0.28,
+			dx: 0.21,
+			dy: 0.42
+		});
+		GroupingGameView.pauseWidgets.resumeButton.on('click tap', function () {
+			GroupingGameView.unpause();
+		});
 		
 		
+		// menu button
+		
+		GroupingGameView.pauseWidgets.menuButton = new Kinetic.Image({image: GroupingGameView.images.menuButton});
+		WidgetUtil.glue(GroupingGameView.pauseWidgets.menuButton, {
+			glueTop: true,
+			glueLeft: true,
+			width: 0.18,
+			height: 0.28,
+			dx: 0.41,
+			dy: 0.42
+		});
+		GroupingGameView.pauseWidgets.menuButton.on('click tap', function () {
+			
+		});
+		
+		
+		// restart button
+		
+		GroupingGameView.pauseWidgets.restartButton = new Kinetic.Image({image: GroupingGameView.images.restartButton});
+		WidgetUtil.glue(GroupingGameView.pauseWidgets.restartButton, {
+			glueTop: true,
+			glueLeft: true,
+			width: 0.18,
+			height: 0.28,
+			dx: 0.61,
+			dy: 0.42
+		});
+		GroupingGameView.pauseWidgets.restartButton.on('click tap', function () {
+			
+		});
+		
+	
+		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.resumeButton);
+		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.menuButton);
+		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.restartButton);
 	}
-	GroupingGameView.backgroundLayer.add(GroupingGameView.pauseOverlay);
+	
+	GroupingGameView.pauseWidgets.overlay.show();
+	GroupingGameView.pauseWidgets.overlay.moveToTop();
+	
+	GroupingGameView.pauseWidgets.resumeButton.show();
+	GroupingGameView.pauseWidgets.resumeButton.moveToTop();
+	
+	GroupingGameView.pauseWidgets.menuButton.show();
+	GroupingGameView.pauseWidgets.menuButton.moveToTop();
+	
+	GroupingGameView.pauseWidgets.restartButton.show();
+	GroupingGameView.pauseWidgets.restartButton.moveToTop();
+	
 	GroupingGameView.stage.draw();
 	
 }
 
 GroupingGameView.unpause = function() {
-	
+	GroupingGameView.pauseWidgets.overlay.hide();
+	GroupingGameView.pauseWidgets.resumeButton.hide();
+	GroupingGameView.pauseWidgets.menuButton.hide();
+	GroupingGameView.pauseWidgets.restartButton.hide();
+	GroupingGameView.stage.draw();
 }
 
