@@ -27,18 +27,7 @@ GroupingGameView.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
 GroupingGameView.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
 GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
 
-//Objective 1 numbers in words and respective number
-/*GroupingGameView.NumberMap = {
-	11 : {value: 11, name: "Eleven"},
-	12 : {value: 12, name: "Twelve"},
-	13 : {value: 13, name: "Thirteen"},
-	14 : {value: 14, name: "Fourteen"},
-	15 : {value: 15, name: "Fifteen"},
-	16 : {value: 16, name: "Sixteen"},
-	17 : {value: 17, name: "Seventeen"},
-	18 : {value: 18, name: "Eighteen"},
-	19 : {value: 19, name: "Nineteen"}
-};*/
+// Map of numbers to their words
 GroupingGameView.NumberInWords = [];
 GroupingGameView.NumberInWords[11] = "ELEVEN";
 GroupingGameView.NumberInWords[12] = "TWELVE";
@@ -49,6 +38,7 @@ GroupingGameView.NumberInWords[16] = "SIXTEEN";
 GroupingGameView.NumberInWords[17] = "SEVENTEEN";
 GroupingGameView.NumberInWords[18] = "EIGHTEEN";
 GroupingGameView.NumberInWords[19] = "NINETEEN";
+
 // The destination locations where eggs will be locked in to
 GroupingGameView.eggDestinationLocations = [
 	{x:0.470, y: 0.465},
@@ -345,7 +335,7 @@ GroupingGameView.drawNewEgg = function() {
 		}
 		
 		// If we reach 10 eggs in our tray
-		if (GroupingGameView.eggsAtDestination.length == 10) {
+		if (GroupingGameView.eggsAtDestination.length == 1) {
 			GroupingGameView.trayOnesFullCallback();
 		}
 		
@@ -473,6 +463,45 @@ GroupingGameView.trayOnesFullCallback = function() {
 		});
 		shrinkTrayTween.play();
 	}, 3000);
+	
+	// Move belt up
+	setTimeout(function() {
+		// set current tray to next
+		GroupingGameView.trays.current = GroupingGameView.trays.next;
+		
+		// create new next tray
+		GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
+		WidgetUtil.glue(GroupingGameView.trays.next, {
+			glueTop: true,
+			glueLeft: true,
+			width: 0.395,
+			height: 0.42,
+			dx: -0.15,
+			dy: 1.005
+		});
+		GroupingGameView.backgroundLayer.add(GroupingGameView.trays.next);		
+		
+		// move current tray up
+		var moveCurrentTrayTween = new Kinetic.Tween({
+			node: GroupingGameView.trays.current, 
+			duration: 1,
+			x: DimensionUtil.decimalToActualWidth(0.25),
+			y: DimensionUtil.decimalToActualHeight(0.415),
+			easing: Kinetic.Easings.Linear,
+		});
+		moveCurrentTrayTween.play();
+		
+		// move next tray up
+		var moveNextTrayTween = new Kinetic.Tween({
+			node: GroupingGameView.trays.next, 
+			duration: 1,
+			x: DimensionUtil.decimalToActualWidth(0.05),
+			y: DimensionUtil.decimalToActualHeight(0.71),
+			easing: Kinetic.Easings.Linear,
+		});
+		moveNextTrayTween.play();
+		
+	}, 4000);
 	
 /*
 	var tween = new Kinetic.Tween({
