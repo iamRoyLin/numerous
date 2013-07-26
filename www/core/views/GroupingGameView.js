@@ -141,13 +141,10 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.drawTrays();
 	GroupingGameView.drawPauseButton();
 	GroupingGameView.drawEggs();
-<<<<<<< HEAD
+	GroupingGameView.drawNumbers();	
 	
 	GroupingGameView.eggOnesGroup.moveToTop();
 	
-=======
-	GroupingGameView.drawNumbers();
->>>>>>> 3e5dc6adaa53ef0f62d1bc558c207bc45ac31646
 	GroupingGameView.stage.draw();
 	
 }
@@ -368,7 +365,6 @@ GroupingGameView.declineEgg = function(egg) {
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
 
-<<<<<<< HEAD
 
 GroupingGameView.trayOnesFullCallback = function() {
 	// create cover
@@ -405,7 +401,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 }
 
 
-=======
+
 GroupingGameView.drawNumbers = function() {
 	//add number of ones
 	GroupingGameView.onesTextWidget = new Kinetic.Text({
@@ -429,7 +425,8 @@ GroupingGameView.drawNumbers = function() {
     });
     GroupingGameView.backgroundLayer.add(GroupingGameView.tensTextWidget);
 }
->>>>>>> 3e5dc6adaa53ef0f62d1bc558c207bc45ac31646
+
+
 GroupingGameView.pauseWidgets = null;
 GroupingGameView.pause = function() {
 
