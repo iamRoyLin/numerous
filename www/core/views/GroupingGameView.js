@@ -1,19 +1,32 @@
 // This is the view logic of objective one, where the child user learns place value
 var GroupingGameView = {};
 
-// The stage to be instantiated in constructor
-GroupingGameView.stage;
-// The main layer (might be the only layer we need)
-GroupingGameView.backgroundLayer;
-
 // Number of eggs at the origin at the beginning
 GroupingGameView.INITIAL_EGG_COUNT = 50;
 // size of the eggs
 GroupingGameView.INITIAL_EGG_DIMENSIONS = {width:60, height: 75};
 // destination area of the eggs
 
-GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.68, width: 0.2, height: 0.05};
-GroupingGameView.INITIAL_EGG_SIZE = {width: 0.06, height: 0.093};
+// rabbit
+GroupingGameView.RABBIT_DIMENSIONS = {x:0.03, y:0.01, width:0.3, height:0.8};
+
+// belt
+GroupingGameView.BELT_DIMENSIONS = {x:0, y:0.187, width:0.68, height:0.813};
+
+// Initial egg positions
+GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.68, width:0.2, height:0.05};
+GroupingGameView.INITIAL_EGG_SIZE = {width:0.06, height:0.093};
+
+// Tray and cover sizes and positions
+GroupingGameView.TRAY_SIZE = {width:0.395, height:0.42};
+GroupingGameView.TRAY_CURRENT_POSITION = {x:0.25, y:0.415};
+GroupingGameView.TRAY_NEXT_POSITION = {x:0.05, y:0.71};
+GroupingGameView.TRAY_BELOW_NEXT_POSITION = {x:-0.15, y:1.005};
+GroupingGameView.INITIAL_COVER_POSITION = {x:0.25, y:-0.415};
+
+// buttons and labels
+GroupingGameView.PAUSE_BUTTON_DIMENSIONS = {x:0.02, y:0.035, width:0.09, height:0.12};
+
 
 // The areas of the 'ones' belts that accepts the egg
 GroupingGameView.BELT_ONES_AREA = {};
@@ -27,23 +40,20 @@ GroupingGameView.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
 GroupingGameView.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
 GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
 
-// Variable for controlling whether activities are enabled (should be turned off during animations)
-GroupingGameView.activitiesEnabled = true;
-
 // Map of numbers to their words
-GroupingGameView.NumberInWords = [];
-GroupingGameView.NumberInWords[11] = "ELEVEN";
-GroupingGameView.NumberInWords[12] = "TWELVE";
-GroupingGameView.NumberInWords[13] = "THIRTEEN";
-GroupingGameView.NumberInWords[14] = "FOURTEEN";
-GroupingGameView.NumberInWords[15] = "FIFTEEN";
-GroupingGameView.NumberInWords[16] = "SIXTEEN";
-GroupingGameView.NumberInWords[17] = "SEVENTEEN";
-GroupingGameView.NumberInWords[18] = "EIGHTEEN";
-GroupingGameView.NumberInWords[19] = "NINETEEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP = [];
+GroupingGameView.NUMBER_TO_WORDS_MAP[11] = "ELEVEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP[12] = "TWELVE";
+GroupingGameView.NUMBER_TO_WORDS_MAP[13] = "THIRTEEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP[14] = "FOURTEEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP[15] = "FIFTEEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP[16] = "SIXTEEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP[17] = "SEVENTEEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP[18] = "EIGHTEEN";
+GroupingGameView.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
 
 // The destination locations where eggs will be locked in to
-GroupingGameView.eggDestinationLocations = [
+GroupingGameView.EGG_DESTINATION_LOCATIONS = [
 	{x:0.470, y: 0.465},
 	{x:0.532, y: 0.465},
 	
@@ -87,21 +97,29 @@ GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg9.png"
 ];
 
-// Images
-GroupingGameView.images = {};
-
-// As the images are loaded into memory, they will be accessible from this array
-GroupingGameView.eggImageObjects = [];
-
-
+// Called when the user enters this page
 GroupingGameView.initialize = function () {
 
-	// clear variables
+	// Array of the eggs currently on the tray at ones
 	GroupingGameView.eggsAtDestination = [];
+	
+	// Array holding eggs initial locations of when it was randomly generated
 	GroupingGameView.eggInitialLocations = [];
+	
+	// A count of all eggs that have been generated
 	GroupingGameView.eggCount = 0;
+	
+	// 
 	GroupingGameView.tensCount = 0;
-
+	
+	// Variable for controlling whether activities are enabled (should be turned off during animations)
+	GroupingGameView.activitiesEnabled = true;
+	
+	// As images are loaded into memory, they will be accessible from this array
+	GroupingGameView.images = {};
+	// As eggs are loaded into memory, they will be accessible from this array
+	GroupingGameView.eggImageObjects = [];
+	
 	//create a random goal number between 11 and 19
 	GroupingGameView.goalNumber = MathUtil.random(11,19);
 	
@@ -118,13 +136,13 @@ GroupingGameView.initialize = function () {
 		height: window.innerHeight
 	});
 	
-	// Create the main layer and stage
+	// The main layer (might be the only layer we need)
 	GroupingGameView.backgroundLayer = new Kinetic.Layer();
 	GroupingGameView.stage.add(GroupingGameView.backgroundLayer);	
 	
 	// create the egg ones group
-	GroupingGameView.eggOnesGroup = new Kinetic.Group({ x: 0, y: 0 });
-	GroupingGameView.backgroundLayer.add(GroupingGameView.eggOnesGroup);
+	GroupingGameView.onesWidgetGroup = new Kinetic.Group({});
+	GroupingGameView.backgroundLayer.add(GroupingGameView.onesWidgetGroup);
 	
 	// Add images to the loader class
 	var loader = new PxLoader();
@@ -134,7 +152,6 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.images.cover = loader.addImage(GroupingGameView.sources.cover);
 	GroupingGameView.images.coverFront = loader.addImage(GroupingGameView.sources.coverFront);
 	GroupingGameView.images.coverBack = loader.addImage(GroupingGameView.sources.coverBack);
-	
 	GroupingGameView.images.pauseButton = loader.addImage(GroupingGameView.sources.pauseButton);
 	GroupingGameView.images.menuButton = loader.addImage(GroupingGameView.sources.menuButton);
 	GroupingGameView.images.restartButton = loader.addImage(GroupingGameView.sources.restartButton);
@@ -154,7 +171,7 @@ GroupingGameView.initialize = function () {
 
 // Should be called once graphics are loaded into memory
 GroupingGameView.loaded = function () {
-	// Draw the graphics components
+	// Call helper functionsthe to draw components
 	GroupingGameView.drawRabbit();
 	GroupingGameView.drawBelts();
 	GroupingGameView.drawTrays();
@@ -162,8 +179,11 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.drawEggs();
 	GroupingGameView.drawNumbers();	
 	GroupingGameView.drawTitle();
-	GroupingGameView.eggOnesGroup.moveToTop();
 	
+	// layering
+	GroupingGameView.onesWidgetGroup.moveToTop();
+	
+	// redraw all widgets
 	GroupingGameView.stage.draw();
 }
 
@@ -175,28 +195,25 @@ GroupingGameView.drawTrays = function() {
 	WidgetUtil.glue(GroupingGameView.trays.current, {
 		glueTop: true,
 		glueLeft: true,
-		width: 0.395,
-		height: 0.42,
-		dx: 0.25,
-		dy: 0.415
+		width: GroupingGameView.TRAY_SIZE.width,
+		height: GroupingGameView.TRAY_SIZE.height,
+		dx: GroupingGameView.TRAY_CURRENT_POSITION.x,
+		dy: GroupingGameView.TRAY_CURRENT_POSITION.y
 	});
-	GroupingGameView.eggOnesGroup.add(GroupingGameView.trays.current);
+	GroupingGameView.onesWidgetGroup.add(GroupingGameView.trays.current);
 	
 	// tray next
 	GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
 	WidgetUtil.glue(GroupingGameView.trays.next, {
 		glueTop: true,
 		glueLeft: true,
-		width: 0.395,
-		height: 0.42,
-		dx: 0.05,
-		dy: 0.71
+		width: GroupingGameView.TRAY_SIZE.width,
+		height: GroupingGameView.TRAY_SIZE.height,
+		dx: GroupingGameView.TRAY_NEXT_POSITION.x,
+		dy: GroupingGameView.TRAY_NEXT_POSITION.y
 	});
 	GroupingGameView.backgroundLayer.add(GroupingGameView.trays.next);
-	
-	
 }
-
 
 // Draws the rabbit
 GroupingGameView.drawRabbit = function() {
@@ -204,10 +221,10 @@ GroupingGameView.drawRabbit = function() {
 	WidgetUtil.glue(rabbit, {
 		glueTop: false,
 		glueLeft: false,
-		width: 0.3,
-		height: 0.8,
-		dx: 0.03,
-		dy: 0.01
+		width: GroupingGameView.RABBIT_DIMENSIONS.width,
+		height: GroupingGameView.RABBIT_DIMENSIONS.height,
+		dx: GroupingGameView.RABBIT_DIMENSIONS.x,
+		dy: GroupingGameView.RABBIT_DIMENSIONS.y
 	});
 	GroupingGameView.backgroundLayer.add(rabbit);
 }
@@ -218,10 +235,10 @@ GroupingGameView.drawBelts = function() {
 	WidgetUtil.glue(belts, {
 		glueTop: true,
 		glueLeft: true,
-		width: 0.68,
-		height: 0.813,
-		dx: 0,
-		dy: 0.187
+		width: GroupingGameView.BELT_DIMENSIONS.width,
+		height: GroupingGameView.BELT_DIMENSIONS.height,
+		dx: GroupingGameView.BELT_DIMENSIONS.x,
+		dy: GroupingGameView.BELT_DIMENSIONS.y
 	});
 	GroupingGameView.backgroundLayer.add(belts);
 }
@@ -231,10 +248,10 @@ GroupingGameView.drawPauseButton = function() {
 	WidgetUtil.glue(pauseButton, {
 		glueTop: true,
 		glueLeft: true,
-		width: 0.09,
-		height: 0.12,
-		dx: 0.02,
-		dy: 0.035
+		width: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.width,
+		height: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.height,
+		dx: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.x,
+		dy: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.y
 	});
 	GroupingGameView.backgroundLayer.add(pauseButton);
 	
@@ -244,7 +261,6 @@ GroupingGameView.drawPauseButton = function() {
 	pauseButton.on('click tap', function() {
 		GroupingGameView.pause();
 	});
-	
 }
 
 // Draws eggs in a specified area
@@ -306,10 +322,6 @@ GroupingGameView.drawNewEgg = function() {
 		dy: yInit
 	});
 	
-	// create touch hit region of only non-transparent pixels
-	// Creates a weird region, fix and maybe add back in later
-	// egg.createImageHitRegion(function() {GroupingGameView.backgroundLayer.draw()});
-	
 	// add cursor styling
 	egg.on('mouseover', function() {document.body.style.cursor = 'pointer'});
 	egg.on('mouseout', function() {document.body.style.cursor = 'default'});					
@@ -321,6 +333,7 @@ GroupingGameView.drawNewEgg = function() {
 	
 	egg.on('dragend', function() {
 		if (GroupingGameView.activitiesEnabled == false) {
+			GroupingGameView.declineEgg(this);
 			return;
 		}
 		
@@ -337,13 +350,10 @@ GroupingGameView.drawNewEgg = function() {
 		
 		// If we reach 10 eggs in our tray
 		if (GroupingGameView.eggsAtDestination.length == 10) {
-			GroupingGameView.activitiesEnabled = false;
 			GroupingGameView.trayOnesFullCallback();
 		}
-		
-		
-		
 	});
+	
 	GroupingGameView.backgroundLayer.add(egg);
 	return egg;
 }
@@ -352,7 +362,6 @@ GroupingGameView.drawNewEgg = function() {
 // accepts the egg and add it to the accepted array
 GroupingGameView.acceptEgg = function(egg) {
 	
-
 	// make the egg not draggable
 	egg.setDraggable(false);
 	// move it to the right position
@@ -360,12 +369,11 @@ GroupingGameView.acceptEgg = function(egg) {
 
 	// add it to the group
 	egg.remove();
-	GroupingGameView.eggOnesGroup.add(egg);
+	GroupingGameView.onesWidgetGroup.add(egg);
 	egg.moveToTop();
 	
-	egg.setX(DimensionUtil.decimalToActualWidth(GroupingGameView.eggDestinationLocations[index].x));
-	egg.setY(DimensionUtil.decimalToActualHeight(GroupingGameView.eggDestinationLocations[index].y));
-	
+	egg.setX(DimensionUtil.decimalToActualWidth(GroupingGameView.EGG_DESTINATION_LOCATIONS[index].x));
+	egg.setY(DimensionUtil.decimalToActualHeight(GroupingGameView.EGG_DESTINATION_LOCATIONS[index].y));
 	
 	GroupingGameView.stage.draw();
 	// add it to the destination array
@@ -376,14 +384,14 @@ GroupingGameView.acceptEgg = function(egg) {
 	
 	// increase number of eggs
 	var ones = GroupingGameView.eggsAtDestination.length;
-	if (ones != 10){
+	if (ones != 10) {
 		GroupingGameView.onesTextWidget.setText(ones);
-	}else{
+	} else {
 		GroupingGameView.onesTextWidget.setText(0);
 		GroupingGameView.tensCount ++;
 	}
-	GroupingGameView.tensTextWidget.setText(GroupingGameView.tensCount);
 	
+	GroupingGameView.tensTextWidget.setText(GroupingGameView.tensCount);
 	GroupingGameView.stage.draw();
 }
 
@@ -395,6 +403,14 @@ GroupingGameView.declineEgg = function(egg) {
 
 GroupingGameView.trayOnesFullCallback = function() {
 	
+	// Disable all performable activities by user
+	GroupingGameView.activitiesEnabled = false;
+	
+	var fallCoverDurationSeconds = 2;
+	var trayLiftDurationSeconds = 1;
+	var shrinkTrayDurationSeconds = 1;
+	var beltSlideDurationSeconds = 1;
+	
 	// The cover is separated into two parts front (the part that are in front of the eggs) and the back (parts behind the eggs)
 	
 	// Draw the cover's front
@@ -402,12 +418,12 @@ GroupingGameView.trayOnesFullCallback = function() {
 	WidgetUtil.glue(coverFront, {
 		glueTop: true,
 		glueLeft: true,
-		width: 0.395,
-		height: 0.42,
-		dx: 0.25,
-		dy: -0.415
+		width: GroupingGameView.TRAY_SIZE.width,
+		height: GroupingGameView.TRAY_SIZE.height,
+		dx: GroupingGameView.INITIAL_COVER_POSITION.x,
+		dy: GroupingGameView.INITIAL_COVER_POSITION.y
 	});
-	GroupingGameView.eggOnesGroup.add(coverFront);
+	GroupingGameView.onesWidgetGroup.add(coverFront);
 	coverFront.moveToTop();
 	
 	// Draw the cover's back
@@ -415,12 +431,12 @@ GroupingGameView.trayOnesFullCallback = function() {
 	WidgetUtil.glue(coverBack, {
 		glueTop: true,
 		glueLeft: true,
-		width: 0.395,
-		height: 0.42,
-		dx: 0.25,
-		dy: -0.415
+		width: GroupingGameView.TRAY_SIZE.width,
+		height: GroupingGameView.TRAY_SIZE.height,
+		dx: GroupingGameView.INITIAL_COVER_POSITION.x,
+		dy: GroupingGameView.INITIAL_COVER_POSITION.y
 	});
-	GroupingGameView.eggOnesGroup.add(coverBack);
+	GroupingGameView.onesWidgetGroup.add(coverBack);
 	coverBack.moveToBottom();
 	
 	// redraw the stage
@@ -429,15 +445,15 @@ GroupingGameView.trayOnesFullCallback = function() {
 	// Make the covers fall onto the tray
 	var dropCoverFrontTween = new Kinetic.Tween({
 		node: coverFront,
-		duration: 2,
-		x: DimensionUtil.decimalToActualWidth(0.25),
-		y: DimensionUtil.decimalToActualHeight(0.415),
+		duration: fallCoverDurationSeconds,
+		x: DimensionUtil.decimalToActualWidth(GroupingGameView.TRAY_CURRENT_POSITION.x),
+		y: DimensionUtil.decimalToActualHeight(GroupingGameView.TRAY_CURRENT_POSITION.y)
 	});
 	var dropCoverBackTween = new Kinetic.Tween({
 		node: coverBack,
-		duration: 2,
-		x: DimensionUtil.decimalToActualWidth(0.25),
-		y: DimensionUtil.decimalToActualHeight(0.415),
+		duration: fallCoverDurationSeconds,
+		x: DimensionUtil.decimalToActualWidth(GroupingGameView.TRAY_CURRENT_POSITION.x),
+		y: DimensionUtil.decimalToActualHeight(GroupingGameView.TRAY_CURRENT_POSITION.y),
 	});
 	dropCoverFrontTween.play();
 	dropCoverBackTween.play();
@@ -445,18 +461,18 @@ GroupingGameView.trayOnesFullCallback = function() {
 	// Make the tray lift up
 	setTimeout(function() {
 		var liftTween = new Kinetic.Tween({
-			node: GroupingGameView.eggOnesGroup, 
-			duration: 1,
+			node: GroupingGameView.onesWidgetGroup, 
+			duration: trayLiftDurationSeconds,
 			y: DimensionUtil.decimalToActualHeight(-0.2)
 		});
 		liftTween.play();
-	}, 2000);
+	}, fallCoverDurationSeconds * 1000);
 
 	// Shrink the tray
 	setTimeout(function() {
 		var shrinkTrayTween = new Kinetic.Tween({
-			node: GroupingGameView.eggOnesGroup, 
-			duration: 1,
+			node: GroupingGameView.onesWidgetGroup, 
+			duration: shrinkTrayDurationSeconds,
 			x: DimensionUtil.decimalToActualWidth(-0.05),
 			y: DimensionUtil.decimalToActualHeight(0.26),
 			scaleX: 0.5,
@@ -464,7 +480,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 			easing: Kinetic.Easings.Linear,
 		});
 		shrinkTrayTween.play();
-	}, 3000);
+	}, (fallCoverDurationSeconds + trayLiftDurationSeconds) * 1000);
 	
 	// Move belt up
 	setTimeout(function() {
@@ -476,64 +492,44 @@ GroupingGameView.trayOnesFullCallback = function() {
 		WidgetUtil.glue(GroupingGameView.trays.next, {
 			glueTop: true,
 			glueLeft: true,
-			width: 0.395,
-			height: 0.42,
-			dx: -0.15,
-			dy: 1.005
+			width: GroupingGameView.TRAY_SIZE.width,
+			height: GroupingGameView.TRAY_SIZE.height,
+			dx: GroupingGameView.TRAY_BELOW_NEXT_POSITION.x,
+			dy: GroupingGameView.TRAY_BELOW_NEXT_POSITION.y
 		});
 		GroupingGameView.backgroundLayer.add(GroupingGameView.trays.next);		
 		
 		// move current tray up
 		var moveCurrentTrayTween = new Kinetic.Tween({
 			node: GroupingGameView.trays.current, 
-			duration: 1,
+			duration: beltSlideDurationSeconds,
 			x: DimensionUtil.decimalToActualWidth(0.25),
 			y: DimensionUtil.decimalToActualHeight(0.415),
-			easing: Kinetic.Easings.Linear,
+			easing: Kinetic.Easings.Linear
 		});
 		moveCurrentTrayTween.play();
 		
 		// move next tray up
 		var moveNextTrayTween = new Kinetic.Tween({
 			node: GroupingGameView.trays.next, 
-			duration: 1,
+			duration: beltSlideDurationSeconds,
 			x: DimensionUtil.decimalToActualWidth(0.05),
 			y: DimensionUtil.decimalToActualHeight(0.71),
-			easing: Kinetic.Easings.Linear,
+			easing: Kinetic.Easings.Linear
 		});
 		moveNextTrayTween.play();
 		
-	}, 4000);
+	}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds) * 1000);
 	
 	setTimeout(function() {
+		GroupingGameView.eggsAtDestination = [];
+		GroupingGameView.onesWidgetGroup = new Kinetic.Group({});
+		GroupingGameView.backgroundLayer.add(GroupingGameView.onesWidgetGroup);
+		GroupingGameView.onesWidgetGroup.moveToTop();
+		
 		GroupingGameView.activitiesEnabled = true;
-	}, 5000);
-	
-/*
-	var tween = new Kinetic.Tween({
-		node: GroupingGameView.eggOnesGroup, 
-		duration: 2,
-		x: DimensionUtil.decimalToActualWidth(0.45),
-		y: DimensionUtil.decimalToActualHeight(0.45),
-		
-		scaleX: 0.5,
-		scaleY: 0.5,
-		
-		//rotation: Math.PI * 10,
-		//opacity: 1,
-		//strokeWidth: 6,
-		
-		
-		easing: Kinetic.Easings.Linear,
-		//fillR: 0,
-		//fillG: 0,
-		//fillB: 255
-	});
-	//tween.play();
-*/
+	}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds + beltSlideDurationSeconds) * 1000);
 }
-
-
 
 GroupingGameView.drawNumbers = function() {
 	//add number of ones
@@ -564,7 +560,7 @@ GroupingGameView.drawNumbers = function() {
 }
 
 GroupingGameView.drawTitle = function() {
-	var title = GroupingGameView.NumberInWords[GroupingGameView.goalNumber];
+	var title = GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber];
 	 GroupingGameView.titleTextWidget = new Kinetic.Text({
     	x: DimensionUtil.decimalToActualWidth(0.15),
 		y: DimensionUtil.decimalToActualHeight(0.02),
@@ -585,8 +581,7 @@ GroupingGameView.pause = function() {
 	if (GroupingGameView.pauseWidgets == null) {
 		GroupingGameView.pauseWidgets = {};
 		
-		// overlay
-		
+		// draw overlay
 		GroupingGameView.pauseWidgets.overlay = new Kinetic.Rect({
 			fill: 'black',
 			opacity: 0.62
@@ -602,7 +597,6 @@ GroupingGameView.pause = function() {
 		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.overlay);	
 		
 		// paused label
-		
 		GroupingGameView.pauseWidgets.pausedLabel = new Kinetic.Image({image: GroupingGameView.images.pausedLabel});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.pausedLabel, {
 			glueTop: true,
@@ -614,7 +608,6 @@ GroupingGameView.pause = function() {
 		});
 
 		// resume button
-		
 		GroupingGameView.pauseWidgets.resumeButton = new Kinetic.Image({image: GroupingGameView.images.resumeButton});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.resumeButton, {
 			glueTop: true,
@@ -628,9 +621,7 @@ GroupingGameView.pause = function() {
 			GroupingGameView.unpause();
 		});
 		
-		
 		// menu button
-		
 		GroupingGameView.pauseWidgets.menuButton = new Kinetic.Image({image: GroupingGameView.images.menuButton});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.menuButton, {
 			glueTop: true,
@@ -641,12 +632,9 @@ GroupingGameView.pause = function() {
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.menuButton.on('click tap', function () {
-			
 		});
 		
-		
 		// restart button
-		
 		GroupingGameView.pauseWidgets.restartButton = new Kinetic.Image({image: GroupingGameView.images.restartButton});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.restartButton, {
 			glueTop: true,
@@ -657,10 +645,9 @@ GroupingGameView.pause = function() {
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.restartButton.on('click tap', function () {
-			
 		});
 		
-	
+		// Add all the widgets onto the background layer
 		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.resumeButton);
 		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.menuButton);
 		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.restartButton);
@@ -683,7 +670,6 @@ GroupingGameView.pause = function() {
 	GroupingGameView.pauseWidgets.pausedLabel.moveToTop();
 	
 	GroupingGameView.stage.draw();
-	
 }
 
 GroupingGameView.unpause = function() {
@@ -694,5 +680,4 @@ GroupingGameView.unpause = function() {
 	GroupingGameView.pauseWidgets.pausedLabel.hide();
 	GroupingGameView.stage.draw();
 }
-
 
