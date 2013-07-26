@@ -40,7 +40,7 @@ GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
 	19 : {value: 19, name: "Nineteen"}
 };*/
 GroupingGameView.NumberInWords = [];
-GroupingGameView.NumberInWords[11] = "ElEVEN";
+GroupingGameView.NumberInWords[11] = "ELEVEN";
 GroupingGameView.NumberInWords[12] = "TWELVE";
 GroupingGameView.NumberInWords[13] = "THIRTEEN";
 GroupingGameView.NumberInWords[14] = "FOURTEEN";
@@ -485,10 +485,12 @@ GroupingGameView.trayOnesFullCallback = function() {
 GroupingGameView.drawNumbers = function() {
 	//add number of ones
 	GroupingGameView.onesTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.53),
+		x: DimensionUtil.decimalToActualWidth(0.52),
 		y: DimensionUtil.decimalToActualHeight(0.28),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
     	text: 0,
-    	fontSize: 120,
+    	fontSize: 110,
     	fontFamily: 'COMIC SANS MS',
     	fill: 'black'
     });
@@ -498,8 +500,10 @@ GroupingGameView.drawNumbers = function() {
     GroupingGameView.tensTextWidget = new Kinetic.Text({
     	x: DimensionUtil.decimalToActualWidth(0.26),
 		y: DimensionUtil.decimalToActualHeight(0.28),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
     	text: 0,
-    	fontSize: 120,
+    	fontSize: 110,
     	fontFamily: 'COMIC SANS MS',
     	fill: 'black'
     });
@@ -511,8 +515,10 @@ GroupingGameView.drawTitle = function() {
 	 GroupingGameView.titleTextWidget = new Kinetic.Text({
     	x: DimensionUtil.decimalToActualWidth(0.15),
 		y: DimensionUtil.decimalToActualHeight(0.02),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
     	text: title,
-    	fontSize: 120,
+    	fontSize: 110,
     	fontFamily: 'COMIC SANS MS',
     	fill: 'black'
     });
