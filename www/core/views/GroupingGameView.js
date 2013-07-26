@@ -77,6 +77,7 @@ GroupingGameView.sources.coverBack = "images/grouping_game/cover_back.png";
 GroupingGameView.sources.tray = "images/grouping_game/tray.png";
 
 GroupingGameView.sources.pauseButton = "images/widgets/pause_button.png";
+GroupingGameView.sources.pausedLabel = "images/widgets/paused_label.png";
 GroupingGameView.sources.menuButton = "images/widgets/menu_button.png";
 GroupingGameView.sources.restartButton = "images/widgets/restart_button.png";
 GroupingGameView.sources.resumeButton = "images/widgets/resume_button.png";
@@ -147,6 +148,7 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.images.menuButton = loader.addImage(GroupingGameView.sources.menuButton);
 	GroupingGameView.images.restartButton = loader.addImage(GroupingGameView.sources.restartButton);
 	GroupingGameView.images.resumeButton = loader.addImage(GroupingGameView.sources.resumeButton);
+	GroupingGameView.images.pausedLabel = loader.addImage(GroupingGameView.sources.pausedLabel);
 	GroupingGameView.images.eggs = [];
 	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
 		GroupingGameView.images.eggs[i] = loader.addImage(GroupingGameView.sources.eggs[i]);
@@ -546,7 +548,19 @@ GroupingGameView.pause = function() {
 			dx: 0,
 			dy: 0
 		});
-		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.overlay);		
+		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.overlay);	
+		
+		// paused label
+		
+		GroupingGameView.pauseWidgets.pausedLabel = new Kinetic.Image({image: GroupingGameView.images.pausedLabel});
+		WidgetUtil.glue(GroupingGameView.pauseWidgets.pausedLabel, {
+			glueTop: true,
+			glueLeft: true,
+			width: 0.3,
+			height: 0.1,
+			dx: 0.35,
+			dy: 0.25
+		});
 
 		// resume button
 		
@@ -599,6 +613,7 @@ GroupingGameView.pause = function() {
 		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.resumeButton);
 		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.menuButton);
 		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.restartButton);
+		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.pausedLabel);
 	}
 	
 	GroupingGameView.pauseWidgets.overlay.show();
@@ -612,6 +627,9 @@ GroupingGameView.pause = function() {
 	
 	GroupingGameView.pauseWidgets.restartButton.show();
 	GroupingGameView.pauseWidgets.restartButton.moveToTop();
+	
+	GroupingGameView.pauseWidgets.pausedLabel.show();
+	GroupingGameView.pauseWidgets.pausedLabel.moveToTop();
 	
 	GroupingGameView.stage.draw();
 	
