@@ -184,7 +184,7 @@ GroupingGameView.drawTrays = function() {
 		width: 0.395,
 		height: 0.42,
 		dx: 0.25,
-		dy: 0.48
+		dy: 0.415
 	});
 	GroupingGameView.eggOnesGroup.add(GroupingGameView.trays.current);
 	
@@ -197,7 +197,7 @@ GroupingGameView.drawTrays = function() {
 		width: 0.395,
 		height: 0.42,
 		dx: 0.05,
-		dy: 0.79
+		dy: 0.71
 	});
 	GroupingGameView.backgroundLayer.add(GroupingGameView.trays.next);
 	
