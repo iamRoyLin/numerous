@@ -60,6 +60,8 @@ GroupingGameView.eggDestinationLocations = [
 	{x:0.378, y: 0.710},
 ];
 
+
+
 // Image Sources
 GroupingGameView.sources = {};
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
@@ -89,6 +91,7 @@ GroupingGameView.sources.eggs = [
 
 // Images
 GroupingGameView.images = {};
+
 
 // As the images are loaded into memory, they will be accessible from this array
 GroupingGameView.eggImageObjects = [];
@@ -141,10 +144,30 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.images.resumeButton = loader.addImage(GroupingGameView.sources.resumeButton);
 	GroupingGameView.images.pausedLabel = loader.addImage(GroupingGameView.sources.pausedLabel);
 	GroupingGameView.images.eggs = [];
+	
+	
+	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
 		GroupingGameView.images.eggs[i] = loader.addImage(GroupingGameView.sources.eggs[i]);
 	}
 	
+	//Added sounds to the loader class
+	//GroupingGameView.sounds.acceptEggs = loader.addImage(GroupingGameView.sources.acceptEggs);
+	
+	//Start and load sound
+	soundManager.setup({
+    		url: 'sounds/grouping_game/',
+    		onready: function() {
+     			soundManager.createSound({
+ 					id: 'acceptEggs',
+					url: 'sounds/grouping_game/accept_egg.wav'
+				});
+				soundManager.createSound({
+ 					id: 'rejectEggs',
+					url: 'sounds/grouping_game/reject_egg.wav'
+				});
+   			}
+	});
 	// Registers loaded() function, which gets called when images loaded into memory
 	loader.addCompletionListener(GroupingGameView.loaded);
 	
@@ -328,11 +351,15 @@ GroupingGameView.drawNewEgg = function() {
 		if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)
 				&& (GroupingGameView.eggsAtDestination.length != 10)) {
 			GroupingGameView.acceptEgg(this);
+			soundManager.play('acceptEggs');
+			//soundManager.play(GroupingGameView.sounds.acceptEggs);
 		} else if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
 			GroupingGameView.declineEgg(this);
+			soundManager.play('rejectEggs');
 		} else {
 			GroupingGameView.declineEgg(this);
+			soundManager.play('rejectEggs');
 		}
 		
 		// If we reach 10 eggs in our tray
