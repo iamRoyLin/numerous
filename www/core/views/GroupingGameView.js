@@ -85,6 +85,7 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.eggsAtDestination = [];
 	GroupingGameView.eggInitialLocations = [];
 	GroupingGameView.eggCount = 0;
+	GroupingGameView.tensCount = 0;
 
 
 	// render the html view
@@ -140,10 +141,15 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.drawTrays();
 	GroupingGameView.drawPauseButton();
 	GroupingGameView.drawEggs();
+<<<<<<< HEAD
 	
 	GroupingGameView.eggOnesGroup.moveToTop();
 	
+=======
+	GroupingGameView.drawNumbers();
+>>>>>>> 3e5dc6adaa53ef0f62d1bc558c207bc45ac31646
 	GroupingGameView.stage.draw();
+	
 }
 
 GroupingGameView.drawTrays = function() {
@@ -343,6 +349,17 @@ GroupingGameView.acceptEgg = function(egg) {
 	
 	// create another egg in its place
 	var newEgg = GroupingGameView.drawNewEgg();
+	
+	// increase number of eggs
+	var ones = GroupingGameView.eggsAtDestination.length;
+	if (ones != 10){
+		GroupingGameView.onesTextWidget.setText(ones);
+	}else{
+		GroupingGameView.onesTextWidget.setText(0);
+		GroupingGameView.tensCount ++;
+	}
+	GroupingGameView.tensTextWidget.setText(GroupingGameView.tensCount);
+	
 	GroupingGameView.stage.draw();
 }
 
@@ -351,6 +368,7 @@ GroupingGameView.declineEgg = function(egg) {
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
 
+<<<<<<< HEAD
 
 GroupingGameView.trayOnesFullCallback = function() {
 	// create cover
@@ -387,6 +405,31 @@ GroupingGameView.trayOnesFullCallback = function() {
 }
 
 
+=======
+GroupingGameView.drawNumbers = function() {
+	//add number of ones
+	GroupingGameView.onesTextWidget = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.53),
+		y: DimensionUtil.decimalToActualHeight(0.28),
+    	text: 0,
+    	fontSize: 120,
+    	fontFamily: 'Calibri',
+    	fill: 'black'
+    });
+	GroupingGameView.backgroundLayer.add(GroupingGameView.onesTextWidget);
+	
+	//add number of tens
+    GroupingGameView.tensTextWidget = new Kinetic.Text({
+    	x: DimensionUtil.decimalToActualWidth(0.27),
+		y: DimensionUtil.decimalToActualHeight(0.28),
+    	text: 0,
+    	fontSize: 120,
+    	fontFamily: 'Calibri',
+    	fill: 'black'
+    });
+    GroupingGameView.backgroundLayer.add(GroupingGameView.tensTextWidget);
+}
+>>>>>>> 3e5dc6adaa53ef0f62d1bc558c207bc45ac31646
 GroupingGameView.pauseWidgets = null;
 GroupingGameView.pause = function() {
 
