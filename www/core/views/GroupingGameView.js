@@ -7,12 +7,12 @@ GroupingGameView.stage;
 GroupingGameView.backgroundLayer;
 
 // Number of eggs at the origin at the beginning
-GroupingGameView.INITIAL_EGG_COUNT = 5;
+GroupingGameView.INITIAL_EGG_COUNT = 50;
 // size of the eggs
 GroupingGameView.INITIAL_EGG_DIMENSIONS = {width:60, height: 75};
 // destination area of the eggs
 
-GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.82, y:0.78, width: 0.1, height: 0.05};
+GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.68, width: 0.2, height: 0.05};
 GroupingGameView.INITIAL_EGG_SIZE = {width: 0.06, height: 0.093};
 
 // The areas of the 'ones' belts that accepts the egg
@@ -188,10 +188,10 @@ GroupingGameView.drawRabbit = function() {
 	WidgetUtil.glue(rabbit, {
 		glueTop: false,
 		glueLeft: false,
-		width: 0.2,
-		height: 0.5,
-		dx: 0,
-		dy: 0
+		width: 0.3,
+		height: 0.8,
+		dx: 0.03,
+		dy: 0.01
 	});
 	GroupingGameView.backgroundLayer.add(rabbit);
 }
