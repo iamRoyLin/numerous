@@ -99,7 +99,7 @@ GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg9.png"
 ];
 
-<<<<<<< HEAD
+
 // Images
 GroupingGameView.images = {};
 
@@ -108,9 +108,7 @@ GroupingGameView.images = {};
 GroupingGameView.eggImageObjects = [];
 
 
-=======
 // Called when the user enters this page
->>>>>>> 455153c7917da5d3dc4f53f5f7a318397141da7a
 GroupingGameView.initialize = function () {
 
 	// Array of the eggs currently on the tray at ones
