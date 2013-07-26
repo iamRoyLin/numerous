@@ -321,10 +321,12 @@ GroupingGameView.drawNewEgg = function() {
 	egg.on('mouseover', function() {document.body.style.cursor = 'pointer'});
 	egg.on('mouseout', function() {document.body.style.cursor = 'default'});					
 	
-	egg.on('dragend', function() {
+	egg.on('dragstart', function() {
 		// make it cover all other eggs.
 		this.moveToTop();
-		
+	});
+	
+	egg.on('dragend', function() {
 		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
 		if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)
 				&& (GroupingGameView.eggsAtDestination.length != 10)) {
@@ -351,13 +353,17 @@ GroupingGameView.drawNewEgg = function() {
 
 // accepts the egg and add it to the accepted array
 GroupingGameView.acceptEgg = function(egg) {
+	
+
 	// make the egg not draggable
 	egg.setDraggable(false);
 	// move it to the right position
 	var index = GroupingGameView.eggsAtDestination.length;
 
 	// add it to the group
+	egg.remove();
 	GroupingGameView.eggOnesGroup.add(egg);
+	egg.moveToTop();
 	
 	egg.setX(DimensionUtil.decimalToActualWidth(GroupingGameView.eggDestinationLocations[index].x));
 	egg.setY(DimensionUtil.decimalToActualHeight(GroupingGameView.eggDestinationLocations[index].y));
@@ -391,25 +397,24 @@ GroupingGameView.declineEgg = function(egg) {
 
 GroupingGameView.trayOnesFullCallback = function() {
 	
-	// create cover
-
-	var cover = new Kinetic.Image({image: GroupingGameView.images.cover});
-	WidgetUtil.glue(cover, {
+	GroupingGameView.coverWidget = new Kinetic.Image({image: GroupingGameView.images.cover});
+	WidgetUtil.glue(GroupingGameView.coverWidget, {
 		glueTop: true,
 		glueLeft: true,
-		width: 0.35,
-		height: 0.41,
-		dx: 0.27,
-		dy: -0.41
+		width: 0.395,
+		height: 0.42,
+		dx: 0.25,
+		dy: -0.415
 	});
-	GroupingGameView.eggOnesGroup.add(cover);
+	GroupingGameView.eggOnesGroup.add(GroupingGameView.coverWidget);
+	GroupingGameView.coverWidget.moveToTop();
 	GroupingGameView.stage.draw();
 	
 	var dropCoverTween = new Kinetic.Tween({
-		node: cover,
+		node: GroupingGameView.coverWidget,
 		duration: 2,
-		x: DimensionUtil.decimalToActualWidth(0.27),
-		y: DimensionUtil.decimalToActualHeight(0.42),
+		x: DimensionUtil.decimalToActualWidth(0.25),
+		y: DimensionUtil.decimalToActualHeight(0.415),
 		onFinish: function () {
 			// lift up
 
