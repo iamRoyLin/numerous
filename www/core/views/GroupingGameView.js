@@ -314,7 +314,7 @@ GroupingGameView.drawNewEgg = function() {
 		}
 		
 		// If we reach 10 eggs in our tray
-		if (GroupingGameView.eggsAtDestination.length == 2) {
+		if (GroupingGameView.eggsAtDestination.length == 1) {
 			GroupingGameView.trayOnesFullCallback();
 		}
 		
@@ -367,17 +367,43 @@ GroupingGameView.declineEgg = function(egg) {
 
 
 GroupingGameView.trayOnesFullCallback = function() {
+	
 	// create cover
-	
-	
 
-	// lift up
-	var liftTween = new Kinetic.Tween({
-		node: GroupingGameView.eggOnesGroup, 
-		y: DimensionUtil.decimalToActualHeight(-0.2)
+	var cover = new Kinetic.Image({image: GroupingGameView.images.cover});
+	WidgetUtil.glue(cover, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.35,
+		height: 0.41,
+		dx: 0.27,
+		dy: -0.41
 	});
-	liftTween.play();
+	GroupingGameView.eggOnesGroup.add(cover);
+	GroupingGameView.stage.draw();
+	
+	var dropCoverTween = new Kinetic.Tween({
+		node: cover,
+		duration: 2,
+		x: DimensionUtil.decimalToActualWidth(0.27),
+		y: DimensionUtil.decimalToActualHeight(0.42),
+		onFinish: function () {
+			// lift up
 
+		
+		}
+	});
+	dropCoverTween.play();
+	
+	setTimeout(function() {
+		var liftTween = new Kinetic.Tween({
+			node: GroupingGameView.eggOnesGroup, 
+			y: DimensionUtil.decimalToActualHeight(-0.2)
+		});
+		liftTween.play();
+	}, 2000);
+
+/*
 	var tween = new Kinetic.Tween({
 		node: GroupingGameView.eggOnesGroup, 
 		duration: 2,
@@ -398,6 +424,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 		//fillB: 255
 	});
 	//tween.play();
+*/
 }
 
 
