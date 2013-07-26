@@ -72,6 +72,8 @@ GroupingGameView.sources = {};
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
 GroupingGameView.sources.cover = "images/grouping_game/cover.png";
+GroupingGameView.sources.coverFront = "images/grouping_game/cover_front.png";
+GroupingGameView.sources.coverBack = "images/grouping_game/cover_back.png";
 GroupingGameView.sources.tray = "images/grouping_game/tray.png";
 
 GroupingGameView.sources.pauseButton = "images/widgets/pause_button.png";
@@ -138,6 +140,8 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
 	GroupingGameView.images.tray = loader.addImage(GroupingGameView.sources.tray);
 	GroupingGameView.images.cover = loader.addImage(GroupingGameView.sources.cover);
+	GroupingGameView.images.coverFront = loader.addImage(GroupingGameView.sources.coverFront);
+	GroupingGameView.images.coverBack = loader.addImage(GroupingGameView.sources.coverBack);
 	
 	GroupingGameView.images.pauseButton = loader.addImage(GroupingGameView.sources.pauseButton);
 	GroupingGameView.images.menuButton = loader.addImage(GroupingGameView.sources.menuButton);
@@ -397,8 +401,11 @@ GroupingGameView.declineEgg = function(egg) {
 
 GroupingGameView.trayOnesFullCallback = function() {
 	
-	GroupingGameView.coverWidget = new Kinetic.Image({image: GroupingGameView.images.cover});
-	WidgetUtil.glue(GroupingGameView.coverWidget, {
+	// The cover is separated into two parts front (the part that are in front of the eggs) and the back (parts behind the eggs)
+	
+	// Draw the cover's front
+	var coverFront = new Kinetic.Image({image: GroupingGameView.images.coverFront});
+	WidgetUtil.glue(coverFront, {
 		glueTop: true,
 		glueLeft: true,
 		width: 0.395,
@@ -406,22 +413,39 @@ GroupingGameView.trayOnesFullCallback = function() {
 		dx: 0.25,
 		dy: -0.415
 	});
-	GroupingGameView.eggOnesGroup.add(GroupingGameView.coverWidget);
-	GroupingGameView.coverWidget.moveToTop();
+	GroupingGameView.eggOnesGroup.add(coverFront);
+	coverFront.moveToTop();
+	
+	// Draw the cover's back
+	var coverBack = new Kinetic.Image({image: GroupingGameView.images.coverBack});
+	WidgetUtil.glue(coverBack, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.395,
+		height: 0.42,
+		dx: 0.25,
+		dy: -0.415
+	});
+	GroupingGameView.eggOnesGroup.add(coverBack);
+	coverBack.moveToBottom();
+	
+	// redraw the stage
 	GroupingGameView.stage.draw();
 	
-	var dropCoverTween = new Kinetic.Tween({
-		node: GroupingGameView.coverWidget,
+	var dropCoverFrontTween = new Kinetic.Tween({
+		node: coverFront,
 		duration: 2,
 		x: DimensionUtil.decimalToActualWidth(0.25),
 		y: DimensionUtil.decimalToActualHeight(0.415),
-		onFinish: function () {
-			// lift up
-
-		
-		}
 	});
-	dropCoverTween.play();
+	var dropCoverBackTween = new Kinetic.Tween({
+		node: coverBack,
+		duration: 2,
+		x: DimensionUtil.decimalToActualWidth(0.25),
+		y: DimensionUtil.decimalToActualHeight(0.415),
+	});
+	dropCoverFrontTween.play();
+	dropCoverBackTween.play();
 	
 	setTimeout(function() {
 		var liftTween = new Kinetic.Tween({
@@ -431,6 +455,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 		liftTween.play();
 	}, 2000);
 
+	
 /*
 	var tween = new Kinetic.Tween({
 		node: GroupingGameView.eggOnesGroup, 
