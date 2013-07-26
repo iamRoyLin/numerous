@@ -30,31 +30,35 @@ GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
 
 // The destination locations where eggs will be locked in to
 GroupingGameView.eggDestinationLocations = [
-	{x:0.482, y: 0.460},
-	{x:0.545, y: 0.460},
+	{x:0.470, y: 0.465},
+	{x:0.532, y: 0.465},
 	
-	{x:0.455, y: 0.513},
-	{x:0.519, y: 0.513},
+	{x:0.431, y: 0.526},
+	{x:0.495, y: 0.526},
 	
-	{x:0.419, y: 0.566},
-	{x:0.482, y: 0.566},
+	{x:0.395, y: 0.585},
+	{x:0.458, y: 0.585},
 	
-	{x:0.385, y: 0.619},
-	{x:0.449, y: 0.619},
+	{x:0.356, y: 0.648},
+	{x:0.420, y: 0.648},
 	
-	{x:0.350, y: 0.675},
-	{x:0.413, y: 0.675},
+	{x:0.315, y: 0.710},
+	{x:0.378, y: 0.710},
 ];
 
 // Image Sources
 GroupingGameView.sources = {};
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
+GroupingGameView.sources.cover = "images/grouping_game/cover.png";
+GroupingGameView.sources.tray = "images/grouping_game/tray.png";
 
 GroupingGameView.sources.pauseButton = "images/widgets/pause_button.png";
 GroupingGameView.sources.menuButton = "images/widgets/menu_button.png";
 GroupingGameView.sources.restartButton = "images/widgets/restart_button.png";
 GroupingGameView.sources.resumeButton = "images/widgets/resume_button.png";
+
+
 
 GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg1.png",
@@ -83,8 +87,6 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.eggCount = 0;
 
 
-	
-	
 	// render the html view
 	View.render("GroupingGameView");
 	
@@ -104,12 +106,14 @@ GroupingGameView.initialize = function () {
 	
 	// create the egg ones group
 	GroupingGameView.eggOnesGroup = new Kinetic.Group({ x: 0, y: 0 });
-	GroupingGameView.backgroundLayer.add(GroupingGameView.eggOnesGroup);	
+	GroupingGameView.backgroundLayer.add(GroupingGameView.eggOnesGroup);
 	
 	// Add images to the loader class
 	var loader = new PxLoader();
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
+	GroupingGameView.images.tray = loader.addImage(GroupingGameView.sources.tray);
+	GroupingGameView.images.cover = loader.addImage(GroupingGameView.sources.cover);
 	
 	GroupingGameView.images.pauseButton = loader.addImage(GroupingGameView.sources.pauseButton);
 	GroupingGameView.images.menuButton = loader.addImage(GroupingGameView.sources.menuButton);
@@ -133,11 +137,47 @@ GroupingGameView.loaded = function () {
 	
 	GroupingGameView.drawRabbit();
 	GroupingGameView.drawBelts();
+	GroupingGameView.drawTrays();
 	GroupingGameView.drawPauseButton();
 	GroupingGameView.drawEggs();
 	
+	GroupingGameView.eggOnesGroup.moveToTop();
+	
 	GroupingGameView.stage.draw();
 }
+
+GroupingGameView.drawTrays = function() {
+	GroupingGameView.trays = {};
+	
+	// tray current
+	
+	GroupingGameView.trays.current = new Kinetic.Image({image: GroupingGameView.images.tray});
+	WidgetUtil.glue(GroupingGameView.trays.current, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.395,
+		height: 0.42,
+		dx: 0.25,
+		dy: 0.48
+	});
+	GroupingGameView.eggOnesGroup.add(GroupingGameView.trays.current);
+	
+	// tray next
+	
+	GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
+	WidgetUtil.glue(GroupingGameView.trays.next, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.395,
+		height: 0.42,
+		dx: 0.05,
+		dy: 0.79
+	});
+	GroupingGameView.backgroundLayer.add(GroupingGameView.trays.next);
+	
+	
+}
+
 
 // Draws the rabbit
 GroupingGameView.drawRabbit = function() {
@@ -270,23 +310,9 @@ GroupingGameView.drawNewEgg = function() {
 			GroupingGameView.declineEgg(this);
 		}
 		
-		if (GroupingGameView.eggsAtDestination.length == 4) {
-			var tween = new Kinetic.Tween({
-				node: GroupingGameView.eggOnesGroup, 
-				duration: 2,
-				x: 150,
-				y: 150,
-				//rotation: Math.PI * 10,
-				//opacity: 1,
-				//strokeWidth: 6,
-				scaleX: 0.8,
-				scaleY: 0.8,
-				easing: Kinetic.Easings.Linear,
-				//fillR: 0,
-				//fillG: 0,
-				//fillB: 255
-			});
-			tween.play();
+		// If we reach 10 eggs in our tray
+		if (GroupingGameView.eggsAtDestination.length == 2) {
+			GroupingGameView.trayOnesFullCallback();
 		}
 		
 		
@@ -324,6 +350,42 @@ GroupingGameView.acceptEgg = function(egg) {
 GroupingGameView.declineEgg = function(egg) {
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
+
+
+GroupingGameView.trayOnesFullCallback = function() {
+	// create cover
+	
+	
+
+	// lift up
+	var liftTween = new Kinetic.Tween({
+		node: GroupingGameView.eggOnesGroup, 
+		y: DimensionUtil.decimalToActualHeight(-0.2)
+	});
+	liftTween.play();
+
+	var tween = new Kinetic.Tween({
+		node: GroupingGameView.eggOnesGroup, 
+		duration: 2,
+		x: DimensionUtil.decimalToActualWidth(0.45),
+		y: DimensionUtil.decimalToActualHeight(0.45),
+		
+		scaleX: 0.5,
+		scaleY: 0.5,
+		
+		//rotation: Math.PI * 10,
+		//opacity: 1,
+		//strokeWidth: 6,
+		
+		
+		easing: Kinetic.Easings.Linear,
+		//fillR: 0,
+		//fillG: 0,
+		//fillB: 255
+	});
+	//tween.play();
+}
+
 
 GroupingGameView.pauseWidgets = null;
 GroupingGameView.pause = function() {
@@ -424,4 +486,5 @@ GroupingGameView.unpause = function() {
 	GroupingGameView.pauseWidgets.restartButton.hide();
 	GroupingGameView.stage.draw();
 }
+
 
