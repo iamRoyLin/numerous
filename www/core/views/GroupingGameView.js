@@ -640,6 +640,7 @@ GroupingGameView.unpause = function() {
 	GroupingGameView.pauseWidgets.resumeButton.hide();
 	GroupingGameView.pauseWidgets.menuButton.hide();
 	GroupingGameView.pauseWidgets.restartButton.hide();
+	GroupingGameView.pauseWidgets.pausedLabel.hide();
 	GroupingGameView.stage.draw();
 }
 
