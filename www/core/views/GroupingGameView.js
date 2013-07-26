@@ -27,6 +27,9 @@ GroupingGameView.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
 GroupingGameView.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
 GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
 
+// Variable for controlling whether activities are enabled (should be turned off during animations)
+GroupingGameView.activitiesEnabled = true;
+
 // Map of numbers to their words
 GroupingGameView.NumberInWords = [];
 GroupingGameView.NumberInWords[11] = "ELEVEN";
@@ -71,8 +74,6 @@ GroupingGameView.sources.pausedLabel = "images/widgets/paused_label.png";
 GroupingGameView.sources.menuButton = "images/widgets/menu_button.png";
 GroupingGameView.sources.restartButton = "images/widgets/restart_button.png";
 GroupingGameView.sources.resumeButton = "images/widgets/resume_button.png";
-
-
 
 GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg1.png",
@@ -154,7 +155,6 @@ GroupingGameView.initialize = function () {
 // Should be called once graphics are loaded into memory
 GroupingGameView.loaded = function () {
 	// Draw the graphics components
-	
 	GroupingGameView.drawRabbit();
 	GroupingGameView.drawBelts();
 	GroupingGameView.drawTrays();
@@ -165,14 +165,12 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.eggOnesGroup.moveToTop();
 	
 	GroupingGameView.stage.draw();
-	
 }
 
 GroupingGameView.drawTrays = function() {
 	GroupingGameView.trays = {};
 	
 	// tray current
-	
 	GroupingGameView.trays.current = new Kinetic.Image({image: GroupingGameView.images.tray});
 	WidgetUtil.glue(GroupingGameView.trays.current, {
 		glueTop: true,
@@ -185,7 +183,6 @@ GroupingGameView.drawTrays = function() {
 	GroupingGameView.eggOnesGroup.add(GroupingGameView.trays.current);
 	
 	// tray next
-	
 	GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
 	WidgetUtil.glue(GroupingGameView.trays.next, {
 		glueTop: true,
@@ -323,6 +320,10 @@ GroupingGameView.drawNewEgg = function() {
 	});
 	
 	egg.on('dragend', function() {
+		if (GroupingGameView.activitiesEnabled == false) {
+			return;
+		}
+		
 		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
 		if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)
 				&& (GroupingGameView.eggsAtDestination.length != 10)) {
@@ -335,7 +336,8 @@ GroupingGameView.drawNewEgg = function() {
 		}
 		
 		// If we reach 10 eggs in our tray
-		if (GroupingGameView.eggsAtDestination.length == 1) {
+		if (GroupingGameView.eggsAtDestination.length == 10) {
+			GroupingGameView.activitiesEnabled = false;
 			GroupingGameView.trayOnesFullCallback();
 		}
 		
@@ -503,6 +505,10 @@ GroupingGameView.trayOnesFullCallback = function() {
 		
 	}, 4000);
 	
+	setTimeout(function() {
+		GroupingGameView.activitiesEnabled = true;
+	}, 5000);
+	
 /*
 	var tween = new Kinetic.Tween({
 		node: GroupingGameView.eggOnesGroup, 
@@ -574,7 +580,7 @@ GroupingGameView.drawTitle = function() {
 				
 GroupingGameView.pauseWidgets = null;
 GroupingGameView.pause = function() {
-
+	
 	// lazy loading
 	if (GroupingGameView.pauseWidgets == null) {
 		GroupingGameView.pauseWidgets = {};
