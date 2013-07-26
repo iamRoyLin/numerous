@@ -81,6 +81,7 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.eggsAtDestination = [];
 	GroupingGameView.eggInitialLocations = [];
 	GroupingGameView.eggCount = 0;
+	GroupingGameView.tensCount = 0;
 
 
 	
@@ -135,8 +136,9 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.drawBelts();
 	GroupingGameView.drawPauseButton();
 	GroupingGameView.drawEggs();
-	
+	GroupingGameView.drawNumbers();
 	GroupingGameView.stage.draw();
+	
 }
 
 // Draws the rabbit
@@ -317,6 +319,17 @@ GroupingGameView.acceptEgg = function(egg) {
 	
 	// create another egg in its place
 	var newEgg = GroupingGameView.drawNewEgg();
+	
+	// increase number of eggs
+	var ones = GroupingGameView.eggsAtDestination.length;
+	if (ones != 10){
+		GroupingGameView.onesTextWidget.setText(ones);
+	}else{
+		GroupingGameView.onesTextWidget.setText(0);
+		GroupingGameView.tensCount ++;
+	}
+	GroupingGameView.tensTextWidget.setText(GroupingGameView.tensCount);
+	
 	GroupingGameView.stage.draw();
 }
 
@@ -325,6 +338,29 @@ GroupingGameView.declineEgg = function(egg) {
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
 
+GroupingGameView.drawNumbers = function() {
+	//add number of ones
+	GroupingGameView.onesTextWidget = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.53),
+		y: DimensionUtil.decimalToActualHeight(0.28),
+    	text: 0,
+    	fontSize: 120,
+    	fontFamily: 'Calibri',
+    	fill: 'black'
+    });
+	GroupingGameView.backgroundLayer.add(GroupingGameView.onesTextWidget);
+	
+	//add number of tens
+    GroupingGameView.tensTextWidget = new Kinetic.Text({
+    	x: DimensionUtil.decimalToActualWidth(0.27),
+		y: DimensionUtil.decimalToActualHeight(0.28),
+    	text: 0,
+    	fontSize: 120,
+    	fontFamily: 'Calibri',
+    	fill: 'black'
+    });
+    GroupingGameView.backgroundLayer.add(GroupingGameView.tensTextWidget);
+}
 GroupingGameView.pauseWidgets = null;
 GroupingGameView.pause = function() {
 
