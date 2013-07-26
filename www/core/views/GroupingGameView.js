@@ -27,7 +27,28 @@ GroupingGameView.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
 GroupingGameView.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
 GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
 
-
+//Objective 1 numbers in words and respective number
+/*GroupingGameView.NumberMap = {
+	11 : {value: 11, name: "Eleven"},
+	12 : {value: 12, name: "Twelve"},
+	13 : {value: 13, name: "Thirteen"},
+	14 : {value: 14, name: "Fourteen"},
+	15 : {value: 15, name: "Fifteen"},
+	16 : {value: 16, name: "Sixteen"},
+	17 : {value: 17, name: "Seventeen"},
+	18 : {value: 18, name: "Eighteen"},
+	19 : {value: 19, name: "Nineteen"}
+};*/
+GroupingGameView.NumberInWords = [];
+GroupingGameView.NumberInWords[11] = "ElEVEN";
+GroupingGameView.NumberInWords[12] = "TWELVE";
+GroupingGameView.NumberInWords[13] = "THIRTEEN";
+GroupingGameView.NumberInWords[14] = "FOURTEEN";
+GroupingGameView.NumberInWords[15] = "FIFTEEN";
+GroupingGameView.NumberInWords[16] = "SIXTEEN";
+GroupingGameView.NumberInWords[17] = "SEVENTEEN";
+GroupingGameView.NumberInWords[18] = "EIGHTEEN";
+GroupingGameView.NumberInWords[19] = "NINETEEN";
 // The destination locations where eggs will be locked in to
 GroupingGameView.eggDestinationLocations = [
 	{x:0.470, y: 0.465},
@@ -87,7 +108,9 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.eggCount = 0;
 	GroupingGameView.tensCount = 0;
 
-
+	//create a random goal number between 11 and 19
+	GroupingGameView.goalNumber = MathUtil.random(11,19);
+	
 	// render the html view
 	View.render("GroupingGameView");
 	
@@ -142,7 +165,7 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.drawPauseButton();
 	GroupingGameView.drawEggs();
 	GroupingGameView.drawNumbers();	
-	
+	GroupingGameView.drawTitle();
 	GroupingGameView.eggOnesGroup.moveToTop();
 	
 	GroupingGameView.stage.draw();
@@ -409,24 +432,36 @@ GroupingGameView.drawNumbers = function() {
 		y: DimensionUtil.decimalToActualHeight(0.28),
     	text: 0,
     	fontSize: 120,
-    	fontFamily: 'Calibri',
+    	fontFamily: 'COMIC SANS MS',
     	fill: 'black'
     });
 	GroupingGameView.backgroundLayer.add(GroupingGameView.onesTextWidget);
 	
 	//add number of tens
     GroupingGameView.tensTextWidget = new Kinetic.Text({
-    	x: DimensionUtil.decimalToActualWidth(0.27),
+    	x: DimensionUtil.decimalToActualWidth(0.26),
 		y: DimensionUtil.decimalToActualHeight(0.28),
     	text: 0,
     	fontSize: 120,
-    	fontFamily: 'Calibri',
+    	fontFamily: 'COMIC SANS MS',
     	fill: 'black'
     });
     GroupingGameView.backgroundLayer.add(GroupingGameView.tensTextWidget);
 }
 
-
+GroupingGameView.drawTitle = function() {
+	var title = GroupingGameView.NumberInWords[GroupingGameView.goalNumber];
+	 GroupingGameView.titleTextWidget = new Kinetic.Text({
+    	x: DimensionUtil.decimalToActualWidth(0.15),
+		y: DimensionUtil.decimalToActualHeight(0.02),
+    	text: title,
+    	fontSize: 120,
+    	fontFamily: 'COMIC SANS MS',
+    	fill: 'black'
+    });
+    GroupingGameView.backgroundLayer.add(GroupingGameView.titleTextWidget);
+}
+				
 GroupingGameView.pauseWidgets = null;
 GroupingGameView.pause = function() {
 
