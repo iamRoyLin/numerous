@@ -70,7 +70,12 @@ GroupingGameView.EGG_DESTINATION_LOCATIONS = [
 	{x:0.378, y: 0.710},
 ];
 
-
+// error types
+GroupingGameView.ERROR_TYPES = {
+	DRAG_TO_TENS : 0,
+	INCORRECT_DONE : 1,
+	EXCEEDED_GOAL_NUMBER : 2
+}
 
 // Image Sources
 GroupingGameView.sources = {};
@@ -86,6 +91,7 @@ GroupingGameView.sources.pausedLabel = "images/widgets/paused_label.png";
 GroupingGameView.sources.menuButton = "images/widgets/menu_button.png";
 GroupingGameView.sources.restartButton = "images/widgets/restart_button.png";
 GroupingGameView.sources.resumeButton = "images/widgets/resume_button.png";
+GroupingGameView.sources.doneButton = "images/widgets/done_button.png";
 
 GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg1.png",
@@ -99,17 +105,17 @@ GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg9.png"
 ];
 
-
 // Images
 GroupingGameView.images = {};
-
 
 // As the images are loaded into memory, they will be accessible from this array
 GroupingGameView.eggImageObjects = [];
 
-
 // Called when the user enters this page
 GroupingGameView.initialize = function () {
+
+	// Number of errors the child has made so far
+	GroupingGameView.errorsMade = 0;
 
 	// Array of the eggs currently on the tray at ones
 	GroupingGameView.eggsAtDestination = [];
@@ -119,9 +125,6 @@ GroupingGameView.initialize = function () {
 	
 	// A count of all eggs that have been generated
 	GroupingGameView.eggCount = 0;
-	
-	// 
-	GroupingGameView.tensCount = 0;
 	
 	// Variable for controlling whether activities are enabled (should be turned off during animations)
 	GroupingGameView.activitiesEnabled = true;
@@ -167,9 +170,9 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.images.menuButton = loader.addImage(GroupingGameView.sources.menuButton);
 	GroupingGameView.images.restartButton = loader.addImage(GroupingGameView.sources.restartButton);
 	GroupingGameView.images.resumeButton = loader.addImage(GroupingGameView.sources.resumeButton);
+	GroupingGameView.images.doneButton = loader.addImage(GroupingGameView.sources.doneButton);
 	GroupingGameView.images.pausedLabel = loader.addImage(GroupingGameView.sources.pausedLabel);
 	GroupingGameView.images.eggs = [];
-	
 	
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
@@ -200,6 +203,11 @@ GroupingGameView.initialize = function () {
 	loader.start();
 }
 
+GroupingGameView.finalize = function() {
+	GroupingGameView.pauseWidgets = null;
+	GroupingGameView.tensCount = null;
+}
+
 // Should be called once graphics are loaded into memory
 GroupingGameView.loaded = function () {
 	// Call helper functionsthe to draw components
@@ -208,14 +216,45 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.drawTrays();
 	GroupingGameView.drawPauseButton();
 	GroupingGameView.drawEggs();
-	GroupingGameView.drawNumbers();	
+	GroupingGameView.drawNumbers();
 	GroupingGameView.drawTitle();
+	GroupingGameView.drawDoneButton();
 	
 	// layering
 	GroupingGameView.onesWidgetGroup.moveToTop();
 	
 	// redraw all widgets
 	GroupingGameView.stage.draw();
+}
+
+GroupingGameView.drawDoneButton = function() {
+	var doneButton = new Kinetic.Image({image: GroupingGameView.images.doneButton});
+	WidgetUtil.glue(doneButton, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.15,
+		height: 0.2,
+		dx: 0.02,
+		dy: 0.25
+	});
+	
+	doneButton.on('click tap', function () {
+		var total = GroupingGameView.calculateTotal();
+		
+		if (total == GroupingGameView.goalNumber) {
+			alert("Correct!");
+		} else {
+			GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.INCORRECT_DONE);	
+		}
+	});
+	
+	GroupingGameView.backgroundLayer.add(doneButton);
+}
+
+GroupingGameView.calculateTotal = function () {
+	var ones = parseInt(GroupingGameView.onesTextWidget.getText());
+	var tens = parseInt(GroupingGameView.tensTextWidget.getText() * 10);
+	return (tens + ones);
 }
 
 GroupingGameView.drawTrays = function() {
@@ -374,9 +413,10 @@ GroupingGameView.drawNewEgg = function() {
 			GroupingGameView.acceptEgg(this);
 			//soundManager.play('acceptEggs');
 			//soundManager.play(GroupingGameView.sounds.acceptEggs);
-		} else if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)) {
+		} else if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_TENS_AREA.X_ARRAY, GroupingGameView.BELT_TENS_AREA.Y_ARRAY, GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
 			GroupingGameView.declineEgg(this);
+			GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.DRAG_TO_TENS);
 			//soundManager.play('rejectEggs');
 		} else {
 			GroupingGameView.declineEgg(this);
@@ -396,6 +436,13 @@ GroupingGameView.drawNewEgg = function() {
 
 // accepts the egg and add it to the accepted array
 GroupingGameView.acceptEgg = function(egg) {
+	
+	// check to see if total is greater than goal Number
+	if (GroupingGameView.calculateTotal() >= GroupingGameView.goalNumber) {
+		GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.EXCEEDED_GOAL_NUMBER);
+		GroupingGameView.declineEgg(egg);
+		return;
+	}
 	
 	// make the egg not draggable
 	egg.setDraggable(false);
@@ -419,11 +466,14 @@ GroupingGameView.acceptEgg = function(egg) {
 	
 	// increase number of eggs
 	var ones = GroupingGameView.eggsAtDestination.length;
+	if (GroupingGameView.tensCount == null) GroupingGameView.tensCount = 0;
 	if (ones != 10) {
 		GroupingGameView.onesTextWidget.setText(ones);
+		GroupingGameView.onesTextWidget.draw();
+		GroupingGameView.stage.draw();
 	} else {
 		GroupingGameView.onesTextWidget.setText(0);
-		GroupingGameView.tensCount ++;
+		GroupingGameView.tensCount++;
 	}
 	
 	GroupingGameView.tensTextWidget.setText(GroupingGameView.tensCount);
@@ -609,7 +659,7 @@ GroupingGameView.drawTitle = function() {
     GroupingGameView.backgroundLayer.add(GroupingGameView.titleTextWidget);
 }
 				
-GroupingGameView.pauseWidgets = null;
+// call this to pause the game
 GroupingGameView.pause = function() {
 	
 	// lazy loading
@@ -682,6 +732,10 @@ GroupingGameView.pause = function() {
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.restartButton.on('click tap', function () {
+			GroupingGameView.backgroundLayer.remove();
+			GroupingGameView.finalize();
+			GroupingGameView.initialize();
+			
 		});
 		
 		// Add all the widgets onto the background layer
@@ -709,6 +763,7 @@ GroupingGameView.pause = function() {
 	GroupingGameView.stage.draw();
 }
 
+// call this to unpause the game
 GroupingGameView.unpause = function() {
 	GroupingGameView.pauseWidgets.overlay.hide();
 	GroupingGameView.pauseWidgets.resumeButton.hide();
@@ -717,4 +772,11 @@ GroupingGameView.unpause = function() {
 	GroupingGameView.pauseWidgets.pausedLabel.hide();
 	GroupingGameView.stage.draw();
 }
+
+GroupingGameView.errorMade = function (errorType) {
+	alert("made error");
+}
+
+
+
 
