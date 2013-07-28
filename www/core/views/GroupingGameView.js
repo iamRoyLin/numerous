@@ -196,6 +196,9 @@ GroupingGameView.initialize = function () {
 				});
    			}
 	});*/
+	
+	// Initialize tens count
+	GroupingGameView.tensCount = null;
 	// Registers loaded() function, which gets called when images loaded into memory
 	loader.addCompletionListener(GroupingGameView.loaded);
 	
@@ -340,7 +343,7 @@ GroupingGameView.drawEggs = function() {
 		GroupingGameView.drawNewEgg();
 	}
 	
-	if (Env.debug) {
+	/*if (Env.debug) {
 		// draw out the region ones
 		for (var i = 0; i < GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY.length; i++) {
 			var ellipse = new Kinetic.Ellipse({
@@ -368,7 +371,7 @@ GroupingGameView.drawEggs = function() {
 			});
 			GroupingGameView.backgroundLayer.add(ellipse);
 		}
-	}
+	}*/
 }
 
 // Draws one egg in a specified area
