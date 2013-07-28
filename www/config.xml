@@ -17,7 +17,7 @@
     <author href="www.author.com" email="author@email.com">
         Author
     </author>
-    <icon src="images/widgets/icon1.png" />
+    <icon src="images/widgets/icon2.png" />
 	<preference name="orientation" value="landscape" />
  
     <feature name="http://api.phonegap.com/1.0/camera"/>
