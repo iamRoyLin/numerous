@@ -1,61 +1,97 @@
 var LoginView = {};
 
+// Image Sources
+LoginView.sources = {};
+LoginView.sources.background = "images/widgets/home_screen.png";
+LoginView.sources.playButton = "images/widgets/play_button.png";
+LoginView.sources.optionsButton = "images/widgets/options_button.png";
+
+// Images
+LoginView.images = {};
+
+//	Initialize login view
 LoginView.initialize = function(store) {
 	LoginView.store = store;
 	View.render("LoginView");
-	$('body').on('keyup', '.search-key', LoginView.findByName)
-	LoginView.registerEvents();
 	
-	Controller.routeAnchor(".login_linkToGroupingGame", "GroupingGameView", null);
-}
-
-LoginView.findByName = function() {
-	LoginView.store.findByName($('.search-key').val(), function(employees) {
-		var l = employees.length;
-		var e;
-		$('.employee-list').empty();
-		for (var i=0; i<l; i++) {
-			e = employees[i];
-			//$('.employee-list').append('<li><a href="#employees/' + e.id + '">' + e.firstName + ' ' + e.lastName + '</a></li>');
-			$('.employee-list').append('<li><a class="employee_'+e.id+'">' + e.firstName + ' ' + e.lastName + '</a></li>');
-			
-			Controller.routeAnchor(".employee_" + e.id, "DetailView", e);
-			
-		}
-		
-		
-		if (LoginView.iscroll) {
-			console.log('Refresh iScroll');
-			LoginView.iscroll.refresh();
-		} else {
-			console.log('New iScroll');
-			LoginView.iscroll = new iScroll($('.scroll', self.el)[0], {hScrollbar: false, vScrollbar: false });
-		}
-		
+	//$('body').on('keyup', '.search-key', LoginView.findByName)
+	//LoginView.registerEvents();
+	//Controller.routeAnchor(".login_linkToGroupingGame", "GroupingGameView", null);
+	
+	// Setup the stage
+	LoginView.stage = new Kinetic.Stage({
+		container: "container",
+		width: window.innerWidth,
+		height: window.innerHeight
 	});
-}
-
-LoginView.registerEvents = function() {
-	// Check of browser supports touch events...
-	if (document.documentElement.hasOwnProperty('ontouchstart')) {
-		// ... if yes: register touch event listener to change the "selected" state of the item
-		$('body').on('touchstart', 'a', function(event) {
-			$(event.target).addClass('tappable-active');
-		});
-		$('body').on('touchend', 'a', function(event) {
-			$(event.target).removeClass('tappable-active');
-		});
-	} else {
-		// ... if not: register mouse events instead
-		$('body').on('mousedown', 'a', function(event) {
-			$(event.target).addClass('tappable-active');
-		});
-		$('body').on('mouseup', 'a', function(event) {
-			$(event.target).removeClass('tappable-active');
-		});
-	}
 	
-
+	// The main layer (might be the only layer we need)
+	LoginView.backgroundLayer = new Kinetic.Layer();
+	LoginView.stage.add(LoginView.backgroundLayer);	
+	
+	var loader = new PxLoader();
+	LoginView.images.background = loader.addImage(LoginView.sources.background);
+	LoginView.images.playButton = loader.addImage(LoginView.sources.playButton);
+	LoginView.images.optionsButton = loader.addImage(LoginView.sources.optionsButton);
+	
+	// Registers loaded() function, which gets called when images loaded into memory
+	loader.addCompletionListener(LoginView.loaded);
+	
+	// Starts loading all the images into memory
+	loader.start();
 }
+
+LoginView.loaded = function () {
+	// Call helper functionsthe to draw components
+	LoginView.drawBackground();
+	LoginView.drawButtons();
+	
+	// redraw all widgets
+	LoginView.stage.draw();
+}
+
+LoginView.drawBackground = function() {
+	var background = new Kinetic.Image({image: LoginView.images.background});
+	WidgetUtil.glue(background, {
+		glueTop: false,
+		glueLeft: false,
+		width: 1,
+		height: 1,
+		dx: 0,
+		dy: 0
+	});
+	LoginView.backgroundLayer.add(background);
+}
+
+LoginView.drawButtons = function() {
+
+	//play button
+	var	playButton = new Kinetic.Image({image: LoginView.images.playButton});
+	WidgetUtil.glue(playButton, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.20,
+		height: 0.28,
+		dx: 0.23,
+		dy: 0.45
+	});
+	LoginView.backgroundLayer.add(playButton);
+	playButton.on('click tap', function () {
+			GroupingGameView.initialize();
+	});
+	
+	//options button
+	var	optionsButton = new Kinetic.Image({image: LoginView.images.optionsButton});
+	WidgetUtil.glue(optionsButton, {
+		glueTop: true,
+		glueLeft: true,
+		width: 0.20,
+		height: 0.28,
+		dx: 0.55,
+		dy: 0.45
+	});
+	LoginView.backgroundLayer.add(optionsButton);
+}
+
 	
 
