@@ -648,7 +648,7 @@ GroupingGameView.pause = function() {
 			glueTop: true,
 			glueLeft: true,
 			width: 0.18,
-			height: 0.28,
+			height: 0.25,
 			dx: 0.21,
 			dy: 0.42
 		});
@@ -662,11 +662,13 @@ GroupingGameView.pause = function() {
 			glueTop: true,
 			glueLeft: true,
 			width: 0.18,
-			height: 0.28,
+			height: 0.25,
 			dx: 0.41,
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.menuButton.on('click tap', function () {
+			GroupingGameView.pauseWidgets = null;
+			LoginView.initialize();
 		});
 		
 		// restart button
@@ -675,7 +677,7 @@ GroupingGameView.pause = function() {
 			glueTop: true,
 			glueLeft: true,
 			width: 0.18,
-			height: 0.28,
+			height: 0.25,
 			dx: 0.61,
 			dy: 0.42
 		});
