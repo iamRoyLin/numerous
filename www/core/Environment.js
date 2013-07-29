@@ -8,23 +8,11 @@ var Env = new function () {
 
 	this.debug = true;
 	
-	
-	//this.phoneGap = false;
 	if (document.URL.indexOf('file:') === 0) {
 		this.phoneGap = true;
-		alert("PG!");
 	} else {
 		this.phoneGap = false;
-		alert("no PG!");	
 	}
 
 	
 }
-
-/*
-document.addEventListener("deviceready", onDeviceReady, false);
-function onDeviceReady() {
-	Env.phoneGap = true;
-    alert("phonegap ready!");
-}
-*/
