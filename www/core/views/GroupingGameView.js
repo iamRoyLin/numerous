@@ -204,8 +204,6 @@ GroupingGameView.initialize = function (predefinedNumber) {
 		GroupingGameView.images.eggs[i] = loader.addImage(GroupingGameView.sources.eggs[i]);
 	}
 	
-	// Initialize tens count
-	GroupingGameView.tensCount = null;
 	// Registers loaded() function, which gets called when images loaded into memory
 	loader.addCompletionListener(GroupingGameView.loaded);
 	
@@ -215,7 +213,6 @@ GroupingGameView.initialize = function (predefinedNumber) {
 
 GroupingGameView.finalize = function() {
 	GroupingGameView.pauseWidgets = null;
-	GroupingGameView.tensCount = null;
 	GroupingGameView.thinkCloudTextWidget = null;
 	
 	for(var i = 0; i < GroupingGameView.timeOuts.length; i++) {
@@ -513,17 +510,12 @@ GroupingGameView.acceptEgg = function(egg) {
 	
 	// increase number of eggs
 	var ones = GroupingGameView.eggsAtDestination.length;
-	if (GroupingGameView.tensCount == null) GroupingGameView.tensCount = 0;
-	if (ones != 10) {
+	if (ones < 10) {
 		GroupingGameView.onesTextWidget.setText(ones);
 		GroupingGameView.onesTextWidget.draw();
 		GroupingGameView.stage.draw();
-	} else {
-		GroupingGameView.onesTextWidget.setText(0);
-		GroupingGameView.tensCount++;
 	}
 	
-	GroupingGameView.tensTextWidget.setText(GroupingGameView.tensCount);
 	GroupingGameView.stage.draw();
 }
 
@@ -652,6 +644,9 @@ GroupingGameView.trayOnesFullCallback = function() {
 		GroupingGameView.onesWidgetGroup = new Kinetic.Group({});
 		GroupingGameView.backgroundLayer.add(GroupingGameView.onesWidgetGroup);
 		GroupingGameView.onesWidgetGroup.moveToTop();
+		
+		GroupingGameView.onesTextWidget.setText(0);
+		GroupingGameView.tensTextWidget.setText(parseInt(GroupingGameView.tensTextWidget.getText())+1);
 		
 		GroupingGameView.activitiesEnabled = true;
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds + beltSlideDurationSeconds) * 1000);
