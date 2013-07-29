@@ -8,14 +8,14 @@ var Env = new function () {
 
 	this.debug = true;
 	
-	this.phoneGap = (typeof(device) != 'undefined');
+	this.phoneGap = false;
 	
-	if (this.phoneGap) {
-		alert("phonegap");
-	} else {
-		alert("not phonegap");
-	}
+
 	
 }
 
-
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+	Env.phoneGap = true;
+    alert("phonegap ready!");
+}
