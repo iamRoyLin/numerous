@@ -12,7 +12,7 @@ var Music = new function () {
 			myMedia = new Media(src, function() {}, function() {});
 			myMedia.play();
 		} else {
-			alert("this is no phonegap);
+			alert("this is no phonegap");
 			soundManager.createSound({
 				url: src,
 				autoLoad: true,
