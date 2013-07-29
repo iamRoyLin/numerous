@@ -19,6 +19,21 @@ GroupingGameView.THINK_CLOUD_DIMENSIONS = {x:0.62, y:-0.02, width:0.41, height:0
 // think cloud 2 for making too many mistakes
 GroupingGameView.THINK_CLOUD2_DIMENSIONS = {x:0.03, y:0.4, width:0.8, height:0.6};
 
+// complements
+GroupingGameView.COMPLIMENTS = [
+	"Good work!",
+	"Well done!",
+	"Great job!",
+	"Nice going!",
+	"Great!",
+	"Perfect!",
+	"Awesome!",
+	"Looks good!",
+	"Brilliant",
+	"Good!",
+	"Super!",
+	"Superb!"
+]
 
 // Initial egg positions
 GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.79, width:0.2, height:0.05};
@@ -118,6 +133,11 @@ GroupingGameView.sources.eggs = [
 
 // Images
 GroupingGameView.images = {};
+
+// sounds
+GroupingGameView.sounds = {};
+GroupingGameView.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
+GroupingGameView.sounds.rejectEgg = "sounds/grouping_game/reject_egg.wav";
 
 // As the images are loaded into memory, they will be accessible from this array
 GroupingGameView.eggImageObjects = [];
@@ -455,7 +475,7 @@ GroupingGameView.drawNewEgg = function() {
 		if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)
 				&& (GroupingGameView.eggsAtDestination.length != 10)) {
 			GroupingGameView.acceptEgg(this);
-			//soundManager.play('acceptEggs');
+		//soundManager.play('acceptEggs');
 			//soundManager.play(GroupingGameView.sounds.acceptEggs);
 		} else if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_TENS_AREA.X_ARRAY, GroupingGameView.BELT_TENS_AREA.Y_ARRAY, GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
@@ -477,9 +497,13 @@ GroupingGameView.drawNewEgg = function() {
 	return egg;
 }
 
-
 // accepts the egg and add it to the accepted array
 GroupingGameView.acceptEgg = function(egg) {
+	
+	// say a compliment
+	var compliment = GroupingGameView.COMPLIMENTS[MathUtil.random(0,GroupingGameView.COMPLIMENTS.length-1)];
+	GroupingGameView.displayThinkCloud(compliment);
+	
 	
 	// check to see if total is greater than goal Number
 	if (GroupingGameView.calculateTotal() >= GroupingGameView.goalNumber) {
