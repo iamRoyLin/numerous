@@ -1,5 +1,6 @@
 var Music = new function () {
 	
+	/*
 	if (!Env.phoneGap) {
 		soundManager.setup({
 			url: 'lib/soundmanager/swf_files/',
@@ -22,5 +23,7 @@ var Music = new function () {
 			});
 		}
 	}
+	*/
+	*/
 }
 
