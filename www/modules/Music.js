@@ -8,7 +8,7 @@ var Music = new function () {
 	// call this function to play a sound
 	this.play = function (src) {
 		if (Env.phoneGap) {
-			myMedia = new Media("sounds/grouping_game/reject_egg.wav", function() {}, function() {});
+			myMedia = new Media(src, function() {}, function() {});
 			myMedia.play();
 		} else {
 			soundManager.createSound({
