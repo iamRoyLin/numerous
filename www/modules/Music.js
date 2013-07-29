@@ -5,13 +5,18 @@ var Music = new function () {
 		onready: function() {}
 	});
 		
-	
+	// call this function to play a sound
 	this.play = function (src) {
-		soundManager.createSound({
-		  url: src,
-		  autoLoad: true,
-		  autoPlay: true
-		});
+		if (Env.phoneGap) {
+			myMedia = new Media("sounds/grouping_game/reject_egg.wav", function() {}, function() {});
+			myMedia.play();
+		} else {
+			soundManager.createSound({
+				url: src,
+				autoLoad: true,
+				autoPlay: true
+			});
+		}
 	}
 }
 
