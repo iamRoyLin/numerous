@@ -8,13 +8,16 @@ GroupingGameView.INITIAL_EGG_DIMENSIONS = {width:60, height: 75};
 // destination area of the eggs
 
 // rabbit
-GroupingGameView.RABBIT_DIMENSIONS = {x:0.03, y:0.01, width:0.3, height:0.8};
+GroupingGameView.RABBIT_DIMENSIONS = {x:0.67, y:0.3, width:0.3, height:0.8};
 
 // belt
 GroupingGameView.BELT_DIMENSIONS = {x:0, y:0.187, width:0.68, height:0.813};
 
+// think cloud
+GroupingGameView.THINK_CLOUD_DIMENSIONS = {x:0.62, y:-0.02, width:0.41, height:0.45};
+
 // Initial egg positions
-GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.68, width:0.2, height:0.05};
+GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.79, width:0.2, height:0.05};
 GroupingGameView.INITIAL_EGG_SIZE = {width:0.06, height:0.093};
 
 // Tray and cover sizes and positions
@@ -79,7 +82,10 @@ GroupingGameView.ERROR_TYPES = {
 
 // Image Sources
 GroupingGameView.sources = {};
+
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
+GroupingGameView.sources.thinkCloud = "images/widgets/think_cloud.png";
+
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
 GroupingGameView.sources.coverFront = "images/grouping_game/cover_front.png";
 GroupingGameView.sources.coverBack = "images/grouping_game/cover_back.png";
@@ -115,6 +121,9 @@ GroupingGameView.initialize = function () {
 	
 	// REMOVE THIS ONCE YOU SEE IT VIANNA, THIS IS AN EXAMPLE OF HOW TO USE SOUND:
 	// Music.play("sounds/grouping_game/accept_egg.wav");
+	
+	// timeouts to clear
+	GroupingGameView.timeOuts = [];
 	
 	// Number of errors the child has made so far
 	GroupingGameView.errorsMade = 0;
@@ -163,40 +172,24 @@ GroupingGameView.initialize = function () {
 	// Add images to the loader class
 	var loader = new PxLoader();
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
+	GroupingGameView.images.thinkCloud = loader.addImage(GroupingGameView.sources.thinkCloud);
+	
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
 	GroupingGameView.images.tray = loader.addImage(GroupingGameView.sources.tray);
 	GroupingGameView.images.coverFront = loader.addImage(GroupingGameView.sources.coverFront);
 	GroupingGameView.images.coverBack = loader.addImage(GroupingGameView.sources.coverBack);
 	GroupingGameView.images.pauseButton = loader.addImage(GroupingGameView.sources.pauseButton);
+	
 	GroupingGameView.images.menuButton = loader.addImage(GroupingGameView.sources.menuButton);
 	GroupingGameView.images.restartButton = loader.addImage(GroupingGameView.sources.restartButton);
 	GroupingGameView.images.resumeButton = loader.addImage(GroupingGameView.sources.resumeButton);
 	GroupingGameView.images.doneButton = loader.addImage(GroupingGameView.sources.doneButton);
 	GroupingGameView.images.pausedLabel = loader.addImage(GroupingGameView.sources.pausedLabel);
-	GroupingGameView.images.eggs = [];
 	
-	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
+	GroupingGameView.images.eggs = [];
 	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
 		GroupingGameView.images.eggs[i] = loader.addImage(GroupingGameView.sources.eggs[i]);
 	}
-	
-	//Added sounds to the loader class
-	//GroupingGameView.sounds.acceptEggs = loader.addImage(GroupingGameView.sources.acceptEggs);
-	
-	//Start and load sound
-	/*soundManager.setup({
-    		url: 'sounds/grouping_game/',
-    		onready: function() {
-     			soundManager.createSound({
- 					id: 'acceptEggs',
-					url: 'sounds/grouping_game/accept_egg.wav'
-				});
-				soundManager.createSound({
- 					id: 'rejectEggs',
-					url: 'sounds/grouping_game/reject_egg.wav'
-				});
-   			}
-	});*/
 	
 	// Initialize tens count
 	GroupingGameView.tensCount = null;
@@ -210,6 +203,11 @@ GroupingGameView.initialize = function () {
 GroupingGameView.finalize = function() {
 	GroupingGameView.pauseWidgets = null;
 	GroupingGameView.tensCount = null;
+	
+	for(var i = 0; i < GroupingGameView.timeOuts.length; i++) {
+		clearTimeout(GroupingGameView.timeOuts[i]);
+	}
+	GroupingGameView.timeOuts = [];
 }
 
 // Should be called once graphics are loaded into memory
@@ -223,6 +221,7 @@ GroupingGameView.loaded = function () {
 	GroupingGameView.drawNumbers();
 	GroupingGameView.drawTitle();
 	GroupingGameView.drawDoneButton();
+	GroupingGameView.drawThinkCloud();
 	
 	// layering
 	GroupingGameView.onesWidgetGroup.moveToTop();
@@ -234,8 +233,6 @@ GroupingGameView.loaded = function () {
 GroupingGameView.drawDoneButton = function() {
 	var doneButton = new Kinetic.Image({image: GroupingGameView.images.doneButton});
 	WidgetUtil.glue(doneButton, {
-		glueTop: true,
-		glueLeft: true,
 		width: 0.15,
 		height: 0.2,
 		dx: 0.02,
@@ -267,8 +264,6 @@ GroupingGameView.drawTrays = function() {
 	// tray current
 	GroupingGameView.trays.current = new Kinetic.Image({image: GroupingGameView.images.tray});
 	WidgetUtil.glue(GroupingGameView.trays.current, {
-		glueTop: true,
-		glueLeft: true,
 		width: GroupingGameView.TRAY_SIZE.width,
 		height: GroupingGameView.TRAY_SIZE.height,
 		dx: GroupingGameView.TRAY_CURRENT_POSITION.x,
@@ -279,8 +274,6 @@ GroupingGameView.drawTrays = function() {
 	// tray next
 	GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
 	WidgetUtil.glue(GroupingGameView.trays.next, {
-		glueTop: true,
-		glueLeft: true,
 		width: GroupingGameView.TRAY_SIZE.width,
 		height: GroupingGameView.TRAY_SIZE.height,
 		dx: GroupingGameView.TRAY_NEXT_POSITION.x,
@@ -293,8 +286,6 @@ GroupingGameView.drawTrays = function() {
 GroupingGameView.drawRabbit = function() {
 	var rabbit = new Kinetic.Image({image: GroupingGameView.images.rabbit});
 	WidgetUtil.glue(rabbit, {
-		glueTop: false,
-		glueLeft: false,
 		width: GroupingGameView.RABBIT_DIMENSIONS.width,
 		height: GroupingGameView.RABBIT_DIMENSIONS.height,
 		dx: GroupingGameView.RABBIT_DIMENSIONS.x,
@@ -307,8 +298,6 @@ GroupingGameView.drawRabbit = function() {
 GroupingGameView.drawBelts = function() {
 	var belts = new Kinetic.Image({image: GroupingGameView.images.belts});
 	WidgetUtil.glue(belts, {
-		glueTop: true,
-		glueLeft: true,
 		width: GroupingGameView.BELT_DIMENSIONS.width,
 		height: GroupingGameView.BELT_DIMENSIONS.height,
 		dx: GroupingGameView.BELT_DIMENSIONS.x,
@@ -317,11 +306,38 @@ GroupingGameView.drawBelts = function() {
 	GroupingGameView.backgroundLayer.add(belts);
 }
 
+GroupingGameView.drawThinkCloud = function () {
+	GroupingGameView.thinkCloud = new Kinetic.Image({image: GroupingGameView.images.thinkCloud});
+	WidgetUtil.glue(GroupingGameView.thinkCloud, {
+		width: GroupingGameView.THINK_CLOUD_DIMENSIONS.width,
+		height: GroupingGameView.THINK_CLOUD_DIMENSIONS.height,
+		dx: GroupingGameView.THINK_CLOUD_DIMENSIONS.x,
+		dy: GroupingGameView.THINK_CLOUD_DIMENSIONS.y
+	});
+	GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloud);
+	GroupingGameView.displayThinkCloud("");
+}
+
+GroupingGameView.displayThinkCloud = function(message, duration) {
+
+	 GroupingGameView.thinkCloudTextWidget = new Kinetic.Text({
+    	x: DimensionUtil.decimalToActualWidth(0.68),
+		y: DimensionUtil.decimalToActualHeight(0.08),
+		width: DimensionUtil.decimalToActualWidth(0.18),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+    	text: message,
+    	fontSize: 25,
+    	fontFamily: 'COMIC SANS MS',
+    	fill: 'black'
+    });
+    GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloudTextWidget);
+}
+
+
 GroupingGameView.drawPauseButton = function() {
 	var pauseButton = new Kinetic.Image({image: GroupingGameView.images.pauseButton});
 	WidgetUtil.glue(pauseButton, {
-		glueTop: true,
-		glueLeft: true,
 		width: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.width,
 		height: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.height,
 		dx: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.x,
@@ -505,8 +521,6 @@ GroupingGameView.trayOnesFullCallback = function() {
 	// Draw the cover's front
 	var coverFront = new Kinetic.Image({image: GroupingGameView.images.coverFront});
 	WidgetUtil.glue(coverFront, {
-		glueTop: true,
-		glueLeft: true,
 		width: GroupingGameView.TRAY_SIZE.width,
 		height: GroupingGameView.TRAY_SIZE.height,
 		dx: GroupingGameView.INITIAL_COVER_POSITION.x,
@@ -518,8 +532,6 @@ GroupingGameView.trayOnesFullCallback = function() {
 	// Draw the cover's back
 	var coverBack = new Kinetic.Image({image: GroupingGameView.images.coverBack});
 	WidgetUtil.glue(coverBack, {
-		glueTop: true,
-		glueLeft: true,
 		width: GroupingGameView.TRAY_SIZE.width,
 		height: GroupingGameView.TRAY_SIZE.height,
 		dx: GroupingGameView.INITIAL_COVER_POSITION.x,
@@ -548,7 +560,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 	dropCoverBackTween.play();
 	
 	// Make the tray lift up
-	setTimeout(function() {
+	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
 		var liftTween = new Kinetic.Tween({
 			node: GroupingGameView.onesWidgetGroup, 
 			duration: trayLiftDurationSeconds,
@@ -558,7 +570,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 	}, fallCoverDurationSeconds * 1000);
 
 	// Shrink the tray
-	setTimeout(function() {
+	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
 		var shrinkTrayTween = new Kinetic.Tween({
 			node: GroupingGameView.onesWidgetGroup, 
 			duration: shrinkTrayDurationSeconds,
@@ -572,15 +584,13 @@ GroupingGameView.trayOnesFullCallback = function() {
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds) * 1000);
 	
 	// Move belt up
-	setTimeout(function() {
+	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
 		// set current tray to next
 		GroupingGameView.trays.current = GroupingGameView.trays.next;
 		
 		// create new next tray
 		GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
 		WidgetUtil.glue(GroupingGameView.trays.next, {
-			glueTop: true,
-			glueLeft: true,
 			width: GroupingGameView.TRAY_SIZE.width,
 			height: GroupingGameView.TRAY_SIZE.height,
 			dx: GroupingGameView.TRAY_BELOW_NEXT_POSITION.x,
@@ -610,7 +620,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 		
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds) * 1000);
 	
-	setTimeout(function() {
+	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
 		GroupingGameView.eggsAtDestination = [];
 		GroupingGameView.onesWidgetGroup = new Kinetic.Group({});
 		GroupingGameView.backgroundLayer.add(GroupingGameView.onesWidgetGroup);
@@ -656,7 +666,7 @@ GroupingGameView.drawTitle = function() {
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
     	text: title,
-    	fontSize: 110,
+    	fontSize: 90,
     	fontFamily: 'COMIC SANS MS',
     	fill: 'black'
     });
@@ -676,8 +686,6 @@ GroupingGameView.pause = function() {
 			opacity: 0.62
 		});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.overlay, {
-			glueTop: true,
-			glueLeft: true,
 			width: 1,
 			height: 1,
 			dx: 0,
@@ -688,8 +696,6 @@ GroupingGameView.pause = function() {
 		// paused label
 		GroupingGameView.pauseWidgets.pausedLabel = new Kinetic.Image({image: GroupingGameView.images.pausedLabel});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.pausedLabel, {
-			glueTop: true,
-			glueLeft: true,
 			width: 0.3,
 			height: 0.1,
 			dx: 0.35,
@@ -699,8 +705,6 @@ GroupingGameView.pause = function() {
 		// resume button
 		GroupingGameView.pauseWidgets.resumeButton = new Kinetic.Image({image: GroupingGameView.images.resumeButton});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.resumeButton, {
-			glueTop: true,
-			glueLeft: true,
 			width: 0.18,
 			height: 0.25,
 			dx: 0.21,
@@ -713,8 +717,6 @@ GroupingGameView.pause = function() {
 		// menu button
 		GroupingGameView.pauseWidgets.menuButton = new Kinetic.Image({image: GroupingGameView.images.menuButton});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.menuButton, {
-			glueTop: true,
-			glueLeft: true,
 			width: 0.18,
 			height: 0.25,
 			dx: 0.41,
@@ -728,8 +730,6 @@ GroupingGameView.pause = function() {
 		// restart button
 		GroupingGameView.pauseWidgets.restartButton = new Kinetic.Image({image: GroupingGameView.images.restartButton});
 		WidgetUtil.glue(GroupingGameView.pauseWidgets.restartButton, {
-			glueTop: true,
-			glueLeft: true,
 			width: 0.18,
 			height: 0.25,
 			dx: 0.61,
@@ -778,8 +778,28 @@ GroupingGameView.unpause = function() {
 }
 
 GroupingGameView.errorMade = function (errorType) {
-	alert("made error");
+	switch (errorType) {
+		case GroupingGameView.ERROR_TYPES.DRAG_TO_TENS:
+			alert("drag to tens error");
+			
+			
+		break;
+		case GroupingGameView.ERROR_TYPES.INCORRECT_DONE:
+			alert("incorrent done error");
+			
+			
+		break;
+		case GroupingGameView.ERROR_TYPES.EXCEEDED_GOAL_NUMBER:
+			alert("exceeded number error");
+		
+		
+		break;
+	}
 }
+
+
+
+
 
 
 
