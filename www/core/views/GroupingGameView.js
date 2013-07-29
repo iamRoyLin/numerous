@@ -113,7 +113,8 @@ GroupingGameView.eggImageObjects = [];
 // Called when the user enters this page
 GroupingGameView.initialize = function () {
 	
-	Music.play("sounds/grouping_game/accept_egg.wav");
+	// REMOVE THIS ONCE YOU SEE IT VIANNA, THIS IS AN EXAMPLE OF HOW TO USE SOUND:
+	// Music.play("sounds/grouping_game/accept_egg.wav");
 	
 	// Number of errors the child has made so far
 	GroupingGameView.errorsMade = 0;
