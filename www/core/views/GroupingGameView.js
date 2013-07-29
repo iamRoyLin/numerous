@@ -121,13 +121,7 @@ GroupingGameView.initialize = function () {
 	alert(Env.phoneGap);
 	
 	// Music.play("sounds/grouping_game/accept_egg.wav");
-	
-	
-	
-	setTimeout(function() {
-		Music.play("sounds/grouping_game/accept_egg.wav");
-	}, 5000);
-	
+
 	
 	// Number of errors the child has made so far
 	GroupingGameView.errorsMade = 0;
