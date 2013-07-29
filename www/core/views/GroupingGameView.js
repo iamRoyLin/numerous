@@ -114,6 +114,12 @@ GroupingGameView.eggImageObjects = [];
 // Called when the user enters this page
 GroupingGameView.initialize = function () {
 
+	// Create Media object from src
+	my_media = new Media("sounds/grouping_game/reject_egg.wav", function() {}, function() {});
+
+	// Play audio
+	my_media.play();
+	 
 	// Number of errors the child has made so far
 	GroupingGameView.errorsMade = 0;
 
