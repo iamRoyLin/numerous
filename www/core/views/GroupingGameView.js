@@ -16,6 +16,10 @@ GroupingGameView.BELT_DIMENSIONS = {x:0, y:0.187, width:0.68, height:0.813};
 // think cloud
 GroupingGameView.THINK_CLOUD_DIMENSIONS = {x:0.62, y:-0.02, width:0.41, height:0.45};
 
+// think cloud 2 for making too many mistakes
+GroupingGameView.THINK_CLOUD2_DIMENSIONS = {x:0.03, y:0.4, width:0.8, height:0.6};
+
+
 // Initial egg positions
 GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.79, width:0.2, height:0.05};
 GroupingGameView.INITIAL_EGG_SIZE = {width:0.06, height:0.093};
@@ -85,6 +89,7 @@ GroupingGameView.sources = {};
 
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
 GroupingGameView.sources.thinkCloud = "images/widgets/think_cloud.png";
+GroupingGameView.sources.thinkCloud2 = "images/widgets/think_cloud2.png";
 
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
 GroupingGameView.sources.coverFront = "images/grouping_game/cover_front.png";
@@ -97,6 +102,7 @@ GroupingGameView.sources.menuButton = "images/widgets/menu_button.png";
 GroupingGameView.sources.restartButton = "images/widgets/restart_button.png";
 GroupingGameView.sources.resumeButton = "images/widgets/resume_button.png";
 GroupingGameView.sources.doneButton = "images/widgets/done_button.png";
+GroupingGameView.sources.retryButton = "images/widgets/retry_button.png";
 
 GroupingGameView.sources.eggs = [
 	"images/grouping_game/eggs/egg1.png",
@@ -117,7 +123,7 @@ GroupingGameView.images = {};
 GroupingGameView.eggImageObjects = [];
 
 // Called when the user enters this page
-GroupingGameView.initialize = function () {
+GroupingGameView.initialize = function (predefinedNumber) {
 	
 	// REMOVE THIS ONCE YOU SEE IT VIANNA, THIS IS AN EXAMPLE OF HOW TO USE SOUND:
 	// Music.play("sounds/grouping_game/accept_egg.wav");
@@ -146,7 +152,12 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.eggImageObjects = [];
 	
 	//create a random goal number between 11 and 19
-	GroupingGameView.goalNumber = MathUtil.random(11,19);
+	if (predefinedNumber != null) {
+		GroupingGameView.goalNumber = predefinedNumber;
+	} else {
+		GroupingGameView.goalNumber = MathUtil.random(11,19);
+	}
+	
 	
 	// render the html view
 	View.render("GroupingGameView");
@@ -173,6 +184,7 @@ GroupingGameView.initialize = function () {
 	var loader = new PxLoader();
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	GroupingGameView.images.thinkCloud = loader.addImage(GroupingGameView.sources.thinkCloud);
+	GroupingGameView.images.thinkCloud2 = loader.addImage(GroupingGameView.sources.thinkCloud2);
 	
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
 	GroupingGameView.images.tray = loader.addImage(GroupingGameView.sources.tray);
@@ -184,6 +196,7 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.images.restartButton = loader.addImage(GroupingGameView.sources.restartButton);
 	GroupingGameView.images.resumeButton = loader.addImage(GroupingGameView.sources.resumeButton);
 	GroupingGameView.images.doneButton = loader.addImage(GroupingGameView.sources.doneButton);
+	GroupingGameView.images.retryButton= loader.addImage(GroupingGameView.sources.retryButton);
 	GroupingGameView.images.pausedLabel = loader.addImage(GroupingGameView.sources.pausedLabel);
 	
 	GroupingGameView.images.eggs = [];
@@ -203,11 +216,22 @@ GroupingGameView.initialize = function () {
 GroupingGameView.finalize = function() {
 	GroupingGameView.pauseWidgets = null;
 	GroupingGameView.tensCount = null;
+	GroupingGameView.thinkCloudTextWidget = null;
 	
 	for(var i = 0; i < GroupingGameView.timeOuts.length; i++) {
 		clearTimeout(GroupingGameView.timeOuts[i]);
 	}
 	GroupingGameView.timeOuts = [];
+}
+
+GroupingGameView.restartGame = function(sameNumber) {
+	GroupingGameView.backgroundLayer.remove();
+	GroupingGameView.finalize();
+	if (sameNumber) {
+		GroupingGameView.initialize(GroupingGameView.goalNumber);
+	} else {
+		GroupingGameView.initialize();
+	}
 }
 
 // Should be called once graphics are loaded into memory
@@ -315,23 +339,26 @@ GroupingGameView.drawThinkCloud = function () {
 		dy: GroupingGameView.THINK_CLOUD_DIMENSIONS.y
 	});
 	GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloud);
-	GroupingGameView.displayThinkCloud("");
 }
 
-GroupingGameView.displayThinkCloud = function(message, duration) {
-
-	 GroupingGameView.thinkCloudTextWidget = new Kinetic.Text({
-    	x: DimensionUtil.decimalToActualWidth(0.68),
-		y: DimensionUtil.decimalToActualHeight(0.08),
-		width: DimensionUtil.decimalToActualWidth(0.18),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-    	text: message,
-    	fontSize: 25,
-    	fontFamily: 'COMIC SANS MS',
-    	fill: 'black'
-    });
-    GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloudTextWidget);
+GroupingGameView.displayThinkCloud = function(message) {
+	if (GroupingGameView.thinkCloudTextWidget == null) {
+		GroupingGameView.thinkCloudTextWidget = new Kinetic.Text({
+			x: DimensionUtil.decimalToActualWidth(0.68),
+			y: DimensionUtil.decimalToActualHeight(0.08),
+			width: DimensionUtil.decimalToActualWidth(0.18),
+			scaleX: 1/1024*DimensionUtil.width,
+			scaleY: 1/768*DimensionUtil.height,
+			fontSize: 25,
+			fontFamily: 'COMIC SANS MS',
+			fill: 'black',
+			align: 'center',
+			lineHeight: 1.3
+		});
+		GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloudTextWidget);
+	}
+	GroupingGameView.thinkCloudTextWidget.setText(message);
+	GroupingGameView.stage.draw();
 }
 
 
@@ -736,9 +763,7 @@ GroupingGameView.pause = function() {
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.restartButton.on('click tap', function () {
-			GroupingGameView.backgroundLayer.remove();
-			GroupingGameView.finalize();
-			GroupingGameView.initialize();
+			GroupingGameView.restartGame();
 			
 		});
 		
@@ -778,29 +803,74 @@ GroupingGameView.unpause = function() {
 }
 
 GroupingGameView.errorMade = function (errorType) {
+	GroupingGameView.errorsMade++;
+
+
 	switch (errorType) {
 		case GroupingGameView.ERROR_TYPES.DRAG_TO_TENS:
-			alert("drag to tens error");
+			GroupingGameView.displayThinkCloud("WHOOPS! This is only ONE easter egg! You need to drag this to ONES!");
 			
 			
 		break;
 		case GroupingGameView.ERROR_TYPES.INCORRECT_DONE:
-			alert("incorrent done error");
+			GroupingGameView.displayThinkCloud("UH OH! The number you have made is not " + 
+				GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] +
+				"! You need more eggs!");
 			
 			
 		break;
 		case GroupingGameView.ERROR_TYPES.EXCEEDED_GOAL_NUMBER:
-			alert("exceeded number error");
+			GroupingGameView.displayThinkCloud("You're trying to make " + 
+				GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] +
+				". Count your eggs! Have you already got the correct number?");
 		
 		
 		break;
 	}
+	
+	if (GroupingGameView.errorsMade == 2) {
+		GroupingGameView.activitiesEnabled = false;
+		
+		var cloudWidget = new Kinetic.Image({image: GroupingGameView.images.thinkCloud2});
+		WidgetUtil.glue(cloudWidget, {
+			width: GroupingGameView.THINK_CLOUD2_DIMENSIONS.width,
+			height: GroupingGameView.THINK_CLOUD2_DIMENSIONS.height,
+			dx: GroupingGameView.THINK_CLOUD2_DIMENSIONS.x,
+			dy: GroupingGameView.THINK_CLOUD2_DIMENSIONS.y
+		});
+		GroupingGameView.backgroundLayer.add(cloudWidget);
+		
+		var retryTextWidget = new Kinetic.Text({
+			text: "You've made too many mistakes!",
+			x: DimensionUtil.decimalToActualWidth(0.12),
+			y: DimensionUtil.decimalToActualHeight(0.55),
+			width: DimensionUtil.decimalToActualWidth(0.4),
+			scaleX: 1/1024*DimensionUtil.width,
+			scaleY: 1/768*DimensionUtil.height,
+			fontSize: 50,
+			fontFamily: 'COMIC SANS MS',
+			fill: 'black',
+			align: 'center',
+			lineHeight: 1.3
+		});
+		GroupingGameView.backgroundLayer.add(retryTextWidget);
+		
+		var retryButtonWidget = new Kinetic.Image({image: GroupingGameView.images.retryButton});
+		WidgetUtil.glue(retryButtonWidget, {
+			width: 0.18,
+			height: 0.1,
+			dx: 0.35,
+			dy: 0.73
+		});
+		GroupingGameView.backgroundLayer.add(retryButtonWidget);
+		
+		retryButtonWidget.on('click tap', function () {
+			GroupingGameView.restartGame(true);
+		});
+		
+		GroupingGameView.stage.draw();
+	}
 }
-
-
-
-
-
 
 
 
