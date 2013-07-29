@@ -267,6 +267,9 @@ GroupingGameView.loaded = function () {
 	// layering
 	GroupingGameView.onesWidgetGroup.moveToTop();
 	
+	// initial setups
+	GroupingGameView.displayThinkCloud("Drag " + GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] + " of my easter eggs onto the belt!");
+	
 	// redraw all widgets
 	GroupingGameView.stage.draw();
 }
@@ -373,6 +376,7 @@ GroupingGameView.displayThinkCloud = function(message) {
 			lineHeight: 1.3
 		});
 		GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloudTextWidget);
+
 	}
 	GroupingGameView.thinkCloudTextWidget.setText(message);
 	GroupingGameView.stage.draw();
@@ -895,6 +899,3 @@ GroupingGameView.errorMade = function (errorType) {
 		GroupingGameView.stage.draw();
 	}
 }
-
-
-
