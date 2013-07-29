@@ -8,6 +8,8 @@ var Env = new function () {
 
 	this.debug = true;
 	
+	alert(document.URL);
+	
 	//this.phoneGap = false;
 	if (typeof PhoneGap === "undefined") {
 		this.phoneGap = false;
