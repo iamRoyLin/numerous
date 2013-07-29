@@ -475,16 +475,13 @@ GroupingGameView.drawNewEgg = function() {
 		if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)
 				&& (GroupingGameView.eggsAtDestination.length != 10)) {
 			GroupingGameView.acceptEgg(this);
-		//soundManager.play('acceptEggs');
-			//soundManager.play(GroupingGameView.sounds.acceptEggs);
+			
 		} else if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_TENS_AREA.X_ARRAY, GroupingGameView.BELT_TENS_AREA.Y_ARRAY, GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
 			GroupingGameView.declineEgg(this);
 			GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.DRAG_TO_TENS);
-			//soundManager.play('rejectEggs');
 		} else {
 			GroupingGameView.declineEgg(this);
-			//soundManager.play('rejectEggs');
 		}
 		
 		// If we reach 10 eggs in our tray
@@ -500,6 +497,8 @@ GroupingGameView.drawNewEgg = function() {
 // accepts the egg and add it to the accepted array
 GroupingGameView.acceptEgg = function(egg) {
 	
+
+	
 	// say a compliment
 	var compliment = GroupingGameView.COMPLIMENTS[MathUtil.random(0,GroupingGameView.COMPLIMENTS.length-1)];
 	GroupingGameView.displayThinkCloud(compliment);
@@ -511,6 +510,9 @@ GroupingGameView.acceptEgg = function(egg) {
 		GroupingGameView.declineEgg(egg);
 		return;
 	}
+	
+	// play the accept egg sound
+	Music.play(GroupingGameView.sounds.acceptEgg);
 	
 	// make the egg not draggable
 	egg.setDraggable(false);
@@ -545,6 +547,9 @@ GroupingGameView.acceptEgg = function(egg) {
 
 // declines the egg and move it back to its original spot
 GroupingGameView.declineEgg = function(egg) {
+	// play the decline egg sound
+	Music.play(GroupingGameView.sounds.rejectEgg);
+
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
 
