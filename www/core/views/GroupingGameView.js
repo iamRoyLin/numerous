@@ -115,6 +115,8 @@ GroupingGameView.initialize = function () {
 	
 	if (Env.phoneGap) {
 		alert("phonegap!");
+	} else {
+		alert("not phonegap!");
 	}
 	
 	// Music.play("sounds/grouping_game/accept_egg.wav");
