@@ -118,7 +118,7 @@ GroupingGameView.initialize = function () {
 	// Play audio
 	//my_media.play();
 	
-	
+	alert(Env.phoneGap);
 	
 	// Music.play("sounds/grouping_game/accept_egg.wav");
 	
