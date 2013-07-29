@@ -9,12 +9,13 @@ var Env = new function () {
 	this.debug = true;
 	
 	//this.phoneGap = false;
-	if (navigator.notification) {
-		this.phoneGap = true;
-		alert("PG!");
-	} else {
+	if (typeof PhoneGap === "undefined") {
 		this.phoneGap = false;
 		alert("no PG!");
+	} else {
+		this.phoneGap = true;
+		alert("PG!");	
+
 	}
 
 	
