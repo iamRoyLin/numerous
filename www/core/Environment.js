@@ -8,14 +8,22 @@ var Env = new function () {
 
 	this.debug = true;
 	
-	this.phoneGap = false;
-	
+	//this.phoneGap = false;
+	if (navigator.notification) {
+		this.phoneGap = true;
+		alert("PG!");
+	} else {
+		this.phoneGap = false;
+		alert("no PG!");
+	}
 
 	
 }
 
+/*
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
 	Env.phoneGap = true;
     alert("phonegap ready!");
 }
+*/

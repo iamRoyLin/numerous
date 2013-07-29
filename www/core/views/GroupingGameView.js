@@ -113,13 +113,6 @@ GroupingGameView.eggImageObjects = [];
 // Called when the user enters this page
 GroupingGameView.initialize = function () {
 	
-	if (Env.phoneGap) {
-		alert("phonegap");
-	} else {
-		alert("not phonegap");
-	}
-	
-	
 	// Music.play("sounds/grouping_game/accept_egg.wav");
 	
 	// Number of errors the child has made so far
