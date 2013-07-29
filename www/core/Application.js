@@ -10,8 +10,3 @@ App.initialize = function() {
 $(function () {
 	App.initialize();
 });
-
-function onDeviceReady() {
-	alert("device ready!");
-	Env.phoneGap = true;
-}

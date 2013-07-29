@@ -8,7 +8,13 @@ var Env = new function () {
 
 	this.debug = true;
 	
-	this.phoneGap = (window.PhoneGap);
+	this.phoneGap = (typeof(device) != 'undefined');
+	
+	if (this.phoneGap) {
+		alert("phonegap");
+	} else {
+		alert("not phonegap");
+	}
 	
 }
 
