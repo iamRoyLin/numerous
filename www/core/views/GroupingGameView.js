@@ -81,7 +81,6 @@ GroupingGameView.ERROR_TYPES = {
 GroupingGameView.sources = {};
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
-GroupingGameView.sources.cover = "images/grouping_game/cover.png";
 GroupingGameView.sources.coverFront = "images/grouping_game/cover_front.png";
 GroupingGameView.sources.coverBack = "images/grouping_game/cover_back.png";
 GroupingGameView.sources.tray = "images/grouping_game/tray.png";
@@ -115,11 +114,21 @@ GroupingGameView.eggImageObjects = [];
 GroupingGameView.initialize = function () {
 
 	// Create Media object from src
-	my_media = new Media("sounds/grouping_game/reject_egg.wav", function() {}, function() {});
-
+	//my_media = new Media("sounds/grouping_game/reject_egg.wav", function() {}, function() {});
 	// Play audio
-	my_media.play();
-	 
+	//my_media.play();
+	
+	
+	
+	// Music.play("sounds/grouping_game/accept_egg.wav");
+	
+	
+	
+	setTimeout(function() {
+		Music.play("sounds/grouping_game/accept_egg.wav");
+	}, 5000);
+	
+	
 	// Number of errors the child has made so far
 	GroupingGameView.errorsMade = 0;
 
@@ -169,7 +178,6 @@ GroupingGameView.initialize = function () {
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
 	GroupingGameView.images.tray = loader.addImage(GroupingGameView.sources.tray);
-	GroupingGameView.images.cover = loader.addImage(GroupingGameView.sources.cover);
 	GroupingGameView.images.coverFront = loader.addImage(GroupingGameView.sources.coverFront);
 	GroupingGameView.images.coverBack = loader.addImage(GroupingGameView.sources.coverBack);
 	GroupingGameView.images.pauseButton = loader.addImage(GroupingGameView.sources.pauseButton);
