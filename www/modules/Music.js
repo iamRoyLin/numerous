@@ -24,6 +24,5 @@ var Music = new function () {
 		}
 	}
 	*/
-	*/
 }
 
