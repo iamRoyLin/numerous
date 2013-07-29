@@ -1,9 +1,11 @@
 var Music = new function () {
 	
-	this.manager = soundManager.setup({
-		url: 'lib/soundmanager/swf_files/',
-		onready: function() {}
-	});
+	if (!Env.phoneGap) {
+		soundManager.setup({
+			url: 'lib/soundmanager/swf_files/',
+			onready: function() {}
+		});
+	}
 		
 	// call this function to play a sound
 	this.play = function (src) {
