@@ -9,6 +9,10 @@ LoginView.sources.optionsButton = "images/widgets/button_options.png";
 // Images
 LoginView.images = {};
 
+// Sounds
+LoginView.sounds = {};
+LoginView.sounds.select = "sounds/menu/menu_select.wav";
+
 //	Initialize login view
 LoginView.initialize = function(store) {
 	LoginView.store = store;
@@ -77,6 +81,7 @@ LoginView.drawButtons = function() {
 	});
 	LoginView.backgroundLayer.add(playButton);
 	playButton.on('click tap', function () {
+			Music.play(LoginView.sounds.select);
 			MenuView.initialize();
 	});
 	

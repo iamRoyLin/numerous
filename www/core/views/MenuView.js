@@ -7,6 +7,10 @@ MenuView.sources.arrowLeft = "images/widgets/arrow_left.png";
 MenuView.sources.arrowRight = "images/widgets/arrow_right.png";
 MenuView.sources.homeButton = "images/widgets/button_back_to_home.png";
 
+// Sounds
+MenuView.sounds = {};
+MenuView.sounds.select = "sounds/menu/menu_select.wav";
+
 // Number of Unit
 MenuView.UNIT_COUNT = 4;
 
@@ -98,6 +102,7 @@ MenuView.drawGroups = function() {
 		});
 		// Need to edit when the unit name is changed
 		myButton.on('click tap', function () {
+			Music.play(MenuView.sounds.select);
 			GroupingGameView.initialize();
 		});
 		MenuView.unitsGroupArray[i].add(myButton);
@@ -129,6 +134,7 @@ MenuView.drawHomeButton = function() {
 	});
 	MenuView.backgroundLayer.add(button);
 	button.on('click tap', function () {
+		Music.play(MenuView.sounds.select);
 		LoginView.initialize();
 	});
 }
@@ -160,6 +166,7 @@ MenuView.drawLeftArrow = function() {
 	});
 	
 	MenuView.leftArrow.on('click tap', function () {
+		Music.play(MenuView.sounds.select);
 		MenuView.leftClick();
 	});
 	
@@ -176,6 +183,7 @@ MenuView.drawRightArrow = function() {
 	});
 	
 	MenuView.rightArrow.on('click tap', function () {
+		Music.play(MenuView.sounds.select);
 		MenuView.rightClick();
 	});
 	
