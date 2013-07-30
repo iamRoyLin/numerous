@@ -305,13 +305,12 @@ GroupingGameView.drawDoneButton = function() {
 // 0 for fail, 1 to 3 for stars
 GroupingGameView.finish(score) {
 
-	var finishLabel = null;
-	var stars = null;
+	var finishLabelImage = null;
+	var starsImage = null;
 	
-
 	switch(score) {
 		case 0:
-		
+			
 			
 			
 			
