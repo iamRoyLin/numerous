@@ -148,6 +148,7 @@ GroupingGameView.sounds = {};
 GroupingGameView.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
 GroupingGameView.sounds.rejectEgg = "sounds/grouping_game/reject_egg.wav";
 GroupingGameView.sounds.select = "sounds/menu/menu_select.wav";
+GroupingGameView.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 
 // As the images are loaded into memory, they will be accessible from this array
 GroupingGameView.eggImageObjects = [];
@@ -727,6 +728,8 @@ GroupingGameView.trayOnesFullCallback = function() {
 	// redraw the stage
 	GroupingGameView.stage.draw();
 	
+	Music.play(GroupingGameView.sounds.wrapUp);
+	
 	// Make the covers fall onto the tray
 	var dropCoverFrontTween = new Kinetic.Tween({
 		node: coverFront,
@@ -743,6 +746,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 	});
 	dropCoverFrontTween.play();
 	dropCoverBackTween.play();
+	
 	
 	// Make the tray lift up
 	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
@@ -767,6 +771,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 		});
 		shrinkTrayTween.play();
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds) * 1000);
+	
 	
 	// Move belt up
 	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
