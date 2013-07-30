@@ -86,17 +86,17 @@ MenuView.drawGroups = function() {
 		
 		var myLabel = new Kinetic.Image({image: MenuView.images.unitLabels[i]});
 		WidgetUtil.glue(myLabel, {
-			width: 0.4,
-			height: 0.14,
-			dx: 0.28,
+			width: 0.35,
+			height: 0.12,
+			dx: 0.3,
 			dy: 0.15
 		});
 		MenuView.unitsGroupArray[i].add(myLabel);
 		
 		var myButton = new Kinetic.Image({image: MenuView.images.unitPlayButtons[i]});
 		WidgetUtil.glue(myButton, {
-			width: 0.33,
-			height: 0.45,
+			width: 0.3,
+			height: 0.43,
 			dx: 0.33,
 			dy: 0.37
 		});
