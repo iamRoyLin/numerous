@@ -734,6 +734,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 		x: DimensionUtil.decimalToActualWidth(GroupingGameView.TRAY_CURRENT_POSITION.x),
 		y: DimensionUtil.decimalToActualHeight(GroupingGameView.TRAY_CURRENT_POSITION.y)
 	});
+	
 	var dropCoverBackTween = new Kinetic.Tween({
 		node: coverBack,
 		duration: fallCoverDurationSeconds,
