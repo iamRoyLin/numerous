@@ -105,13 +105,17 @@ GroupingGameView.sources = {};
 GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
 GroupingGameView.sources.thinkCloud = "images/widgets/think_cloud.png";
 GroupingGameView.sources.thinkCloud2 = "images/widgets/think_cloud2.png";
-
 GroupingGameView.sources.belts = "images/grouping_game/belts.png";
 GroupingGameView.sources.coverFront = "images/grouping_game/cover_front.png";
 GroupingGameView.sources.coverBack = "images/grouping_game/cover_back.png";
 GroupingGameView.sources.tray = "images/grouping_game/tray.png";
 
+GroupingGameView.sources.star1 = "images/widgets/star1.png";
+GroupingGameView.sources.star2 = "images/widgets/star2.png";
+GroupingGameView.sources.star3 = "images/widgets/star3.png";
+
 GroupingGameView.sources.labelPaused = "images/widgets/label_paused.png";
+GroupingGameView.sources.labelTryAgain = "images/widgets/label_try_again.png";
 GroupingGameView.sources.labelPerfect = "images/widgets/label_perfect.png";
 GroupingGameView.sources.labelGood = "images/widgets/label_good.png";
 GroupingGameView.sources.labelExcellent = "images/widgets/label_excellent.png";
@@ -121,7 +125,6 @@ GroupingGameView.sources.buttonMenu = "images/widgets/button_menu.png";
 GroupingGameView.sources.buttonRestart = "images/widgets/button_restart.png";
 GroupingGameView.sources.buttonResume = "images/widgets/button_resume.png";
 GroupingGameView.sources.buttonDone = "images/widgets/button_done.png";
-
 GroupingGameView.sources.buttonRetry = "images/widgets/button_retry.png";
 GroupingGameView.sources.buttonNext = "images/widgets/button_next.png";
 
@@ -158,6 +161,9 @@ GroupingGameView.initialize = function (predefinedNumber) {
 	// Number of errors the child has made so far
 	GroupingGameView.errorsMade = 0;
 
+	// Number of allowable errors
+	GroupingGameView.allowableErrorsCount = 3;
+	
 	// Array of the eggs currently on the tray at ones
 	GroupingGameView.eggsAtDestination = [];
 	
@@ -209,20 +215,28 @@ GroupingGameView.initialize = function (predefinedNumber) {
 	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
 	GroupingGameView.images.thinkCloud = loader.addImage(GroupingGameView.sources.thinkCloud);
 	GroupingGameView.images.thinkCloud2 = loader.addImage(GroupingGameView.sources.thinkCloud2);
-	
 	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
 	GroupingGameView.images.tray = loader.addImage(GroupingGameView.sources.tray);
 	GroupingGameView.images.coverFront = loader.addImage(GroupingGameView.sources.coverFront);
 	GroupingGameView.images.coverBack = loader.addImage(GroupingGameView.sources.coverBack);
 	GroupingGameView.images.buttonPause = loader.addImage(GroupingGameView.sources.buttonPause);
 	
+	GroupingGameView.images.star1 = loader.addImage(GroupingGameView.sources.star1);
+	GroupingGameView.images.star2 = loader.addImage(GroupingGameView.sources.star2);
+	GroupingGameView.images.star3 = loader.addImage(GroupingGameView.sources.star3);
+
 	GroupingGameView.images.buttonMenu = loader.addImage(GroupingGameView.sources.buttonMenu);
 	GroupingGameView.images.buttonRestart = loader.addImage(GroupingGameView.sources.buttonRestart);
 	GroupingGameView.images.buttonResume = loader.addImage(GroupingGameView.sources.buttonResume);
 	GroupingGameView.images.buttonDone = loader.addImage(GroupingGameView.sources.buttonDone);
 	GroupingGameView.images.buttonRetry = loader.addImage(GroupingGameView.sources.buttonRetry);
 	GroupingGameView.images.buttonNext = loader.addImage(GroupingGameView.sources.buttonNext);
+	
 	GroupingGameView.images.labelPaused = loader.addImage(GroupingGameView.sources.labelPaused);
+	GroupingGameView.images.labelTryAgain = loader.addImage(GroupingGameView.sources.labelTryAgain);
+	GroupingGameView.images.labelPerfect = loader.addImage(GroupingGameView.sources.labelPerfect);
+	GroupingGameView.images.labelGood = loader.addImage(GroupingGameView.sources.labelGood);
+	GroupingGameView.images.labelExcellent = loader.addImage(GroupingGameView.sources.labelExcellent);
 	
 	GroupingGameView.images.eggs = [];
 	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
@@ -292,7 +306,7 @@ GroupingGameView.drawDoneButton = function() {
 		var total = GroupingGameView.calculateTotal();
 		
 		if (total == GroupingGameView.goalNumber) {
-			alert("Correct!");
+			GroupingGameView.finish(GroupingGameView.allowableErrorsCount - GroupingGameView.errorsMade);
 		} else {
 			GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.INCORRECT_DONE);	
 		}
@@ -304,37 +318,31 @@ GroupingGameView.drawDoneButton = function() {
 // finsih score:
 // 0 for fail, 1 to 3 for stars
 GroupingGameView.finish = function(score) {
-
-	var finishLabelImage = null;
+	var finishTitleImage = null;
 	var starsImage = null;
 	
 	switch(score) {
 		case 0:
+			finishTitleImage = GroupingGameView.images.labelTryAgain;
+			starsImage = null;
 			
-			
-			
-			
-
-					
-			
-			
-			
-			
-		
 		break;
 		case 1:
+			finishTitleImage = GroupingGameView.images.labelGood;
+			starsImage = GroupingGameView.images.star1;
 		
 		break;
 		case 2:
-		
-		break;
-		
+			finishTitleImage = GroupingGameView.images.labelExcellent;
+			starsImage = GroupingGameView.images.star2;
+			
+		break;			
 		case 3:
-		
+			finishTitleImage = GroupingGameView.images.labelPerfect;
+			starsImage = GroupingGameView.images.star3;
+			
 		break;
 	}
-	
-	
 	
 
 	// draw overlay
@@ -348,8 +356,74 @@ GroupingGameView.finish = function(score) {
 		dx: 0,
 		dy: 0
 	});
-	GroupingGameView.backgroundLayer.add(overlay);	
+	GroupingGameView.backgroundLayer.add(overlay);
 	
+	// draw title
+	var finishTitle = new Kinetic.Image({image: finishTitleImage});
+	WidgetUtil.glue(finishTitle, {
+		width: 0.5,
+		height: 0.2,
+		dx: 0.25,
+		dy: 0.2
+	});
+	GroupingGameView.backgroundLayer.add(finishTitle);
+	
+	if (starsImage != null) {
+		// draw stars
+		var starsWidget = new Kinetic.Image({image: starsImage});
+		WidgetUtil.glue(starsWidget, {
+			width: 0.35,
+			height: 0.15,
+			dx: 0.325,
+			dy: 0.4
+		});
+		GroupingGameView.backgroundLayer.add(starsWidget);
+			
+	}
+	
+	var buttonRetry = null;
+	
+	// draw buttons 
+	if (score == 0) {
+		// draw retry button only
+		buttonRetry = new Kinetic.Image({image: GroupingGameView.images.buttonRetry});
+		WidgetUtil.glue(buttonRetry, {
+			width: 0.15,
+			height: 0.27,
+			dx: 0.425,
+			dy: 0.5
+		});
+	} else {
+		buttonRetry = new Kinetic.Image({image: GroupingGameView.images.buttonRetry});
+		WidgetUtil.glue(buttonRetry, {
+			width: 0.1,
+			height: 0.19,
+			dx: 0.36,
+			dy: 0.65
+		});
+		
+		var buttonNext = new Kinetic.Image({image: GroupingGameView.images.buttonNext});
+		WidgetUtil.glue(buttonNext, {
+			width: 0.1,
+			height: 0.19,
+			dx: 0.54,
+			dy: 0.65
+		});
+		GroupingGameView.backgroundLayer.add(buttonNext);	
+		buttonNext.on('click tap', function () {
+			alert("next");
+		});
+	}
+	
+	buttonRetry.on('click tab', function () {
+		Music.play(GroupingGameView.sounds.select);
+		GroupingGameView.restartGame(true);
+	});
+	
+	GroupingGameView.backgroundLayer.add(buttonRetry);	
+	
+	
+	GroupingGameView.stage.draw();
 }
 
 GroupingGameView.calculateTotal = function () {
@@ -919,46 +993,7 @@ GroupingGameView.errorMade = function (errorType) {
 		break;
 	}
 	
-	if (GroupingGameView.errorsMade == 2) {
-		GroupingGameView.activitiesEnabled = false;
-		
-		var cloudWidget = new Kinetic.Image({image: GroupingGameView.images.thinkCloud2});
-		WidgetUtil.glue(cloudWidget, {
-			width: GroupingGameView.THINK_CLOUD2_DIMENSIONS.width,
-			height: GroupingGameView.THINK_CLOUD2_DIMENSIONS.height,
-			dx: GroupingGameView.THINK_CLOUD2_DIMENSIONS.x,
-			dy: GroupingGameView.THINK_CLOUD2_DIMENSIONS.y
-		});
-		GroupingGameView.backgroundLayer.add(cloudWidget);
-		
-		var retryTextWidget = new Kinetic.Text({
-			text: "You've made too many mistakes!",
-			x: DimensionUtil.decimalToActualWidth(0.12),
-			y: DimensionUtil.decimalToActualHeight(0.55),
-			width: DimensionUtil.decimalToActualWidth(0.4),
-			scaleX: 1/1024*DimensionUtil.width,
-			scaleY: 1/768*DimensionUtil.height,
-			fontSize: 50,
-			fontFamily: 'COMIC SANS MS',
-			fill: 'black',
-			align: 'center',
-			lineHeight: 1.3
-		});
-		GroupingGameView.backgroundLayer.add(retryTextWidget);
-		
-		var buttonRetryWidget = new Kinetic.Image({image: GroupingGameView.images.buttonRetry});
-		WidgetUtil.glue(buttonRetryWidget, {
-			width: 0.18,
-			height: 0.1,
-			dx: 0.35,
-			dy: 0.73
-		});
-		GroupingGameView.backgroundLayer.add(buttonRetryWidget);
-		
-		buttonRetryWidget.on('click tap', function () {
-			GroupingGameView.restartGame(true);
-		});
-		
-		GroupingGameView.stage.draw();
+	if (GroupingGameView.errorsMade == GroupingGameView.allowableErrorsCount) {
+		GroupingGameView.finish(0);
 	}
 }
