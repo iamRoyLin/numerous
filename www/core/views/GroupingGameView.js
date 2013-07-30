@@ -138,15 +138,13 @@ GroupingGameView.images = {};
 GroupingGameView.sounds = {};
 GroupingGameView.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
 GroupingGameView.sounds.rejectEgg = "sounds/grouping_game/reject_egg.wav";
+GroupingGameView.sounds.select = "sounds/menu/menu_select.wav";
 
 // As the images are loaded into memory, they will be accessible from this array
 GroupingGameView.eggImageObjects = [];
 
 // Called when the user enters this page
 GroupingGameView.initialize = function (predefinedNumber) {
-	
-	// REMOVE THIS ONCE YOU SEE IT VIANNA, THIS IS AN EXAMPLE OF HOW TO USE SOUND:
-	// Music.play("sounds/grouping_game/accept_egg.wav");
 	
 	// timeouts to clear
 	GroupingGameView.timeOuts = [];
@@ -397,6 +395,7 @@ GroupingGameView.drawPauseButton = function() {
 	pauseButton.on('mouseout', function() {document.body.style.cursor = 'default'});	
 	
 	pauseButton.on('click tap', function() {
+		Music.play(GroupingGameView.sounds.select);
 		GroupingGameView.pause();
 	});
 }
@@ -766,6 +765,7 @@ GroupingGameView.pause = function() {
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.resumeButton.on('click tap', function () {
+			Music.play(GroupingGameView.sounds.select);
 			GroupingGameView.unpause();
 		});
 		
@@ -778,8 +778,9 @@ GroupingGameView.pause = function() {
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.menuButton.on('click tap', function () {
+			Music.play(GroupingGameView.sounds.select);
 			GroupingGameView.pauseWidgets = null;
-			LoginView.initialize();
+			LoginView.initialize();	
 		});
 		
 		// restart button
@@ -791,8 +792,8 @@ GroupingGameView.pause = function() {
 			dy: 0.42
 		});
 		GroupingGameView.pauseWidgets.restartButton.on('click tap', function () {
+			Music.play(GroupingGameView.sounds.select);
 			GroupingGameView.restartGame();
-			
 		});
 		
 		// Add all the widgets onto the background layer
