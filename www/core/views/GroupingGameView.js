@@ -111,8 +111,12 @@ GroupingGameView.sources.coverFront = "images/grouping_game/cover_front.png";
 GroupingGameView.sources.coverBack = "images/grouping_game/cover_back.png";
 GroupingGameView.sources.tray = "images/grouping_game/tray.png";
 
-GroupingGameView.sources.buttonPause = "images/widgets/button_pause.png";
 GroupingGameView.sources.labelPaused = "images/widgets/label_paused.png";
+GroupingGameView.sources.labelPerfect = "images/widgets/label_perfect.png";
+GroupingGameView.sources.labelGood = "images/widgets/label_good.png";
+GroupingGameView.sources.labelExcellent = "images/widgets/label_excellent.png";
+
+GroupingGameView.sources.buttonPause = "images/widgets/button_pause.png";
 GroupingGameView.sources.buttonMenu = "images/widgets/button_menu.png";
 GroupingGameView.sources.buttonRestart = "images/widgets/button_restart.png";
 GroupingGameView.sources.buttonResume = "images/widgets/button_resume.png";
@@ -302,8 +306,23 @@ GroupingGameView.drawDoneButton = function() {
 // finsih score:
 // 0 for fail, 1 to 3 for stars
 GroupingGameView.finish(score) {
+
+	var finishLabel = null;
+	var stars = null;
+	
+
 	switch(score) {
 		case 0:
+		
+			
+			
+			
+
+					
+			
+			
+			
+			
 		
 		break;
 		case 1:
@@ -317,6 +336,23 @@ GroupingGameView.finish(score) {
 		
 		break;
 	}
+	
+	
+	
+
+	// draw overlay
+	var overlay = new Kinetic.Rect({
+		fill: 'black',
+		opacity: 0.62
+	});
+	WidgetUtil.glue(overlay, {
+		width: 1,
+		height: 1,
+		dx: 0,
+		dy: 0
+	});
+	GroupingGameView.backgroundLayer.add(overlay);	
+	
 }
 
 GroupingGameView.calculateTotal = function () {
