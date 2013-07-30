@@ -916,7 +916,7 @@ GroupingGameView.pause = function() {
 		GroupingGameView.pauseWidgets.buttonMenu.on('click tap', function () {
 			Music.play(GroupingGameView.sounds.select);
 			GroupingGameView.pauseWidgets = null;
-			LoginView.initialize();	
+			MenuView.initialize();	
 		});
 		
 		// restart button

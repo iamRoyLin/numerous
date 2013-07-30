@@ -5,6 +5,7 @@ MenuView.sources = {};
 MenuView.sources.numerousTitle = "images/widgets/numerous_title.png";
 MenuView.sources.arrowLeft = "images/widgets/arrow_left.png";
 MenuView.sources.arrowRight = "images/widgets/arrow_right.png";
+MenuView.sources.homeButton = "images/widgets/button_back_to_home.png";
 
 // Number of Unit
 MenuView.UNIT_COUNT = 4;
@@ -54,6 +55,7 @@ MenuView.initialize = function() {
 	
 	MenuView.images.arrowLeft = loader.addImage(MenuView.sources.arrowLeft);
 	MenuView.images.arrowRight = loader.addImage(MenuView.sources.arrowRight);
+	MenuView.images.homeButton = loader.addImage(MenuView.sources.homeButton);
 	
 	// Registers loaded() function, which gets called when images loaded into memory
 	loader.addCompletionListener(MenuView.loaded);
@@ -68,6 +70,7 @@ MenuView.loaded = function () {
 	MenuView.drawArrows();
 	MenuView.drawGroups();
 	MenuView.leftArrow.hide();
+	MenuView.drawHomeButton();
 	// redraw all widgets
 	MenuView.stage.draw();
 }
@@ -79,19 +82,23 @@ MenuView.drawGroups = function() {
 		
 		var myLabel = new Kinetic.Image({image: MenuView.images.unitLabels[i]});
 		WidgetUtil.glue(myLabel, {
-			width: 0.3,
-			height: 0.1,
-			dx: 0.33,
+			width: 0.4,
+			height: 0.14,
+			dx: 0.28,
 			dy: 0.15
 		});
 		MenuView.unitsGroupArray[i].add(myLabel);
 		
 		var myButton = new Kinetic.Image({image: MenuView.images.unitPlayButtons[i]});
 		WidgetUtil.glue(myButton, {
-			width: 0.3,
-			height: 0.4,
+			width: 0.33,
+			height: 0.45,
 			dx: 0.33,
-			dy: 0.3
+			dy: 0.37
+		});
+		// Need to edit when the unit name is changed
+		myButton.on('click tap', function () {
+			GroupingGameView.initialize();
 		});
 		MenuView.unitsGroupArray[i].add(myButton);
 		
@@ -104,20 +111,32 @@ MenuView.drawGroups = function() {
 MenuView.drawTitle = function() {
 	var title = new Kinetic.Image({image: MenuView.images.numerousTitle});
 	WidgetUtil.glue(title, {
-		glueTop: true,
-		glueLeft: true,
-		width: 0.3,
+		width: 0.35,
 		height: 0.1,
-		dx: 0.33,
+		dx: 0.31,
 		dy: 0.05
 	});
 	MenuView.backgroundLayer.add(title);
 }
 
+MenuView.drawHomeButton = function() {
+	var button = new Kinetic.Image({image: MenuView.images.homeButton});
+	WidgetUtil.glue(button, {
+		width: 0.11,
+		height: 0.12,
+		dx: 0.05,
+		dy: 0.05
+	});
+	MenuView.backgroundLayer.add(button);
+	button.on('click tap', function () {
+		LoginView.initialize();
+	});
+}
+
 MenuView.selectUnitCallback = function() {
 	if (MenuView.currentUnit == 0){
 		MenuView.leftArrow.hide();
-	}else if(MenuView.currentUnit == menuView.UNITS_COUNT){
+	}else if(MenuView.currentUnit == MenuView.UNIT_COUNT-1){
 		MenuView.rightArrow.hide();
 	}else{
 		MenuView.leftArrow.show();
@@ -134,12 +153,10 @@ MenuView.drawArrows = function() {
 MenuView.drawLeftArrow = function() {
 	MenuView.leftArrow = new Kinetic.Image({image: MenuView.images.arrowLeft});
 	WidgetUtil.glue(MenuView.leftArrow, {
-		glueTop: true,
-		glueLeft: true,
 		width: 0.1,
 		height: 0.22,
 		dx: 0.1,
-		dy: 0.4
+		dy: 0.5
 	});
 	
 	MenuView.leftArrow.on('click tap', function () {
@@ -152,12 +169,10 @@ MenuView.drawLeftArrow = function() {
 MenuView.drawRightArrow = function() {
 	MenuView.rightArrow = new Kinetic.Image({image: MenuView.images.arrowRight});
 	WidgetUtil.glue(MenuView.rightArrow, {
-		glueTop: true,
-		glueLeft: true,
 		width: 0.1,
 		height: 0.22,
 		dx: 0.8,
-		dy: 0.4
+		dy: 0.5
 	});
 	
 	MenuView.rightArrow.on('click tap', function () {
@@ -168,20 +183,17 @@ MenuView.drawRightArrow = function() {
 }
 
 MenuView.leftClick = function () {
-	
-}
-MenuView.rightClick = function () {
-	var nextUnit = MenuView.currentUnit+1;
-	var nextGroup = MenuView.unitsGroupArray[nextUnit];
+	var preUnit = MenuView.currentUnit-1;
+	var preGroup = MenuView.unitsGroupArray[preUnit];
 	var currentGroup = MenuView.unitsGroupArray[MenuView.currentUnit];
 	
-	nextGroup.setOpacity(0);
-	nextGroup.setX(DimensionUtil.decimalToActualWidth(0.2));
-	nextGroup.show();
+	preGroup.setOpacity(0);
+	preGroup.setX(DimensionUtil.decimalToActualWidth(-0.35));
+	preGroup.show();
 	
 	var tweenIn = new Kinetic.Tween({
-		node: nextGroup,
-		duration: 1,
+		node: preGroup,
+		duration: 0.5,
 		x: 0,
 		opacity: 1
 	});
@@ -189,8 +201,39 @@ MenuView.rightClick = function () {
 	
 	var tweenOut = new Kinetic.Tween({
 		node: currentGroup,
-		duration: 1,
-		x: DimensionUtil.decimalToActualWidth(-0.2),
+		duration: 0.5,
+		x: DimensionUtil.decimalToActualWidth(0.35),
+		opacity: 0,
+		//Check
+		onFinish: function () {
+			currentGroup.hide();
+		}
+	});
+	tweenOut.play();
+	MenuView.currentUnit--;
+	MenuView.selectUnitCallback();
+}
+MenuView.rightClick = function () {
+	var nextUnit = MenuView.currentUnit+1;
+	var nextGroup = MenuView.unitsGroupArray[nextUnit];
+	var currentGroup = MenuView.unitsGroupArray[MenuView.currentUnit];
+	
+	nextGroup.setOpacity(0);
+	nextGroup.setX(DimensionUtil.decimalToActualWidth(0.35));
+	nextGroup.show();
+	
+	var tweenIn = new Kinetic.Tween({
+		node: nextGroup,
+		duration: 0.5,
+		x: 0,
+		opacity: 1
+	});
+	tweenIn.play();
+	
+	var tweenOut = new Kinetic.Tween({
+		node: currentGroup,
+		duration: 0.5,
+		x: DimensionUtil.decimalToActualWidth(-0.35),
 		opacity: 0,
 		//Check
 		onFinish: function () {
@@ -199,6 +242,7 @@ MenuView.rightClick = function () {
 	});
 	tweenOut.play();
 	MenuView.currentUnit++;
+	MenuView.selectUnitCallback();
 }
 
 

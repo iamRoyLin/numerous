@@ -77,7 +77,7 @@ LoginView.drawButtons = function() {
 	});
 	LoginView.backgroundLayer.add(playButton);
 	playButton.on('click tap', function () {
-			GroupingGameView.initialize();
+			MenuView.initialize();
 	});
 	
 	//options button
