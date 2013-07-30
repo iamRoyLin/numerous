@@ -17,6 +17,7 @@
     <author href="www.author.com" email="author@email.com">
         Author
     </author>
+    <gap:splash src="images/widgets/splash_screen.png" width="1024" height="768"/>
     <icon src="images/widgets/icon2.png" />
 	<preference name="orientation" value="landscape" />
  
