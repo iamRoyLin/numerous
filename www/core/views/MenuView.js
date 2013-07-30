@@ -73,7 +73,7 @@ MenuView.loaded = function () {
 	MenuView.drawTitle();
 	MenuView.drawArrows();
 	MenuView.drawGroups();
-	MenuView.leftArrow.hide();
+	MenuView.arrowLeft.hide();
 	MenuView.drawHomeButton();
 	// redraw all widgets
 	MenuView.stage.draw();
@@ -141,12 +141,12 @@ MenuView.drawHomeButton = function() {
 
 MenuView.selectUnitCallback = function() {
 	if (MenuView.currentUnit == 0){
-		MenuView.leftArrow.hide();
+		MenuView.arrowLeft.hide();
 	}else if(MenuView.currentUnit == MenuView.UNIT_COUNT-1){
-		MenuView.rightArrow.hide();
+		MenuView.arrowRight.hide();
 	}else{
-		MenuView.leftArrow.show();
-		MenuView.rightArrow.show();
+		MenuView.arrowLeft.show();
+		MenuView.arrowRight.show();
 	}
 	
 }
@@ -157,37 +157,39 @@ MenuView.drawArrows = function() {
 }
 
 MenuView.drawLeftArrow = function() {
-	MenuView.leftArrow = new Kinetic.Image({image: MenuView.images.arrowLeft});
-	WidgetUtil.glue(MenuView.leftArrow, {
+	MenuView.arrowLeft = new Kinetic.Image({image: MenuView.images.arrowLeft});
+	WidgetUtil.glue(MenuView.arrowLeft, {
 		width: 0.1,
 		height: 0.22,
 		dx: 0.1,
 		dy: 0.5
 	});
 	
-	MenuView.leftArrow.on('click tap', function () {
+	MenuView.arrowLeft.on('click tap', function () {
 		Music.play(MenuView.sounds.select);
 		MenuView.leftClick();
 	});
 	
-	MenuView.backgroundLayer.add(MenuView.leftArrow);
+	MenuView.backgroundLayer.add(MenuView.arrowLeft);
+	MenuView.arrowLeft.moveToTop();
 }	
 
 MenuView.drawRightArrow = function() {
-	MenuView.rightArrow = new Kinetic.Image({image: MenuView.images.arrowRight});
-	WidgetUtil.glue(MenuView.rightArrow, {
+	MenuView.arrowRight = new Kinetic.Image({image: MenuView.images.arrowRight});
+	WidgetUtil.glue(MenuView.arrowRight, {
 		width: 0.1,
 		height: 0.22,
 		dx: 0.8,
 		dy: 0.5
 	});
 	
-	MenuView.rightArrow.on('click tap', function () {
+	MenuView.arrowRight.on('click tap', function () {
 		Music.play(MenuView.sounds.select);
 		MenuView.rightClick();
 	});
 	
-	MenuView.backgroundLayer.add(MenuView.rightArrow);
+	MenuView.backgroundLayer.add(MenuView.arrowRight);
+	MenuView.arrowRight.moveToTop();
 }
 
 MenuView.leftClick = function () {
