@@ -148,8 +148,6 @@ GroupingGameView.sounds = {};
 GroupingGameView.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
 GroupingGameView.sounds.rejectEgg = "sounds/grouping_game/reject_egg.wav";
 GroupingGameView.sounds.select = "sounds/menu/menu_select.wav";
-GroupingGameView.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
-GroupingGameView.sounds.done = "sounds/grouping_game/done.wav";
 
 // As the images are loaded into memory, they will be accessible from this array
 GroupingGameView.eggImageObjects = [];
@@ -189,7 +187,6 @@ GroupingGameView.initialize = function (predefinedNumber) {
 	} else {
 		GroupingGameView.goalNumber = MathUtil.random(11,19);
 	}
-	
 	
 	// render the html view
 	View.render("GroupingGameView");
@@ -305,7 +302,6 @@ GroupingGameView.drawDoneButton = function() {
 	});
 	
 	buttonDone.on('click tap', function () {
-		Music.play(GroupingGameView.sounds.done);
 		var total = GroupingGameView.calculateTotal();
 		
 		if (total == GroupingGameView.goalNumber) {
@@ -346,7 +342,6 @@ GroupingGameView.finish = function(score) {
 			
 		break;
 	}
-	
 
 	// draw overlay
 	var overlay = new Kinetic.Rect({
@@ -364,9 +359,9 @@ GroupingGameView.finish = function(score) {
 	// draw title
 	var finishTitle = new Kinetic.Image({image: finishTitleImage});
 	WidgetUtil.glue(finishTitle, {
-		width: 0.45,
-		height: 0.15,
-		dx: 0.27,
+		width: 0.5,
+		height: 0.2,
+		dx: 0.25,
 		dy: 0.2
 	});
 	GroupingGameView.backgroundLayer.add(finishTitle);
@@ -376,9 +371,9 @@ GroupingGameView.finish = function(score) {
 		var starsWidget = new Kinetic.Image({image: starsImage});
 		WidgetUtil.glue(starsWidget, {
 			width: 0.35,
-			height: 0.14,
+			height: 0.15,
 			dx: 0.325,
-			dy: 0.35
+			dy: 0.4
 		});
 		GroupingGameView.backgroundLayer.add(starsWidget);
 			
@@ -392,25 +387,25 @@ GroupingGameView.finish = function(score) {
 		buttonRetry = new Kinetic.Image({image: GroupingGameView.images.buttonRetry});
 		WidgetUtil.glue(buttonRetry, {
 			width: 0.15,
-			height: 0.25,
+			height: 0.27,
 			dx: 0.425,
-			dy: 0.45
+			dy: 0.5
 		});
 	} else {
 		buttonRetry = new Kinetic.Image({image: GroupingGameView.images.buttonRetry});
 		WidgetUtil.glue(buttonRetry, {
 			width: 0.1,
-			height: 0.17,
+			height: 0.19,
 			dx: 0.36,
-			dy: 0.6
+			dy: 0.65
 		});
 		
 		var buttonNext = new Kinetic.Image({image: GroupingGameView.images.buttonNext});
 		WidgetUtil.glue(buttonNext, {
 			width: 0.1,
-			height: 0.17,
+			height: 0.19,
 			dx: 0.54,
-			dy: 0.6
+			dy: 0.65
 		});
 		GroupingGameView.backgroundLayer.add(buttonNext);	
 		buttonNext.on('click tap', function () {
@@ -424,7 +419,6 @@ GroupingGameView.finish = function(score) {
 	});
 	
 	GroupingGameView.backgroundLayer.add(buttonRetry);	
-	
 	
 	GroupingGameView.stage.draw();
 }
@@ -515,7 +509,6 @@ GroupingGameView.displayThinkCloud = function(message) {
 	GroupingGameView.stage.draw();
 }
 
-
 GroupingGameView.drawPauseButton = function() {
 	var buttonPause = new Kinetic.Image({image: GroupingGameView.images.buttonPause});
 	WidgetUtil.glue(buttonPause, {
@@ -529,7 +522,6 @@ GroupingGameView.drawPauseButton = function() {
 	buttonPause.on('mouseover', function() {document.body.style.cursor = 'pointer'});
 	buttonPause.on('mouseout', function() {document.body.style.cursor = 'default'});	
 	
-
 	buttonPause.on('click tap', function() {
 		Music.play(GroupingGameView.sounds.select);
 		GroupingGameView.pause();
@@ -636,12 +628,9 @@ GroupingGameView.drawNewEgg = function() {
 // accepts the egg and add it to the accepted array
 GroupingGameView.acceptEgg = function(egg) {
 	
-
-	
 	// say a compliment
 	var compliment = GroupingGameView.COMPLIMENTS[MathUtil.random(0,GroupingGameView.COMPLIMENTS.length-1)];
 	GroupingGameView.displayThinkCloud(compliment);
-	
 	
 	// check to see if total is greater than goal Number
 	if (GroupingGameView.calculateTotal() >= GroupingGameView.goalNumber) {
@@ -692,7 +681,6 @@ GroupingGameView.declineEgg = function(egg) {
 	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
 }
 
-
 GroupingGameView.trayOnesFullCallback = function() {
 	
 	// Disable all performable activities by user
@@ -730,8 +718,6 @@ GroupingGameView.trayOnesFullCallback = function() {
 	// redraw the stage
 	GroupingGameView.stage.draw();
 	
-	Music.play(GroupingGameView.sounds.wrapUp);
-	
 	// Make the covers fall onto the tray
 	var dropCoverFrontTween = new Kinetic.Tween({
 		node: coverFront,
@@ -748,7 +734,6 @@ GroupingGameView.trayOnesFullCallback = function() {
 	});
 	dropCoverFrontTween.play();
 	dropCoverBackTween.play();
-	
 	
 	// Make the tray lift up
 	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
@@ -773,7 +758,6 @@ GroupingGameView.trayOnesFullCallback = function() {
 		});
 		shrinkTrayTween.play();
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds) * 1000);
-	
 	
 	// Move belt up
 	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
@@ -867,7 +851,7 @@ GroupingGameView.drawTitle = function() {
     });
     GroupingGameView.backgroundLayer.add(GroupingGameView.titleTextWidget);
 }
-				
+
 // call this to pause the game
 GroupingGameView.pause = function() {
 	
@@ -984,20 +968,17 @@ GroupingGameView.errorMade = function (errorType) {
 		case GroupingGameView.ERROR_TYPES.DRAG_TO_TENS:
 			GroupingGameView.displayThinkCloud("WHOOPS! This is only ONE easter egg! You need to drag this to ONES!");
 			
-			
 		break;
 		case GroupingGameView.ERROR_TYPES.INCORRECT_DONE:
 			GroupingGameView.displayThinkCloud("UH OH! The number you have made is not " + 
 				GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] +
 				"! You need more eggs!");
 			
-			
 		break;
 		case GroupingGameView.ERROR_TYPES.EXCEEDED_GOAL_NUMBER:
 			GroupingGameView.displayThinkCloud("You're trying to make " + 
 				GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] +
 				". Count your eggs! Have you already got the correct number?");
-		
 		
 		break;
 	}
