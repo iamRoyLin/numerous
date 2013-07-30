@@ -3,8 +3,8 @@ var LoginView = {};
 // Image Sources
 LoginView.sources = {};
 LoginView.sources.background = "images/widgets/home_screen.png";
-LoginView.sources.playButton = "images/widgets/play_button.png";
-LoginView.sources.optionsButton = "images/widgets/options_button.png";
+LoginView.sources.playButton = "images/widgets/button_play.png";
+LoginView.sources.optionsButton = "images/widgets/button_options.png";
 
 // Images
 LoginView.images = {};
