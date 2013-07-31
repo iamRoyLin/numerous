@@ -844,7 +844,7 @@ GroupingGameView.prototype.finish = function(score) {
 		});
 	}
 	
-	buttonRetry.on('click tab', function () {
+	buttonRetry.on('click tap', function () {
 		Music.play(app.view.sounds.select);
 		app.controller.restart(true);
 	});
