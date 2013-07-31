@@ -136,6 +136,8 @@ function GroupingGameView() {
 	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
 	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.wav";
 	this.sounds.select = "sounds/menu/menu_select.wav";
+	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
+	this.sounds.done = "sounds/grouping_game/done.wav";
 	
 	// A count of all eggs that have been generated
 	this.eggCount = 0;
@@ -298,6 +300,7 @@ GroupingGameView.prototype.drawDoneButton = function() {
 	});
 	
 	buttonDone.on('click tap', function () {
+		Music.play(app.view.sounds.done);
 		var total = app.view.calculateTotal();
 		if (total == app.view.goalNumber) {
 			app.view.finish(app.view.allowableErrorsCount - app.view.errorsMade);
@@ -624,6 +627,7 @@ GroupingGameView.prototype.trayFull = function() {
 	// redraw the stage
 	app.stage.draw();
 	
+	Music.play(app.view.sounds.wrapUp);
 	// Make the covers fall onto the tray
 	var dropCoverFrontTween = new Kinetic.Tween({
 		node: coverFront,
@@ -790,9 +794,9 @@ GroupingGameView.prototype.finish = function(score) {
 	// draw title
 	var finishTitle = new Kinetic.Image({image: finishTitleImage});
 	WidgetUtil.glue(finishTitle, {
-		width: 0.5,
-		height: 0.2,
-		dx: 0.25,
+		width: 0.45,
+		height: 0.15,
+		dx: 0.27,
 		dy: 0.2
 	});
 	app.layer.add(finishTitle);
@@ -802,9 +806,9 @@ GroupingGameView.prototype.finish = function(score) {
 		var starsWidget = new Kinetic.Image({image: starsImage});
 		WidgetUtil.glue(starsWidget, {
 			width: 0.35,
-			height: 0.15,
+			height: 0.14,
 			dx: 0.325,
-			dy: 0.4
+			dy: 0.35
 		});
 		app.layer.add(starsWidget);
 			
@@ -818,25 +822,25 @@ GroupingGameView.prototype.finish = function(score) {
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
 		WidgetUtil.glue(buttonRetry, {
 			width: 0.15,
-			height: 0.27,
+			height: 0.25,
 			dx: 0.425,
-			dy: 0.5
+			dy: 0.45
 		});
 	} else {
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
 		WidgetUtil.glue(buttonRetry, {
 			width: 0.1,
-			height: 0.19,
+			height: 0.17,
 			dx: 0.36,
-			dy: 0.65
+			dy: 0.6
 		});
 		
 		var buttonNext = new Kinetic.Image({image: this.images.buttonNext});
 		WidgetUtil.glue(buttonNext, {
 			width: 0.1,
-			height: 0.19,
+			height: 0.17,
 			dx: 0.54,
-			dy: 0.65
+			dy: 0.6
 		});
 		app.layer.add(buttonNext);	
 		buttonNext.on('click tap', function () {
