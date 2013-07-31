@@ -17,5 +17,5 @@ MenuController.prototype.home = function () {
 };
 
 MenuController.prototype.unitSelect = function(unit) {
-	app.route("GroupingGame");
+	app.route("MenuUnit1");
 }

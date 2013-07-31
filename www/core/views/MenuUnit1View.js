@@ -3,14 +3,15 @@ function MenuUnit1View() {
 	this.LEVEL_COUNT = 19;
 	
 	// level names
+	
 	this.LEVEL_NAMES = [
 		"eleven",
 		"twelve",
 		"thirteen",
-		"fourteen",
+		"four-teen",
 		"fifteen",
 		"sixteen",
-		"seventeen",
+		"seven-teen",
 		"eighteen",
 		"nineteen",
 		
@@ -26,7 +27,7 @@ function MenuUnit1View() {
 		'"eleven"',
 		'"twelve"',
 		
-		'PRACTICE'
+		'Practice'
 	];
 	
 	
@@ -122,19 +123,25 @@ MenuUnit1View.prototype.drawBoxes = function() {
 		
 		// text
 		var text = new Kinetic.Text({
-			x: DimensionUtil.decimalToActualWidth(0),
-			y: DimensionUtil.decimalToActualHeight(0.02),
-			width: DimensionUtil.decimalToActualWidth(0.11 / (1/1024*DimensionUtil.width)),
+			x: DimensionUtil.decimalToActualWidth(0.01),
+			y: DimensionUtil.decimalToActualHeight(0.05),
+			width: DimensionUtil.decimalToActualWidth(0.099 / (1/1024*DimensionUtil.width)),
 			scaleX: 1/1024*DimensionUtil.width,
 			scaleY: 1/768*DimensionUtil.height,
 			text: this.LEVEL_NAMES[boxNumber],
-			fontSize: 30,
+			fontSize: 25,
 			fontFamily: 'COMIC SANS MS',
-			fill: 'black'
+			fill: 'black',
+			align: 'center'
 		});
 		group.add(text);
 		
 		app.layer.add(group);
+		
+		group.gameId = boxNumber;
+		group.on('click tap', function () {
+			app.controller.game(this.gameId);
+		});
 	}
 }
 

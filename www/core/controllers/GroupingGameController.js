@@ -23,5 +23,5 @@ GroupingGameController.prototype.restart = function(sameNumber) {
 }
 
 GroupingGameController.prototype.menu = function() {
-	app.route("Menu");
+	app.route("MenuUnit1");
 }

@@ -51,5 +51,5 @@ App.prototype._loaded = function() {
 
 $(function () {
 	app = new App();
-	app.route("MenuUnit1");
+	app.route("Home");
 });
