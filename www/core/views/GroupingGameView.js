@@ -1,299 +1,296 @@
-// This is the view logic of objective one, where the child user learns place value
-var GroupingGameView = {};
-
-// Number of eggs at the origin at the beginning
-GroupingGameView.INITIAL_EGG_COUNT = 50;
-// size of the eggs
-GroupingGameView.INITIAL_EGG_DIMENSIONS = {width:60, height: 75};
-// destination area of the eggs
-
-// rabbit
-GroupingGameView.RABBIT_DIMENSIONS = {x:0.67, y:0.3, width:0.3, height:0.8};
-
-// belt
-GroupingGameView.BELT_DIMENSIONS = {x:0, y:0.187, width:0.68, height:0.813};
-
-// think cloud
-GroupingGameView.THINK_CLOUD_DIMENSIONS = {x:0.62, y:-0.02, width:0.41, height:0.45};
-
-// think cloud 2 for making too many mistakes
-GroupingGameView.THINK_CLOUD2_DIMENSIONS = {x:0.03, y:0.4, width:0.8, height:0.6};
-
-// complements
-GroupingGameView.COMPLIMENTS = [
-	"Good work!",
-	"Well done!",
-	"Great job!",
-	"Nice going!",
-	"Great!",
-	"Perfect!",
-	"Awesome!",
-	"Looks good!",
-	"Brilliant",
-	"Good!",
-	"Super!",
-	"Superb!"
-]
-
-// Initial egg positions
-GroupingGameView.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.79, width:0.2, height:0.05};
-GroupingGameView.INITIAL_EGG_SIZE = {width:0.06, height:0.093};
-
-// Tray and cover sizes and positions
-GroupingGameView.TRAY_SIZE = {width:0.395, height:0.42};
-GroupingGameView.TRAY_CURRENT_POSITION = {x:0.25, y:0.415};
-GroupingGameView.TRAY_NEXT_POSITION = {x:0.05, y:0.71};
-GroupingGameView.TRAY_BELOW_NEXT_POSITION = {x:-0.15, y:1.005};
-GroupingGameView.INITIAL_COVER_POSITION = {x:0.25, y:-0.415};
-
-// buttons and labels
-GroupingGameView.PAUSE_BUTTON_DIMENSIONS = {x:0.02, y:0.035, width:0.09, height:0.12};
-
-
-// The areas of the 'ones' belts that accepts the egg
-GroupingGameView.BELT_ONES_AREA = {};
-GroupingGameView.BELT_ONES_AREA.X_ARRAY =      [0.54, 0.48, 0.42, 0.36];
-GroupingGameView.BELT_ONES_AREA.Y_ARRAY =      [0.56, 0.64, 0.72, 0.80];
-GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11, 0.11];
-
-// The areas of the 'tens' belts that accepts the egg
-GroupingGameView.BELT_TENS_AREA = {};
-GroupingGameView.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
-GroupingGameView.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
-GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
-
-// Map of numbers to their words
-GroupingGameView.NUMBER_TO_WORDS_MAP = [];
-GroupingGameView.NUMBER_TO_WORDS_MAP[11] = "ELEVEN";
-GroupingGameView.NUMBER_TO_WORDS_MAP[12] = "TWELVE";
-GroupingGameView.NUMBER_TO_WORDS_MAP[13] = "THIRTEEN";
-GroupingGameView.NUMBER_TO_WORDS_MAP[14] = "FOURTEEN";
-GroupingGameView.NUMBER_TO_WORDS_MAP[15] = "FIFTEEN";
-GroupingGameView.NUMBER_TO_WORDS_MAP[16] = "SIXTEEN";
-GroupingGameView.NUMBER_TO_WORDS_MAP[17] = "SEVENTEEN";
-GroupingGameView.NUMBER_TO_WORDS_MAP[18] = "EIGHTEEN";
-GroupingGameView.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
-
-// The destination locations where eggs will be locked in to
-GroupingGameView.EGG_DESTINATION_LOCATIONS = [
-	{x:0.470, y: 0.465},
-	{x:0.532, y: 0.465},
+function GroupingGameView() {
 	
-	{x:0.431, y: 0.526},
-	{x:0.495, y: 0.526},
+	// constants
 	
-	{x:0.395, y: 0.585},
-	{x:0.458, y: 0.585},
+	// Number of eggs at the origin at the beginning
+	this.INITIAL_EGG_COUNT = 50;
 	
-	{x:0.356, y: 0.648},
-	{x:0.420, y: 0.648},
+	// size of the eggs
+	this.INITIAL_EGG_DIMENSIONS = {width:60, height: 75};
 	
-	{x:0.315, y: 0.710},
-	{x:0.378, y: 0.710},
-];
+	// The areas of the 'ones' belts that accepts the egg
+	this.BELT_ONES_AREA = {};
+	this.BELT_ONES_AREA.X_ARRAY =      [0.54, 0.48, 0.42, 0.36];
+	this.BELT_ONES_AREA.Y_ARRAY =      [0.56, 0.64, 0.72, 0.80];
+	this.BELT_ONES_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11, 0.11];
 
-// error types
-GroupingGameView.ERROR_TYPES = {
-	DRAG_TO_TENS : 0,
-	INCORRECT_DONE : 1,
-	EXCEEDED_GOAL_NUMBER : 2
-}
+	// The areas of the 'tens' belts that accepts the egg
+	this.BELT_TENS_AREA = {};
+	this.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
+	this.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
+	this.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
 
-// Image Sources
-GroupingGameView.sources = {};
+	// complements
+	this.COMPLIMENTS = [
+		"Good work!",
+		"Well done!",
+		"Great job!",
+		"Nice going!",
+		"Great!",
+		"Perfect!",
+		"Awesome!",
+		"Looks good!",
+		"Brilliant",
+		"Good!",
+		"Super!",
+		"Superb!"
+	];
 
-GroupingGameView.sources.rabbit = "images/grouping_game/rabbit.png";
-GroupingGameView.sources.thinkCloud = "images/widgets/think_cloud.png";
-GroupingGameView.sources.thinkCloud2 = "images/widgets/think_cloud2.png";
-GroupingGameView.sources.belts = "images/grouping_game/belts.png";
-GroupingGameView.sources.coverFront = "images/grouping_game/cover_front.png";
-GroupingGameView.sources.coverBack = "images/grouping_game/cover_back.png";
-GroupingGameView.sources.tray = "images/grouping_game/tray.png";
+	// The destination locations where eggs will be locked in to
+	this.EGG_DESTINATION_LOCATIONS = [
+		{x:0.470, y: 0.465},
+		{x:0.532, y: 0.465},
+		
+		{x:0.431, y: 0.526},
+		{x:0.495, y: 0.526},
+		
+		{x:0.395, y: 0.585},
+		{x:0.458, y: 0.585},
+		
+		{x:0.356, y: 0.648},
+		{x:0.420, y: 0.648},
+		
+		{x:0.315, y: 0.710},
+		{x:0.378, y: 0.710},
+	];
 
-GroupingGameView.sources.star1 = "images/widgets/star1.png";
-GroupingGameView.sources.star2 = "images/widgets/star2.png";
-GroupingGameView.sources.star3 = "images/widgets/star3.png";
-
-GroupingGameView.sources.labelPaused = "images/widgets/label_paused.png";
-GroupingGameView.sources.labelTryAgain = "images/widgets/label_try_again.png";
-GroupingGameView.sources.labelPerfect = "images/widgets/label_perfect.png";
-GroupingGameView.sources.labelGood = "images/widgets/label_good.png";
-GroupingGameView.sources.labelExcellent = "images/widgets/label_excellent.png";
-
-GroupingGameView.sources.buttonPause = "images/widgets/button_pause.png";
-GroupingGameView.sources.buttonMenu = "images/widgets/button_menu.png";
-GroupingGameView.sources.buttonRestart = "images/widgets/button_restart.png";
-GroupingGameView.sources.buttonResume = "images/widgets/button_resume.png";
-GroupingGameView.sources.buttonDone = "images/widgets/button_done.png";
-GroupingGameView.sources.buttonRetry = "images/widgets/button_retry.png";
-GroupingGameView.sources.buttonNext = "images/widgets/button_next.png";
-
-GroupingGameView.sources.eggs = [
-	"images/grouping_game/eggs/egg1.png",
-	"images/grouping_game/eggs/egg2.png",
-	"images/grouping_game/eggs/egg3.png",
-	"images/grouping_game/eggs/egg4.png",
-	"images/grouping_game/eggs/egg5.png",
-	"images/grouping_game/eggs/egg6.png",
-	"images/grouping_game/eggs/egg7.png",
-	"images/grouping_game/eggs/egg8.png",
-	"images/grouping_game/eggs/egg9.png"
-];
-
-// Images
-GroupingGameView.images = {};
-
-// sounds
-GroupingGameView.sounds = {};
-GroupingGameView.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
-GroupingGameView.sounds.rejectEgg = "sounds/grouping_game/reject_egg.wav";
-GroupingGameView.sounds.select = "sounds/menu/menu_select.wav";
-
-// As the images are loaded into memory, they will be accessible from this array
-GroupingGameView.eggImageObjects = [];
-
-// Called when the user enters this page
-GroupingGameView.initialize = function (predefinedNumber) {
+	// error types
+	this.ERROR_TYPES = {
+		DRAG_TO_TENS : 0,
+		INCORRECT_DONE : 1,
+		EXCEEDED_GOAL_NUMBER : 2
+	}
+		
+	// widgets
+	this.RABBIT_DIMENSIONS = {x:0.67, y:0.3, width:0.3, height:0.8};
+	this.BELT_DIMENSIONS = {x:0, y:0.187, width:0.68, height:0.813};
+	this.THINK_CLOUD_DIMENSIONS = {x:0.62, y:-0.02, width:0.41, height:0.45};
+	this.PAUSE_BUTTON_DIMENSIONS = {x:0.02, y:0.035, width:0.09, height:0.12};
 	
-	// timeouts to clear
-	GroupingGameView.timeOuts = [];
-	
-	// Number of errors the child has made so far
-	GroupingGameView.errorsMade = 0;
+	// Tray and cover sizes and positions
+	this.TRAY_SIZE = {width:0.395, height:0.42};
+	this.TRAY_CURRENT_POSITION = {x:0.25, y:0.415};
+	this.TRAY_NEXT_POSITION = {x:0.05, y:0.71};
+	this.TRAY_BELOW_NEXT_POSITION = {x:-0.15, y:1.005};
+	this.INITIAL_COVER_POSITION = {x:0.25, y:-0.415};
 
-	// Number of allowable errors
-	GroupingGameView.allowableErrorsCount = 3;
+	// Initial egg positions
+	this.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.79, width:0.2, height:0.05};
+	this.INITIAL_EGG_SIZE = {width:0.06, height:0.093};
 	
-	// Array of the eggs currently on the tray at ones
-	GroupingGameView.eggsAtDestination = [];
+	// Map of numbers to their words
+	this.NUMBER_TO_WORDS_MAP = [];
+	this.NUMBER_TO_WORDS_MAP[11] = "ELEVEN";
+	this.NUMBER_TO_WORDS_MAP[12] = "TWELVE";
+	this.NUMBER_TO_WORDS_MAP[13] = "THIRTEEN";
+	this.NUMBER_TO_WORDS_MAP[14] = "FOURTEEN";
+	this.NUMBER_TO_WORDS_MAP[15] = "FIFTEEN";
+	this.NUMBER_TO_WORDS_MAP[16] = "SIXTEEN";
+	this.NUMBER_TO_WORDS_MAP[17] = "SEVENTEEN";
+	this.NUMBER_TO_WORDS_MAP[18] = "EIGHTEEN";
+	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
 	
-	// Array holding eggs initial locations of when it was randomly generated
-	GroupingGameView.eggInitialLocations = [];
+	// Image that are automatically loaded
+	this.images = {};
+
+	this.images.rabbit = "images/grouping_game/rabbit.png";
+	this.images.thinkCloud = "images/widgets/think_cloud.png";
+	this.images.thinkCloud2 = "images/widgets/think_cloud2.png";
+	this.images.belts = "images/grouping_game/belts.png";
+	this.images.coverFront = "images/grouping_game/cover_front.png";
+	this.images.coverBack = "images/grouping_game/cover_back.png";
+	this.images.tray = "images/grouping_game/tray.png";
+
+	this.images.star1 = "images/widgets/star1.png";
+	this.images.star2 = "images/widgets/star2.png";
+	this.images.star3 = "images/widgets/star3.png";
+
+	this.images.labelPaused = "images/widgets/label_paused.png";
+	this.images.labelTryAgain = "images/widgets/label_try_again.png";
+	this.images.labelPerfect = "images/widgets/label_perfect.png";
+	this.images.labelGood = "images/widgets/label_good.png";
+	this.images.labelExcellent = "images/widgets/label_excellent.png";
+
+	this.images.buttonPause = "images/widgets/button_pause.png";
+	this.images.buttonMenu = "images/widgets/button_menu.png";
+	this.images.buttonRestart = "images/widgets/button_restart.png";
+	this.images.buttonResume = "images/widgets/button_resume.png";
+	this.images.buttonDone = "images/widgets/button_done.png";
+	this.images.buttonRetry = "images/widgets/button_retry.png";
+	this.images.buttonNext = "images/widgets/button_next.png";
+
+	this.images.eggs = [
+		"images/grouping_game/eggs/egg1.png",
+		"images/grouping_game/eggs/egg2.png",
+		"images/grouping_game/eggs/egg3.png",
+		"images/grouping_game/eggs/egg4.png",
+		"images/grouping_game/eggs/egg5.png",
+		"images/grouping_game/eggs/egg6.png",
+		"images/grouping_game/eggs/egg7.png",
+		"images/grouping_game/eggs/egg8.png",
+		"images/grouping_game/eggs/egg9.png"
+	];
+	
+	// sounds
+	this.sounds = {};
+	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
+	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.wav";
+	this.sounds.select = "sounds/menu/menu_select.wav";
 	
 	// A count of all eggs that have been generated
-	GroupingGameView.eggCount = 0;
+	this.eggCount = 0;
+	
+	// Array of the eggs currently on the tray at ones
+	this.eggsAtDestination = [];
+	
+	// Array holding eggs initial locations of when it was randomly generated
+	this.eggInitialLocations = [];
+	
+	// As the images are loaded into memory, they will be accessible from this array
+	this.eggImageObjects = [];
 	
 	// Variable for controlling whether activities are enabled (should be turned off during animations)
-	GroupingGameView.activitiesEnabled = true;
+	this.activitiesEnabled = true;
 	
-	// As images are loaded into memory, they will be accessible from this array
-	GroupingGameView.images = {};
-	// As eggs are loaded into memory, they will be accessible from this array
-	GroupingGameView.eggImageObjects = [];
+	// timeouts to clear
+	this.timeOuts = [];
 	
-	//create a random goal number between 11 and 19
-	if (predefinedNumber != null) {
-		GroupingGameView.goalNumber = predefinedNumber;
-	} else {
-		GroupingGameView.goalNumber = MathUtil.random(11,19);
-	}
+	// number of mistakes made
+	this.errorsMade = 0;
 	
-	// render the html view
-	View.render("GroupingGameView");
-	
-	// setup view routing
-	Controller.routeAnchor(".grouping_back", "LoginView", App.store);
-	
-	// Setup the stage
-	GroupingGameView.stage = new Kinetic.Stage({
-		container: "container",
-		width: window.innerWidth,
-		height: window.innerHeight
-	});
-	
-	// The main layer (might be the only layer we need)
-	GroupingGameView.backgroundLayer = new Kinetic.Layer();
-	GroupingGameView.stage.add(GroupingGameView.backgroundLayer);	
+	// Number of allowable errors
+	this.allowableErrorsCount = 3;
 	
 	// create the egg ones group
-	GroupingGameView.onesWidgetGroup = new Kinetic.Group({});
-	GroupingGameView.backgroundLayer.add(GroupingGameView.onesWidgetGroup);
-	
-	// Add images to the loader class
-	var loader = new PxLoader();
-	GroupingGameView.images.rabbit = loader.addImage(GroupingGameView.sources.rabbit);
-	GroupingGameView.images.thinkCloud = loader.addImage(GroupingGameView.sources.thinkCloud);
-	GroupingGameView.images.thinkCloud2 = loader.addImage(GroupingGameView.sources.thinkCloud2);
-	GroupingGameView.images.belts = loader.addImage(GroupingGameView.sources.belts);
-	GroupingGameView.images.tray = loader.addImage(GroupingGameView.sources.tray);
-	GroupingGameView.images.coverFront = loader.addImage(GroupingGameView.sources.coverFront);
-	GroupingGameView.images.coverBack = loader.addImage(GroupingGameView.sources.coverBack);
-	GroupingGameView.images.buttonPause = loader.addImage(GroupingGameView.sources.buttonPause);
-	
-	GroupingGameView.images.star1 = loader.addImage(GroupingGameView.sources.star1);
-	GroupingGameView.images.star2 = loader.addImage(GroupingGameView.sources.star2);
-	GroupingGameView.images.star3 = loader.addImage(GroupingGameView.sources.star3);
+	this.onesWidgetGroup = new Kinetic.Group({});
+	app.layer.add(this.onesWidgetGroup);
+};
 
-	GroupingGameView.images.buttonMenu = loader.addImage(GroupingGameView.sources.buttonMenu);
-	GroupingGameView.images.buttonRestart = loader.addImage(GroupingGameView.sources.buttonRestart);
-	GroupingGameView.images.buttonResume = loader.addImage(GroupingGameView.sources.buttonResume);
-	GroupingGameView.images.buttonDone = loader.addImage(GroupingGameView.sources.buttonDone);
-	GroupingGameView.images.buttonRetry = loader.addImage(GroupingGameView.sources.buttonRetry);
-	GroupingGameView.images.buttonNext = loader.addImage(GroupingGameView.sources.buttonNext);
-	
-	GroupingGameView.images.labelPaused = loader.addImage(GroupingGameView.sources.labelPaused);
-	GroupingGameView.images.labelTryAgain = loader.addImage(GroupingGameView.sources.labelTryAgain);
-	GroupingGameView.images.labelPerfect = loader.addImage(GroupingGameView.sources.labelPerfect);
-	GroupingGameView.images.labelGood = loader.addImage(GroupingGameView.sources.labelGood);
-	GroupingGameView.images.labelExcellent = loader.addImage(GroupingGameView.sources.labelExcellent);
-	
-	GroupingGameView.images.eggs = [];
-	for (var i = 0; i < GroupingGameView.sources.eggs.length; i++) {
-		GroupingGameView.images.eggs[i] = loader.addImage(GroupingGameView.sources.eggs[i]);
+GroupingGameView.prototype.finalize = function () {
+	for(var i = 0; i < this.timeOuts.length; i++) {
+		clearTimeout(this.timeOuts[i]);
 	}
-	
-	// Registers loaded() function, which gets called when images loaded into memory
-	loader.addCompletionListener(GroupingGameView.loaded);
-	
-	// Starts loading all the images into memory
-	loader.start();
-}
+	this.timeOuts = [];
+};
 
-GroupingGameView.finalize = function() {
-	GroupingGameView.pauseWidgets = null;
-	GroupingGameView.thinkCloudTextWidget = null;
-	
-	for(var i = 0; i < GroupingGameView.timeOuts.length; i++) {
-		clearTimeout(GroupingGameView.timeOuts[i]);
-	}
-	GroupingGameView.timeOuts = [];
-}
+GroupingGameView.prototype.draw = function (goalNumber) {
+	this.goalNumber = goalNumber;
 
-GroupingGameView.restartGame = function(sameNumber) {
-	GroupingGameView.backgroundLayer.remove();
-	GroupingGameView.finalize();
-	if (sameNumber) {
-		GroupingGameView.initialize(GroupingGameView.goalNumber);
-	} else {
-		GroupingGameView.initialize();
-	}
-}
+	this.drawRabbit();
+	this.drawThinkCloud();
+	this.drawBelts();
+	this.drawTrays();
+	this.drawTitle();	
+	this.drawPauseWidgets();	
+	this.drawDoneButton();
+	this.drawEggs();	
+	this.drawNumbers();
+	
+	app.stage.draw();
+};
 
-// Should be called once graphics are loaded into memory
-GroupingGameView.loaded = function () {
-	// Call helper functionsthe to draw components
-	GroupingGameView.drawRabbit();
-	GroupingGameView.drawBelts();
-	GroupingGameView.drawTrays();
-	GroupingGameView.drawPauseButton();
-	GroupingGameView.drawEggs();
-	GroupingGameView.drawNumbers();
-	GroupingGameView.drawTitle();
-	GroupingGameView.drawDoneButton();
-	GroupingGameView.drawThinkCloud();
-	
-	// layering
-	GroupingGameView.onesWidgetGroup.moveToTop();
-	
-	// initial setups
-	GroupingGameView.displayThinkCloud("Drag " + GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] + " of my easter eggs onto the belt!");
-	
-	// redraw all widgets
-	GroupingGameView.stage.draw();
-}
+GroupingGameView.prototype.drawRabbit = function () {
+	var rabbit = new Kinetic.Image({image: this.images.rabbit});
+	WidgetUtil.glue(rabbit, {
+		width: this.RABBIT_DIMENSIONS.width,
+		height: this.RABBIT_DIMENSIONS.height,
+		dx: this.RABBIT_DIMENSIONS.x,
+		dy: this.RABBIT_DIMENSIONS.y
+	});
+	app.layer.add(rabbit);
+};
 
-GroupingGameView.drawDoneButton = function() {
-	var buttonDone = new Kinetic.Image({image: GroupingGameView.images.buttonDone});
+GroupingGameView.prototype.drawThinkCloud = function () {
+	
+	// think cloud
+	this.thinkCloud = new Kinetic.Image({image: this.images.thinkCloud});
+	WidgetUtil.glue(this.thinkCloud, {
+		width: this.THINK_CLOUD_DIMENSIONS.width,
+		height: this.THINK_CLOUD_DIMENSIONS.height,
+		dx: this.THINK_CLOUD_DIMENSIONS.x,
+		dy: this.THINK_CLOUD_DIMENSIONS.y
+	});
+	app.layer.add(this.thinkCloud);
+	
+	// text in the think cloud
+	this.thinkCloudTextWidget = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.68),
+		y: DimensionUtil.decimalToActualHeight(0.08),
+		width: DimensionUtil.decimalToActualWidth(0.18),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+		fontSize: 25,
+		fontFamily: 'COMIC SANS MS',
+		fill: 'black',
+		align: 'center',
+		lineHeight: 1.3
+	});
+	app.layer.add(this.thinkCloudTextWidget);
+	
+	this.displayThinkCloud("Drag " + this.NUMBER_TO_WORDS_MAP[this.goalNumber] + " of my easter eggs onto the belt!");
+};
+
+GroupingGameView.prototype.displayThinkCloud = function(message) {
+	this.thinkCloudTextWidget.setText(message);
+	app.stage.draw();
+};
+
+// Draws the belts
+GroupingGameView.prototype.drawBelts = function() {
+	var belts = new Kinetic.Image({image: this.images.belts});
+	WidgetUtil.glue(belts, {
+		width: this.BELT_DIMENSIONS.width,
+		height: this.BELT_DIMENSIONS.height,
+		dx: this.BELT_DIMENSIONS.x,
+		dy: this.BELT_DIMENSIONS.y
+	});
+	app.layer.add(belts);
+};
+
+GroupingGameView.prototype.drawTrays = function() {
+
+	this.trays = {};
+	
+	// tray current
+	this.trays.current = new Kinetic.Image({image: this.images.tray});
+	WidgetUtil.glue(this.trays.current, {
+		width: this.TRAY_SIZE.width,
+		height: this.TRAY_SIZE.height,
+		dx: this.TRAY_CURRENT_POSITION.x,
+		dy: this.TRAY_CURRENT_POSITION.y
+	});
+	this.onesWidgetGroup.add(this.trays.current);
+	
+	// tray next
+	this.trays.next = new Kinetic.Image({image: this.images.tray});
+	WidgetUtil.glue(this.trays.next, {
+		width: this.TRAY_SIZE.width,
+		height: this.TRAY_SIZE.height,
+		dx: this.TRAY_NEXT_POSITION.x,
+		dy: this.TRAY_NEXT_POSITION.y
+	});
+	
+	app.layer.add(this.onesWidgetGroup);
+	app.layer.add(this.trays.next);
+};
+
+GroupingGameView.prototype.drawTitle = function() {
+	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
+	 GroupingGameView.titleTextWidget = new Kinetic.Text({
+    	x: DimensionUtil.decimalToActualWidth(0.15),
+		y: DimensionUtil.decimalToActualHeight(0.02),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+    	text: title,
+    	fontSize: 90,
+    	fontFamily: 'COMIC SANS MS',
+    	fill: 'black'
+    });
+    app.layer.add(GroupingGameView.titleTextWidget);
+};
+
+GroupingGameView.prototype.drawDoneButton = function() {
+	var buttonDone = new Kinetic.Image({image: this.images.buttonDone});
 	WidgetUtil.glue(buttonDone, {
 		width: 0.15,
 		height: 0.2,
@@ -302,48 +299,66 @@ GroupingGameView.drawDoneButton = function() {
 	});
 	
 	buttonDone.on('click tap', function () {
-		var total = GroupingGameView.calculateTotal();
-		
-		if (total == GroupingGameView.goalNumber) {
-			GroupingGameView.finish(GroupingGameView.allowableErrorsCount - GroupingGameView.errorsMade);
+		var total = app.view.calculateTotal();
+		if (total == app.view.goalNumber) {
+			app.view.finish(app.view.allowableErrorsCount - app.view.errorsMade);
 		} else {
-			GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.INCORRECT_DONE);	
+			app.view.errorMade(app.view.ERROR_TYPES.INCORRECT_DONE);	
 		}
 	});
 	
-	GroupingGameView.backgroundLayer.add(buttonDone);
-}
+	app.layer.add(buttonDone);
+};
 
-// finsih score:
-// 0 for fail, 1 to 3 for stars
-GroupingGameView.finish = function(score) {
-	var finishTitleImage = null;
-	var starsImage = null;
+GroupingGameView.prototype.drawNumbers = function() {
+
+	// ones number
+	this.onesTextWidget = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.52),
+		y: DimensionUtil.decimalToActualHeight(0.28),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+    	text: 0,
+    	fontSize: 110,
+    	fontFamily: 'COMIC SANS MS',
+    	fill: 'black'
+    });
+	app.layer.add(this.onesTextWidget);
 	
-	switch(score) {
-		case 0:
-			finishTitleImage = GroupingGameView.images.labelTryAgain;
-			starsImage = null;
-			
-		break;
-		case 1:
-			finishTitleImage = GroupingGameView.images.labelGood;
-			starsImage = GroupingGameView.images.star1;
-		
-		break;
-		case 2:
-			finishTitleImage = GroupingGameView.images.labelExcellent;
-			starsImage = GroupingGameView.images.star2;
-			
-		break;			
-		case 3:
-			finishTitleImage = GroupingGameView.images.labelPerfect;
-			starsImage = GroupingGameView.images.star3;
-			
-		break;
-	}
+	// tens number
+	this.tensTextWidget = new Kinetic.Text({
+    	x: DimensionUtil.decimalToActualWidth(0.26),
+		y: DimensionUtil.decimalToActualHeight(0.28),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+    	text: 0,
+    	fontSize: 110,
+    	fontFamily: 'COMIC SANS MS',
+    	fill: 'black'
+    });
+    app.layer.add(this.tensTextWidget);
+};
 
-	// draw overlay
+GroupingGameView.prototype.drawPauseWidgets = function() {
+
+	// pause button
+	var buttonPause = new Kinetic.Image({image: this.images.buttonPause});
+	WidgetUtil.glue(buttonPause, {
+		width: this.PAUSE_BUTTON_DIMENSIONS.width,
+		height: this.PAUSE_BUTTON_DIMENSIONS.height,
+		dx: this.PAUSE_BUTTON_DIMENSIONS.x,
+		dy: this.PAUSE_BUTTON_DIMENSIONS.y
+	});
+	app.layer.add(buttonPause);
+	buttonPause.on('click tap', function() {
+		Music.play(app.view.sounds.select);
+		app.view.pause();
+	});
+	
+	// pause group
+	this.pauseWidgetsGroup = new Kinetic.Group({});
+
+	// overlay
 	var overlay = new Kinetic.Rect({
 		fill: 'black',
 		opacity: 0.62
@@ -354,185 +369,83 @@ GroupingGameView.finish = function(score) {
 		dx: 0,
 		dy: 0
 	});
-	GroupingGameView.backgroundLayer.add(overlay);
+	this.pauseWidgetsGroup.add(overlay);	
 	
-	// draw title
-	var finishTitle = new Kinetic.Image({image: finishTitleImage});
-	WidgetUtil.glue(finishTitle, {
-		width: 0.5,
-		height: 0.2,
-		dx: 0.25,
-		dy: 0.2
+	// paused label
+	var labelPaused = new Kinetic.Image({image: this.images.labelPaused});
+	WidgetUtil.glue(labelPaused, {
+		width: 0.3,
+		height: 0.1,
+		dx: 0.35,
+		dy: 0.25
 	});
-	GroupingGameView.backgroundLayer.add(finishTitle);
-	
-	if (starsImage != null) {
-		// draw stars
-		var starsWidget = new Kinetic.Image({image: starsImage});
-		WidgetUtil.glue(starsWidget, {
-			width: 0.35,
-			height: 0.15,
-			dx: 0.325,
-			dy: 0.4
-		});
-		GroupingGameView.backgroundLayer.add(starsWidget);
-			
-	}
-	
-	var buttonRetry = null;
-	
-	// draw buttons 
-	if (score == 0) {
-		// draw retry button only
-		buttonRetry = new Kinetic.Image({image: GroupingGameView.images.buttonRetry});
-		WidgetUtil.glue(buttonRetry, {
-			width: 0.15,
-			height: 0.27,
-			dx: 0.425,
-			dy: 0.5
-		});
-	} else {
-		buttonRetry = new Kinetic.Image({image: GroupingGameView.images.buttonRetry});
-		WidgetUtil.glue(buttonRetry, {
-			width: 0.1,
-			height: 0.19,
-			dx: 0.36,
-			dy: 0.65
-		});
-		
-		var buttonNext = new Kinetic.Image({image: GroupingGameView.images.buttonNext});
-		WidgetUtil.glue(buttonNext, {
-			width: 0.1,
-			height: 0.19,
-			dx: 0.54,
-			dy: 0.65
-		});
-		GroupingGameView.backgroundLayer.add(buttonNext);	
-		buttonNext.on('click tap', function () {
-			alert("next");
-		});
-	}
-	
-	buttonRetry.on('click tab', function () {
-		Music.play(GroupingGameView.sounds.select);
-		GroupingGameView.restartGame(true);
-	});
-	
-	GroupingGameView.backgroundLayer.add(buttonRetry);	
-	
-	GroupingGameView.stage.draw();
-}
+	this.pauseWidgetsGroup.add(labelPaused);
 
-GroupingGameView.calculateTotal = function () {
-	var ones = parseInt(GroupingGameView.onesTextWidget.getText());
-	var tens = parseInt(GroupingGameView.tensTextWidget.getText() * 10);
-	return (tens + ones);
-}
-
-GroupingGameView.drawTrays = function() {
-	GroupingGameView.trays = {};
+	// resume button
+	var buttonResume = new Kinetic.Image({image: this.images.buttonResume});
+	WidgetUtil.glue(buttonResume, {
+		width: 0.18,
+		height: 0.25,
+		dx: 0.21,
+		dy: 0.42
+	});
+	this.pauseWidgetsGroup.add(buttonResume);
 	
-	// tray current
-	GroupingGameView.trays.current = new Kinetic.Image({image: GroupingGameView.images.tray});
-	WidgetUtil.glue(GroupingGameView.trays.current, {
-		width: GroupingGameView.TRAY_SIZE.width,
-		height: GroupingGameView.TRAY_SIZE.height,
-		dx: GroupingGameView.TRAY_CURRENT_POSITION.x,
-		dy: GroupingGameView.TRAY_CURRENT_POSITION.y
+	buttonResume.on('click tap', function () {
+		Music.play(app.view.sounds.select);
+		app.view.unpause();
 	});
-	GroupingGameView.onesWidgetGroup.add(GroupingGameView.trays.current);
 	
-	// tray next
-	GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
-	WidgetUtil.glue(GroupingGameView.trays.next, {
-		width: GroupingGameView.TRAY_SIZE.width,
-		height: GroupingGameView.TRAY_SIZE.height,
-		dx: GroupingGameView.TRAY_NEXT_POSITION.x,
-		dy: GroupingGameView.TRAY_NEXT_POSITION.y
+	// menu button
+	var buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
+	WidgetUtil.glue(buttonMenu, {
+		width: 0.18,
+		height: 0.25,
+		dx: 0.41,
+		dy: 0.42
 	});
-	GroupingGameView.backgroundLayer.add(GroupingGameView.trays.next);
-}
-
-// Draws the rabbit
-GroupingGameView.drawRabbit = function() {
-	var rabbit = new Kinetic.Image({image: GroupingGameView.images.rabbit});
-	WidgetUtil.glue(rabbit, {
-		width: GroupingGameView.RABBIT_DIMENSIONS.width,
-		height: GroupingGameView.RABBIT_DIMENSIONS.height,
-		dx: GroupingGameView.RABBIT_DIMENSIONS.x,
-		dy: GroupingGameView.RABBIT_DIMENSIONS.y
-	});
-	GroupingGameView.backgroundLayer.add(rabbit);
-}
-
-// Draws the belts
-GroupingGameView.drawBelts = function() {
-	var belts = new Kinetic.Image({image: GroupingGameView.images.belts});
-	WidgetUtil.glue(belts, {
-		width: GroupingGameView.BELT_DIMENSIONS.width,
-		height: GroupingGameView.BELT_DIMENSIONS.height,
-		dx: GroupingGameView.BELT_DIMENSIONS.x,
-		dy: GroupingGameView.BELT_DIMENSIONS.y
-	});
-	GroupingGameView.backgroundLayer.add(belts);
-}
-
-GroupingGameView.drawThinkCloud = function () {
-	GroupingGameView.thinkCloud = new Kinetic.Image({image: GroupingGameView.images.thinkCloud});
-	WidgetUtil.glue(GroupingGameView.thinkCloud, {
-		width: GroupingGameView.THINK_CLOUD_DIMENSIONS.width,
-		height: GroupingGameView.THINK_CLOUD_DIMENSIONS.height,
-		dx: GroupingGameView.THINK_CLOUD_DIMENSIONS.x,
-		dy: GroupingGameView.THINK_CLOUD_DIMENSIONS.y
-	});
-	GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloud);
-}
-
-GroupingGameView.displayThinkCloud = function(message) {
-	if (GroupingGameView.thinkCloudTextWidget == null) {
-		GroupingGameView.thinkCloudTextWidget = new Kinetic.Text({
-			x: DimensionUtil.decimalToActualWidth(0.68),
-			y: DimensionUtil.decimalToActualHeight(0.08),
-			width: DimensionUtil.decimalToActualWidth(0.18),
-			scaleX: 1/1024*DimensionUtil.width,
-			scaleY: 1/768*DimensionUtil.height,
-			fontSize: 25,
-			fontFamily: 'COMIC SANS MS',
-			fill: 'black',
-			align: 'center',
-			lineHeight: 1.3
-		});
-		GroupingGameView.backgroundLayer.add(GroupingGameView.thinkCloudTextWidget);
-
-	}
-	GroupingGameView.thinkCloudTextWidget.setText(message);
-	GroupingGameView.stage.draw();
-}
-
-GroupingGameView.drawPauseButton = function() {
-	var buttonPause = new Kinetic.Image({image: GroupingGameView.images.buttonPause});
-	WidgetUtil.glue(buttonPause, {
-		width: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.width,
-		height: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.height,
-		dx: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.x,
-		dy: GroupingGameView.PAUSE_BUTTON_DIMENSIONS.y
-	});
-	GroupingGameView.backgroundLayer.add(buttonPause);
+	this.pauseWidgetsGroup.add(buttonMenu);
 	
-	buttonPause.on('mouseover', function() {document.body.style.cursor = 'pointer'});
-	buttonPause.on('mouseout', function() {document.body.style.cursor = 'default'});	
-	
-	buttonPause.on('click tap', function() {
-		Music.play(GroupingGameView.sounds.select);
-		GroupingGameView.pause();
+	buttonMenu.on('click tap', function () {
+		Music.play(app.view.sounds.select);
+		app.controller.menu();
 	});
-}
+	
+	// restart button
+	var buttonRestart = new Kinetic.Image({image: this.images.buttonRestart});
+	WidgetUtil.glue(buttonRestart, {
+		width: 0.18,
+		height: 0.25,
+		dx: 0.61,
+		dy: 0.42
+	});
+	this.pauseWidgetsGroup.add(buttonRestart);
+	
+	buttonRestart.on('click tap', function () {
+		Music.play(app.view.sounds.select);
+		app.controller.restart(true);
+	});
+	
+	app.layer.add(this.pauseWidgetsGroup);
+	this.pauseWidgetsGroup.hide();
+};
+
+GroupingGameView.prototype.pause = function() {
+	this.pauseWidgetsGroup.show();
+	this.pauseWidgetsGroup.moveToTop();
+	app.stage.draw();
+};
+
+GroupingGameView.prototype.unpause = function() {
+	this.pauseWidgetsGroup.hide();
+	app.stage.draw();
+};
 
 // Draws eggs in a specified area
-GroupingGameView.drawEggs = function() {
+GroupingGameView.prototype.drawEggs = function() {
 
-	for (var i=0; i<GroupingGameView.INITIAL_EGG_COUNT; i++) {
-		GroupingGameView.drawNewEgg();
+	for (var i=0; i<this.INITIAL_EGG_COUNT; i++) {
+		this.drawNewEgg();
 	}
 	
 	/*if (Env.debug) {
@@ -564,127 +477,121 @@ GroupingGameView.drawEggs = function() {
 			GroupingGameView.backgroundLayer.add(ellipse);
 		}
 	}*/
-}
+};
 
 // Draws one egg in a specified area
-GroupingGameView.drawNewEgg = function() {
+GroupingGameView.prototype.drawNewEgg = function() {
 	var egg = new Kinetic.Image({
-		image: GroupingGameView.images.eggs[MathUtil.random(0, GroupingGameView.sources.eggs.length)],
+		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length)],
 		draggable: true
 	});	
 	
-	egg.id = GroupingGameView.eggCount;	
-	GroupingGameView.eggCount++;
+	egg.id = this.eggCount;	
+	this.eggCount++;
 	
-	var xInit = MathUtil.random(GroupingGameView.INITIAL_EGG_RECTANGLE.x * 1000, (GroupingGameView.INITIAL_EGG_RECTANGLE.x + GroupingGameView.INITIAL_EGG_RECTANGLE.width)*1000)/1000;
-	var yInit = MathUtil.random(GroupingGameView.INITIAL_EGG_RECTANGLE.y * 1000, (GroupingGameView.INITIAL_EGG_RECTANGLE.y + GroupingGameView.INITIAL_EGG_RECTANGLE.height)*1000)/1000;
-	GroupingGameView.eggInitialLocations[egg.id] = {x:xInit, y:yInit};
+	var xInit = MathUtil.random(this.INITIAL_EGG_RECTANGLE.x * 1000, (this.INITIAL_EGG_RECTANGLE.x + this.INITIAL_EGG_RECTANGLE.width)*1000)/1000;
+	var yInit = MathUtil.random(this.INITIAL_EGG_RECTANGLE.y * 1000, (this.INITIAL_EGG_RECTANGLE.y + this.INITIAL_EGG_RECTANGLE.height)*1000)/1000;
+	this.eggInitialLocations[egg.id] = {x:xInit, y:yInit};
 	
 	WidgetUtil.glue(egg, {
-		width: GroupingGameView.INITIAL_EGG_SIZE.width,
-		height: GroupingGameView.INITIAL_EGG_SIZE.height,
+		width: this.INITIAL_EGG_SIZE.width,
+		height: this.INITIAL_EGG_SIZE.height,
 		dx: xInit,
 		dy: yInit
 	});
 	
-	// add cursor styling
-	egg.on('mouseover', function() {document.body.style.cursor = 'pointer'});
-	egg.on('mouseout', function() {document.body.style.cursor = 'default'});					
-	
-	egg.on('dragstart', function() {
-		// make it cover all other eggs.
-		this.moveToTop();
-	});
-	
+	egg.on('dragstart', function() { this.moveToTop() });
 	egg.on('dragend', function() {
-		if (GroupingGameView.activitiesEnabled == false) {
-			GroupingGameView.declineEgg(this);
+		
+		if (app.view.activitiesEnabled == false) {
+			app.view.declineEgg(this);
 			return;
 		}
 		
 		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
-		if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_ONES_AREA.X_ARRAY, GroupingGameView.BELT_ONES_AREA.Y_ARRAY, GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY)
-				&& (GroupingGameView.eggsAtDestination.length != 10)) {
-			GroupingGameView.acceptEgg(this);
+		if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)
+				&& (app.view.eggsAtDestination.length != 10)) {
+			app.view.acceptEgg(this);
 			
-		} else if (WidgetUtil.isNearPoints(this, GroupingGameView.BELT_TENS_AREA.X_ARRAY, GroupingGameView.BELT_TENS_AREA.Y_ARRAY, GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY)) {
+		} else if (WidgetUtil.isNearPoints(this, app.view.BELT_TENS_AREA.X_ARRAY, app.view.BELT_TENS_AREA.Y_ARRAY, app.view.BELT_TENS_AREA.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
-			GroupingGameView.declineEgg(this);
-			GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.DRAG_TO_TENS);
+			app.view.declineEgg(this);
+			app.view.errorMade(app.view.ERROR_TYPES.DRAG_TO_TENS);
 		} else {
-			GroupingGameView.declineEgg(this);
+			app.view.declineEgg(this);
 		}
 		
 		// If we reach 10 eggs in our tray
-		if (GroupingGameView.eggsAtDestination.length == 10) {
-			GroupingGameView.trayOnesFullCallback();
+		if (app.view.eggsAtDestination.length == 10) {
+			app.view.trayFull();
 		}
+		
 	});
 	
-	GroupingGameView.backgroundLayer.add(egg);
-	return egg;
-}
+	app.layer.add(egg);
+};
+
 
 // accepts the egg and add it to the accepted array
-GroupingGameView.acceptEgg = function(egg) {
+GroupingGameView.prototype.acceptEgg = function(egg) {
 	
 	// say a compliment
-	var compliment = GroupingGameView.COMPLIMENTS[MathUtil.random(0,GroupingGameView.COMPLIMENTS.length-1)];
-	GroupingGameView.displayThinkCloud(compliment);
+	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
+	this.displayThinkCloud(compliment);
 	
 	// check to see if total is greater than goal Number
-	if (GroupingGameView.calculateTotal() >= GroupingGameView.goalNumber) {
-		GroupingGameView.errorMade(GroupingGameView.ERROR_TYPES.EXCEEDED_GOAL_NUMBER);
-		GroupingGameView.declineEgg(egg);
+	if (this.calculateTotal() >= this.goalNumber) {
+		this.errorMade(this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER);
+		this.declineEgg(egg);
 		return;
 	}
 	
 	// play the accept egg sound
-	Music.play(GroupingGameView.sounds.acceptEgg);
+	Music.play(this.sounds.acceptEgg);
 	
 	// make the egg not draggable
 	egg.setDraggable(false);
 	// move it to the right position
-	var index = GroupingGameView.eggsAtDestination.length;
+	var index = this.eggsAtDestination.length;
 
 	// add it to the group
 	egg.remove();
-	GroupingGameView.onesWidgetGroup.add(egg);
+	this.onesWidgetGroup.add(egg);
 	egg.moveToTop();
 	
-	egg.setX(DimensionUtil.decimalToActualWidth(GroupingGameView.EGG_DESTINATION_LOCATIONS[index].x));
-	egg.setY(DimensionUtil.decimalToActualHeight(GroupingGameView.EGG_DESTINATION_LOCATIONS[index].y));
+	egg.setX(DimensionUtil.decimalToActualWidth(this.EGG_DESTINATION_LOCATIONS[index].x));
+	egg.setY(DimensionUtil.decimalToActualHeight(this.EGG_DESTINATION_LOCATIONS[index].y));
 	
-	GroupingGameView.stage.draw();
+	app.stage.draw();
 	// add it to the destination array
-	GroupingGameView.eggsAtDestination.push(egg);
+	this.eggsAtDestination.push(egg);
 	
 	// create another egg in its place
-	var newEgg = GroupingGameView.drawNewEgg();
+	var newEgg = this.drawNewEgg();
 	
 	// increase number of eggs
-	var ones = GroupingGameView.eggsAtDestination.length;
+	var ones = this.eggsAtDestination.length;
 	if (ones < 10) {
-		GroupingGameView.onesTextWidget.setText(ones);
-		GroupingGameView.onesTextWidget.draw();
-		GroupingGameView.stage.draw();
+		this.onesTextWidget.setText(ones);
+		this.onesTextWidget.draw();
+		app.stage.draw();
 	}
 	
-	GroupingGameView.stage.draw();
-}
+	app.stage.draw();
+};
 
 // declines the egg and move it back to its original spot
-GroupingGameView.declineEgg = function(egg) {
+GroupingGameView.prototype.declineEgg = function(egg) {
 	// play the decline egg sound
-	Music.play(GroupingGameView.sounds.rejectEgg);
+	Music.play(this.sounds.declineEgg);
 
-	WidgetUtil.animateMove(egg, 0.4, GroupingGameView.eggInitialLocations[egg.id].x, GroupingGameView.eggInitialLocations[egg.id].y);
-}
+	WidgetUtil.animateMove(egg, 0.4, this.eggInitialLocations[egg.id].x, this.eggInitialLocations[egg.id].y);
+};
 
-GroupingGameView.trayOnesFullCallback = function() {
+GroupingGameView.prototype.trayFull = function() {
 	
 	// Disable all performable activities by user
-	GroupingGameView.activitiesEnabled = false;
+	this.activitiesEnabled = false;
 	
 	var fallCoverDurationSeconds = 2;
 	var trayLiftDurationSeconds = 1;
@@ -694,51 +601,51 @@ GroupingGameView.trayOnesFullCallback = function() {
 	// The cover is separated into two parts front (the part that are in front of the eggs) and the back (parts behind the eggs)
 	
 	// Draw the cover's front
-	var coverFront = new Kinetic.Image({image: GroupingGameView.images.coverFront});
+	var coverFront = new Kinetic.Image({image: this.images.coverFront});
 	WidgetUtil.glue(coverFront, {
-		width: GroupingGameView.TRAY_SIZE.width,
-		height: GroupingGameView.TRAY_SIZE.height,
-		dx: GroupingGameView.INITIAL_COVER_POSITION.x,
-		dy: GroupingGameView.INITIAL_COVER_POSITION.y
+		width: this.TRAY_SIZE.width,
+		height: this.TRAY_SIZE.height,
+		dx: this.INITIAL_COVER_POSITION.x,
+		dy: this.INITIAL_COVER_POSITION.y
 	});
-	GroupingGameView.onesWidgetGroup.add(coverFront);
+	this.onesWidgetGroup.add(coverFront);
 	coverFront.moveToTop();
 	
 	// Draw the cover's back
-	var coverBack = new Kinetic.Image({image: GroupingGameView.images.coverBack});
+	var coverBack = new Kinetic.Image({image: this.images.coverBack});
 	WidgetUtil.glue(coverBack, {
-		width: GroupingGameView.TRAY_SIZE.width,
-		height: GroupingGameView.TRAY_SIZE.height,
-		dx: GroupingGameView.INITIAL_COVER_POSITION.x,
-		dy: GroupingGameView.INITIAL_COVER_POSITION.y
+		width: this.TRAY_SIZE.width,
+		height: this.TRAY_SIZE.height,
+		dx: this.INITIAL_COVER_POSITION.x,
+		dy: this.INITIAL_COVER_POSITION.y
 	});
-	GroupingGameView.onesWidgetGroup.add(coverBack);
+	this.onesWidgetGroup.add(coverBack);
 	coverBack.moveToBottom();
 	
 	// redraw the stage
-	GroupingGameView.stage.draw();
+	app.stage.draw();
 	
 	// Make the covers fall onto the tray
 	var dropCoverFrontTween = new Kinetic.Tween({
 		node: coverFront,
 		duration: fallCoverDurationSeconds,
-		x: DimensionUtil.decimalToActualWidth(GroupingGameView.TRAY_CURRENT_POSITION.x),
-		y: DimensionUtil.decimalToActualHeight(GroupingGameView.TRAY_CURRENT_POSITION.y)
+		x: DimensionUtil.decimalToActualWidth(this.TRAY_CURRENT_POSITION.x),
+		y: DimensionUtil.decimalToActualHeight(this.TRAY_CURRENT_POSITION.y)
 	});
 	
 	var dropCoverBackTween = new Kinetic.Tween({
 		node: coverBack,
 		duration: fallCoverDurationSeconds,
-		x: DimensionUtil.decimalToActualWidth(GroupingGameView.TRAY_CURRENT_POSITION.x),
-		y: DimensionUtil.decimalToActualHeight(GroupingGameView.TRAY_CURRENT_POSITION.y),
+		x: DimensionUtil.decimalToActualWidth(this.TRAY_CURRENT_POSITION.x),
+		y: DimensionUtil.decimalToActualHeight(this.TRAY_CURRENT_POSITION.y),
 	});
 	dropCoverFrontTween.play();
 	dropCoverBackTween.play();
 	
 	// Make the tray lift up
-	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
+	this.timeOuts[this.timeOuts.length] = setTimeout(function() {
 		var liftTween = new Kinetic.Tween({
-			node: GroupingGameView.onesWidgetGroup, 
+			node: app.view.onesWidgetGroup, 
 			duration: trayLiftDurationSeconds,
 			y: DimensionUtil.decimalToActualHeight(-0.2)
 		});
@@ -746,9 +653,9 @@ GroupingGameView.trayOnesFullCallback = function() {
 	}, fallCoverDurationSeconds * 1000);
 
 	// Shrink the tray
-	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
+	this.timeOuts[this.timeOuts.length] = setTimeout(function() {
 		var shrinkTrayTween = new Kinetic.Tween({
-			node: GroupingGameView.onesWidgetGroup, 
+			node: app.view.onesWidgetGroup, 
 			duration: shrinkTrayDurationSeconds,
 			x: DimensionUtil.decimalToActualWidth(-0.05),
 			y: DimensionUtil.decimalToActualHeight(0.26),
@@ -760,23 +667,23 @@ GroupingGameView.trayOnesFullCallback = function() {
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds) * 1000);
 	
 	// Move belt up
-	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
+	this.timeOuts[this.timeOuts.length] = setTimeout(function() {
 		// set current tray to next
-		GroupingGameView.trays.current = GroupingGameView.trays.next;
+		app.view.trays.current = app.view.trays.next;
 		
 		// create new next tray
-		GroupingGameView.trays.next = new Kinetic.Image({image: GroupingGameView.images.tray});
-		WidgetUtil.glue(GroupingGameView.trays.next, {
-			width: GroupingGameView.TRAY_SIZE.width,
-			height: GroupingGameView.TRAY_SIZE.height,
-			dx: GroupingGameView.TRAY_BELOW_NEXT_POSITION.x,
-			dy: GroupingGameView.TRAY_BELOW_NEXT_POSITION.y
+		app.view.trays.next = new Kinetic.Image({image: app.view.images.tray});
+		WidgetUtil.glue(app.view.trays.next, {
+			width: app.view.TRAY_SIZE.width,
+			height: app.view.TRAY_SIZE.height,
+			dx: app.view.TRAY_BELOW_NEXT_POSITION.x,
+			dy: app.view.TRAY_BELOW_NEXT_POSITION.y
 		});
-		GroupingGameView.backgroundLayer.add(GroupingGameView.trays.next);		
+		app.layer.add(app.view.trays.next);		
 		
 		// move current tray up
 		var moveCurrentTrayTween = new Kinetic.Tween({
-			node: GroupingGameView.trays.current, 
+			node: app.view.trays.current, 
 			duration: beltSlideDurationSeconds,
 			x: DimensionUtil.decimalToActualWidth(0.25),
 			y: DimensionUtil.decimalToActualHeight(0.415),
@@ -786,7 +693,7 @@ GroupingGameView.trayOnesFullCallback = function() {
 		
 		// move next tray up
 		var moveNextTrayTween = new Kinetic.Tween({
-			node: GroupingGameView.trays.next, 
+			node: app.view.trays.next, 
 			duration: beltSlideDurationSeconds,
 			x: DimensionUtil.decimalToActualWidth(0.05),
 			y: DimensionUtil.decimalToActualHeight(0.71),
@@ -796,194 +703,154 @@ GroupingGameView.trayOnesFullCallback = function() {
 		
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds) * 1000);
 	
-	GroupingGameView.timeOuts[GroupingGameView.timeOuts.length] = setTimeout(function() {
-		GroupingGameView.eggsAtDestination = [];
-		GroupingGameView.onesWidgetGroup = new Kinetic.Group({});
-		GroupingGameView.backgroundLayer.add(GroupingGameView.onesWidgetGroup);
-		GroupingGameView.onesWidgetGroup.moveToTop();
+	this.timeOuts[this.timeOuts.length] = setTimeout(function() {
+		app.view.eggsAtDestination = [];
+		app.view.onesWidgetGroup = new Kinetic.Group({});
+		app.layer.add(app.view.onesWidgetGroup);
+		app.view.onesWidgetGroup.moveToTop();
 		
-		GroupingGameView.onesTextWidget.setText(0);
-		GroupingGameView.tensTextWidget.setText(parseInt(GroupingGameView.tensTextWidget.getText())+1);
+		app.view.onesTextWidget.setText(0);
+		app.view.tensTextWidget.setText(parseInt(app.view.tensTextWidget.getText())+1);
 		
-		GroupingGameView.activitiesEnabled = true;
+		app.view.activitiesEnabled = true;
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds + beltSlideDurationSeconds) * 1000);
-}
+};
 
-GroupingGameView.drawNumbers = function() {
-	//add number of ones
-	GroupingGameView.onesTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.52),
-		y: DimensionUtil.decimalToActualHeight(0.28),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-    	text: 0,
-    	fontSize: 110,
-    	fontFamily: 'COMIC SANS MS',
-    	fill: 'black'
-    });
-	GroupingGameView.backgroundLayer.add(GroupingGameView.onesTextWidget);
-	
-	//add number of tens
-    GroupingGameView.tensTextWidget = new Kinetic.Text({
-    	x: DimensionUtil.decimalToActualWidth(0.26),
-		y: DimensionUtil.decimalToActualHeight(0.28),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-    	text: 0,
-    	fontSize: 110,
-    	fontFamily: 'COMIC SANS MS',
-    	fill: 'black'
-    });
-    GroupingGameView.backgroundLayer.add(GroupingGameView.tensTextWidget);
-}
-
-GroupingGameView.drawTitle = function() {
-	var title = GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber];
-	 GroupingGameView.titleTextWidget = new Kinetic.Text({
-    	x: DimensionUtil.decimalToActualWidth(0.15),
-		y: DimensionUtil.decimalToActualHeight(0.02),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-    	text: title,
-    	fontSize: 90,
-    	fontFamily: 'COMIC SANS MS',
-    	fill: 'black'
-    });
-    GroupingGameView.backgroundLayer.add(GroupingGameView.titleTextWidget);
-}
-
-// call this to pause the game
-GroupingGameView.pause = function() {
-	
-	// lazy loading
-	if (GroupingGameView.pauseWidgets == null) {
-		GroupingGameView.pauseWidgets = {};
-		
-		// draw overlay
-		GroupingGameView.pauseWidgets.overlay = new Kinetic.Rect({
-			fill: 'black',
-			opacity: 0.62
-		});
-		WidgetUtil.glue(GroupingGameView.pauseWidgets.overlay, {
-			width: 1,
-			height: 1,
-			dx: 0,
-			dy: 0
-		});
-		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.overlay);	
-		
-		// paused label
-		GroupingGameView.pauseWidgets.labelPaused = new Kinetic.Image({image: GroupingGameView.images.labelPaused});
-		WidgetUtil.glue(GroupingGameView.pauseWidgets.labelPaused, {
-			width: 0.3,
-			height: 0.1,
-			dx: 0.35,
-			dy: 0.25
-		});
-
-		// resume button
-		GroupingGameView.pauseWidgets.buttonResume = new Kinetic.Image({image: GroupingGameView.images.buttonResume});
-		WidgetUtil.glue(GroupingGameView.pauseWidgets.buttonResume, {
-			width: 0.18,
-			height: 0.25,
-			dx: 0.21,
-			dy: 0.42
-		});
-		
-		GroupingGameView.pauseWidgets.buttonResume.on('click tap', function () {
-			Music.play(GroupingGameView.sounds.select);
-			GroupingGameView.unpause();
-		});
-		
-		// menu button
-		GroupingGameView.pauseWidgets.buttonMenu = new Kinetic.Image({image: GroupingGameView.images.buttonMenu});
-		WidgetUtil.glue(GroupingGameView.pauseWidgets.buttonMenu, {
-			width: 0.18,
-			height: 0.25,
-			dx: 0.41,
-			dy: 0.42
-		});
-		
-		GroupingGameView.pauseWidgets.buttonMenu.on('click tap', function () {
-			Music.play(GroupingGameView.sounds.select);
-			GroupingGameView.pauseWidgets = null;
-			GroupingGameView.finalize();
-			MenuView.initialize();	
-		});
-		
-		// restart button
-		GroupingGameView.pauseWidgets.buttonRestart = new Kinetic.Image({image: GroupingGameView.images.buttonRestart});
-		WidgetUtil.glue(GroupingGameView.pauseWidgets.buttonRestart, {
-			width: 0.18,
-			height: 0.25,
-			dx: 0.61,
-			dy: 0.42
-		});
-		
-		GroupingGameView.pauseWidgets.buttonRestart.on('click tap', function () {
-			Music.play(GroupingGameView.sounds.select);
-			GroupingGameView.restartGame();
-		});
-		
-		// Add all the widgets onto the background layer
-		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.buttonResume);
-		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.buttonMenu);
-		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.buttonRestart);
-		GroupingGameView.backgroundLayer.add(GroupingGameView.pauseWidgets.labelPaused);
-	}
-	
-	GroupingGameView.pauseWidgets.overlay.show();
-	GroupingGameView.pauseWidgets.overlay.moveToTop();
-	
-	GroupingGameView.pauseWidgets.buttonResume.show();
-	GroupingGameView.pauseWidgets.buttonResume.moveToTop();
-	
-	GroupingGameView.pauseWidgets.buttonMenu.show();
-	GroupingGameView.pauseWidgets.buttonMenu.moveToTop();
-	
-	GroupingGameView.pauseWidgets.buttonRestart.show();
-	GroupingGameView.pauseWidgets.buttonRestart.moveToTop();
-	
-	GroupingGameView.pauseWidgets.labelPaused.show();
-	GroupingGameView.pauseWidgets.labelPaused.moveToTop();
-	
-	GroupingGameView.stage.draw();
-}
-
-// call this to unpause the game
-GroupingGameView.unpause = function() {
-	GroupingGameView.pauseWidgets.overlay.hide();
-	GroupingGameView.pauseWidgets.buttonResume.hide();
-	GroupingGameView.pauseWidgets.buttonMenu.hide();
-	GroupingGameView.pauseWidgets.buttonRestart.hide();
-	GroupingGameView.pauseWidgets.labelPaused.hide();
-	GroupingGameView.stage.draw();
-}
-
-GroupingGameView.errorMade = function (errorType) {
-	GroupingGameView.errorsMade++;
-
+GroupingGameView.prototype.errorMade = function (errorType) {
+	this.errorsMade++;
 
 	switch (errorType) {
-		case GroupingGameView.ERROR_TYPES.DRAG_TO_TENS:
-			GroupingGameView.displayThinkCloud("WHOOPS! This is only ONE easter egg! You need to drag this to ONES!");
-			
+		case this.ERROR_TYPES.DRAG_TO_TENS:
+			this.displayThinkCloud("WHOOPS! This is only ONE easter egg! You need to drag this to ONES!");
 		break;
-		case GroupingGameView.ERROR_TYPES.INCORRECT_DONE:
-			GroupingGameView.displayThinkCloud("UH OH! The number you have made is not " + 
-				GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] +
+		case this.ERROR_TYPES.INCORRECT_DONE:
+			this.displayThinkCloud("UH OH! The number you have made is not " + 
+				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
 				"! You need more eggs!");
-			
 		break;
-		case GroupingGameView.ERROR_TYPES.EXCEEDED_GOAL_NUMBER:
-			GroupingGameView.displayThinkCloud("You're trying to make " + 
-				GroupingGameView.NUMBER_TO_WORDS_MAP[GroupingGameView.goalNumber] +
+		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER:
+			this.displayThinkCloud("You're trying to make " + 
+				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
 				". Count your eggs! Have you already got the correct number?");
-		
 		break;
 	}
 	
-	if (GroupingGameView.errorsMade == GroupingGameView.allowableErrorsCount) {
-		GroupingGameView.finish(0);
+	if (this.errorsMade == this.allowableErrorsCount) {
+		this.finish(0);
 	}
 }
+
+GroupingGameView.prototype.calculateTotal = function () {
+	var ones = parseInt(this.onesTextWidget.getText());
+	var tens = parseInt(this.tensTextWidget.getText() * 10);
+	return (tens + ones);
+};
+
+// finsih score:
+// 0 for fail, 1 to 3 for stars
+GroupingGameView.prototype.finish = function(score) {
+	var finishTitleImage = null;
+	var starsImage = null;
+	
+	switch(score) {
+		case 0:
+			finishTitleImage = this.images.labelTryAgain;
+			starsImage = null;
+			
+		break;
+		case 1:
+			finishTitleImage = this.images.labelGood;
+			starsImage = this.images.star1;
+		
+		break;
+		case 2:
+			finishTitleImage = this.images.labelExcellent;
+			starsImage = this.images.star2;
+			
+		break;			
+		case 3:
+			finishTitleImage = this.images.labelPerfect;
+			starsImage = this.images.star3;
+			
+		break;
+	}
+
+	// draw overlay
+	var overlay = new Kinetic.Rect({
+		fill: 'black',
+		opacity: 0.62
+	});
+	WidgetUtil.glue(overlay, {
+		width: 1,
+		height: 1,
+		dx: 0,
+		dy: 0
+	});
+	app.layer.add(overlay);
+	
+	// draw title
+	var finishTitle = new Kinetic.Image({image: finishTitleImage});
+	WidgetUtil.glue(finishTitle, {
+		width: 0.5,
+		height: 0.2,
+		dx: 0.25,
+		dy: 0.2
+	});
+	app.layer.add(finishTitle);
+	
+	if (starsImage != null) {
+		// draw stars
+		var starsWidget = new Kinetic.Image({image: starsImage});
+		WidgetUtil.glue(starsWidget, {
+			width: 0.35,
+			height: 0.15,
+			dx: 0.325,
+			dy: 0.4
+		});
+		app.layer.add(starsWidget);
+			
+	}
+	
+	var buttonRetry = null;
+	
+	// draw buttons 
+	if (score == 0) {
+		// draw retry button only
+		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
+		WidgetUtil.glue(buttonRetry, {
+			width: 0.15,
+			height: 0.27,
+			dx: 0.425,
+			dy: 0.5
+		});
+	} else {
+		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
+		WidgetUtil.glue(buttonRetry, {
+			width: 0.1,
+			height: 0.19,
+			dx: 0.36,
+			dy: 0.65
+		});
+		
+		var buttonNext = new Kinetic.Image({image: this.images.buttonNext});
+		WidgetUtil.glue(buttonNext, {
+			width: 0.1,
+			height: 0.19,
+			dx: 0.54,
+			dy: 0.65
+		});
+		app.layer.add(buttonNext);	
+		buttonNext.on('click tap', function () {
+			alert("next");
+		});
+	}
+	
+	buttonRetry.on('click tab', function () {
+		Music.play(app.view.sounds.select);
+		app.controller.restart(true);
+	});
+	
+	app.layer.add(buttonRetry);	
+	
+	app.stage.draw();
+};
