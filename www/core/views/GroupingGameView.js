@@ -216,7 +216,7 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 	this.thinkCloudTextWidget = new Kinetic.Text({
 		x: DimensionUtil.decimalToActualWidth(0.68),
 		y: DimensionUtil.decimalToActualHeight(0.08),
-		width: DimensionUtil.decimalToActualWidth(0.18),
+		width: DimensionUtil.decimalToActualWidth(0.28 / (1/1024*DimensionUtil.width)),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 25,
@@ -226,7 +226,6 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 		lineHeight: 1.3
 	});
 	app.layer.add(this.thinkCloudTextWidget);
-	
 	this.displayThinkCloud("Drag " + this.NUMBER_TO_WORDS_MAP[this.goalNumber] + " of my easter eggs onto the belt!");
 };
 
