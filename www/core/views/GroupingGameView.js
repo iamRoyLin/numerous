@@ -2,6 +2,9 @@ function GroupingGameView() {
 	
 	// constants
 	
+	// Number of packs at the origin at the beginning
+	this.INITIAL_PACK_COUNT = 3;
+	
 	// Number of eggs at the origin at the beginning
 	this.INITIAL_EGG_COUNT = 50;
 	
@@ -58,11 +61,13 @@ function GroupingGameView() {
 	this.ERROR_TYPES = {
 		DRAG_TO_TENS : 0,
 		INCORRECT_DONE : 1,
-		EXCEEDED_GOAL_NUMBER : 2
+		EXCEEDED_GOAL_NUMBER_WITH_EGGS : 2,
+		PACK_DRAG_TO_ONES : 3,
+		EXCEEDED_GOAL_NUMBER_WITH_PACKS : 4
 	}
 		
 	// widgets
-	this.RABBIT_DIMENSIONS = {x:0.67, y:0.3, width:0.3, height:0.8};
+	this.RABBIT_DIMENSIONS = {x:0.69, y:0.25, width:0.265, height:0.75};
 	this.BELT_DIMENSIONS = {x:0, y:0.187, width:0.68, height:0.813};
 	this.THINK_CLOUD_DIMENSIONS = {x:0.62, y:-0.02, width:0.41, height:0.45};
 	this.PAUSE_BUTTON_DIMENSIONS = {x:0.02, y:0.035, width:0.09, height:0.12};
@@ -75,8 +80,14 @@ function GroupingGameView() {
 	this.INITIAL_COVER_POSITION = {x:0.25, y:-0.415};
 
 	// Initial egg positions
-	this.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.79, width:0.2, height:0.05};
+	this.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.69, width:0.2, height:0.01};
 	this.INITIAL_EGG_SIZE = {width:0.06, height:0.093};
+	
+	// Initial pack positions
+	this.INITIAL_PACK_RECTANGLE = {x:0.59, y:0.80, width:0.2, height:0.05};
+	this.INITIAL_PACK_SIZE = {width:0.2, height:0.2};
+	
+	this.PACK_DESTINATION_LOCATION = {x: 0.08, y: 0.485}
 	
 	// Map of numbers to their words
 	this.NUMBER_TO_WORDS_MAP = [];
@@ -100,7 +111,8 @@ function GroupingGameView() {
 	this.images.coverFront = "images/grouping_game/cover_front.png";
 	this.images.coverBack = "images/grouping_game/cover_back.png";
 	this.images.tray = "images/grouping_game/tray.png";
-
+	this.images.pack = "images/grouping_game/pack.png";
+	
 	this.images.star1 = "images/widgets/star1.png";
 	this.images.star2 = "images/widgets/star2.png";
 	this.images.star3 = "images/widgets/star3.png";
@@ -139,6 +151,15 @@ function GroupingGameView() {
 	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 	this.sounds.done = "sounds/grouping_game/done.wav";
 	
+	// pack count
+	this.packCount = 0;
+	
+	// boolean represent if there is already a pack at "tens" destination
+	this.packAtDestination = false;
+	
+	// Array holding packs initial locations of when it was randomly generated
+	this.packInitialLocations = [];
+	
 	// A count of all eggs that have been generated
 	this.eggCount = 0;
 	
@@ -168,6 +189,7 @@ function GroupingGameView() {
 	app.layer.add(this.onesWidgetGroup);
 };
 
+// destructor
 GroupingGameView.prototype.finalize = function () {
 	for(var i = 0; i < this.timeOuts.length; i++) {
 		clearTimeout(this.timeOuts[i]);
@@ -175,8 +197,10 @@ GroupingGameView.prototype.finalize = function () {
 	this.timeOuts = [];
 };
 
-GroupingGameView.prototype.draw = function (goalNumber) {
+// draws all the widgets on the screen
+GroupingGameView.prototype.draw = function (goalNumber, variation) {
 	this.goalNumber = goalNumber;
+	this.variation = variation;
 
 	this.drawRabbit();
 	this.drawThinkCloud();
@@ -191,6 +215,7 @@ GroupingGameView.prototype.draw = function (goalNumber) {
 	app.stage.draw();
 };
 
+// draws the rabbit
 GroupingGameView.prototype.drawRabbit = function () {
 	var rabbit = new Kinetic.Image({image: this.images.rabbit});
 	WidgetUtil.glue(rabbit, {
@@ -202,6 +227,7 @@ GroupingGameView.prototype.drawRabbit = function () {
 	app.layer.add(rabbit);
 };
 
+// Draws the think cloud 
 GroupingGameView.prototype.drawThinkCloud = function () {
 	
 	// think cloud
@@ -231,6 +257,7 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 	this.displayThinkCloud("Drag " + this.NUMBER_TO_WORDS_MAP[this.goalNumber] + " of my easter eggs onto the belt!");
 };
 
+// Displays a message in the think cloud
 GroupingGameView.prototype.displayThinkCloud = function(message) {
 	this.thinkCloudTextWidget.setText(message);
 	app.stage.draw();
@@ -248,6 +275,7 @@ GroupingGameView.prototype.drawBelts = function() {
 	app.layer.add(belts);
 };
 
+// draws the two trays (has the animation logic here)
 GroupingGameView.prototype.drawTrays = function() {
 
 	this.trays = {};
@@ -275,6 +303,7 @@ GroupingGameView.prototype.drawTrays = function() {
 	app.layer.add(this.trays.next);
 };
 
+// draws the number the student needs to perform
 GroupingGameView.prototype.drawTitle = function() {
 	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
 	 GroupingGameView.titleTextWidget = new Kinetic.Text({
@@ -290,6 +319,7 @@ GroupingGameView.prototype.drawTitle = function() {
     app.layer.add(GroupingGameView.titleTextWidget);
 };
 
+// draws the done button
 GroupingGameView.prototype.drawDoneButton = function() {
 	var buttonDone = new Kinetic.Image({image: this.images.buttonDone});
 	WidgetUtil.glue(buttonDone, {
@@ -312,6 +342,7 @@ GroupingGameView.prototype.drawDoneButton = function() {
 	app.layer.add(buttonDone);
 };
 
+// draws the number in the "tens" and "ones" boxes
 GroupingGameView.prototype.drawNumbers = function() {
 
 	// ones number
@@ -341,6 +372,101 @@ GroupingGameView.prototype.drawNumbers = function() {
     app.layer.add(this.tensTextWidget);
 };
 
+// draw packs for variation 2
+GroupingGameView.prototype.drawPacks = function () {
+	for (var i=0; i<this.INITIAL_PACK_COUNT; i++) {
+		this.drawNewPack();
+	}
+};
+
+// draws one new pack
+GroupingGameView.prototype.drawNewPack = function () {
+	var pack = new Kinetic.Image({
+		image: this.images.pack,
+		draggable: true
+	});	
+	
+	pack.id = this.packCount;	
+	this.packCount++;
+	
+	var xInit = MathUtil.random(this.INITIAL_PACK_RECTANGLE.x * 100, (this.INITIAL_PACK_RECTANGLE.x + this.INITIAL_PACK_RECTANGLE.width)*100)/100;
+	var yInit = MathUtil.random(this.INITIAL_PACK_RECTANGLE.y * 100, (this.INITIAL_PACK_RECTANGLE.y + this.INITIAL_PACK_RECTANGLE.height)*100)/100;
+	this.packInitialLocations[pack.id] = {x:xInit, y:yInit};
+	WidgetUtil.glue(pack, {
+		width: this.INITIAL_PACK_SIZE.width,
+		height: this.INITIAL_PACK_SIZE.height,
+		dx: xInit,
+		dy: yInit
+	});
+	
+	pack.on('dragstart', function() { this.moveToTop() });
+	pack.on('dragend', function() {
+		
+		if (app.view.activitiesEnabled == false) {
+			app.view.declinePack(this);
+			return;
+		}
+		
+		// accepts the pack at the destination if dropped close enough and not full or else return the pack to its starting position
+		if (WidgetUtil.isNearPoints(this, app.view.BELT_TENS_AREA.X_ARRAY, app.view.BELT_TENS_AREA.Y_ARRAY, app.view.BELT_TENS_AREA.RADIUS_ARRAY)
+				&& (!app.view.packAtDestination)) {
+			app.view.acceptPack(this);
+			
+		} else if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)) {
+			// decline the pack and also record an error
+			app.view.declinePack(this);
+			app.view.errorMade(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
+		} else {
+			app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS);
+			app.view.declinePack(pack);
+		}
+		
+	});
+	
+	app.layer.add(pack);
+	app.stage.draw();
+}
+
+GroupingGameView.prototype.acceptPack = function (pack) {
+	
+	// say a compliment
+	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
+	this.displayThinkCloud(compliment);
+	
+	// increase the count
+	this.packAtDestination = true;
+	this.tensTextWidget.setText(parseInt(this.tensTextWidget.getText())+1);
+	
+	// play the accept egg sound
+	Music.play(this.sounds.acceptEgg);
+	
+	// make the egg not draggable
+	pack.setDraggable(false);
+
+	// add it to the group
+	//egg.remove();
+	//this.onesWidgetGroup.add(egg);
+	//egg.moveToTop();
+	
+	pack.setX(DimensionUtil.decimalToActualWidth(this.PACK_DESTINATION_LOCATION.x));
+	pack.setY(DimensionUtil.decimalToActualHeight(this.PACK_DESTINATION_LOCATION.y));
+	
+	app.stage.draw();
+	
+	// create another egg in its place
+	var newPack = this.drawNewPack();
+	
+	// increase number of eggs
+	app.stage.draw();
+};
+
+GroupingGameView.prototype.declinePack = function (pack) {
+	// play the decline egg sound
+	Music.play(this.sounds.declineEgg);
+	WidgetUtil.animateMove(pack, 0.4, this.packInitialLocations[pack.id].x, this.packInitialLocations[pack.id].y);
+};
+
+// draws all the pause widgets then hides them. Shows when the pause function is called
 GroupingGameView.prototype.drawPauseWidgets = function() {
 
 	// pause button
@@ -432,12 +558,14 @@ GroupingGameView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.hide();
 };
 
+// pause the game
 GroupingGameView.prototype.pause = function() {
 	this.pauseWidgetsGroup.show();
 	this.pauseWidgetsGroup.moveToTop();
 	app.stage.draw();
 };
 
+// unpause the game
 GroupingGameView.prototype.unpause = function() {
 	this.pauseWidgetsGroup.hide();
 	app.stage.draw();
@@ -533,20 +661,19 @@ GroupingGameView.prototype.drawNewEgg = function() {
 	app.layer.add(egg);
 };
 
-
 // accepts the egg and add it to the accepted array
 GroupingGameView.prototype.acceptEgg = function(egg) {
 	
-	// say a compliment
-	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
-	this.displayThinkCloud(compliment);
-	
 	// check to see if total is greater than goal Number
 	if (this.calculateTotal() >= this.goalNumber) {
-		this.errorMade(this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER);
+		this.errorMade(this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 		this.declineEgg(egg);
 		return;
 	}
+	
+	// say a compliment
+	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
+	this.displayThinkCloud(compliment);	
 	
 	// play the accept egg sound
 	Music.play(this.sounds.acceptEgg);
@@ -586,10 +713,10 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 GroupingGameView.prototype.declineEgg = function(egg) {
 	// play the decline egg sound
 	Music.play(this.sounds.declineEgg);
-
 	WidgetUtil.animateMove(egg, 0.4, this.eggInitialLocations[egg.id].x, this.eggInitialLocations[egg.id].y);
 };
 
+// Is called when the "ones" tray is full
 GroupingGameView.prototype.trayFull = function() {
 	
 	// Disable all performable activities by user
@@ -719,6 +846,7 @@ GroupingGameView.prototype.trayFull = function() {
 	}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds + beltSlideDurationSeconds) * 1000);
 };
 
+// Is called when a mistake is made by the student
 GroupingGameView.prototype.errorMade = function (errorType) {
 	this.errorsMade++;
 
@@ -729,12 +857,21 @@ GroupingGameView.prototype.errorMade = function (errorType) {
 		case this.ERROR_TYPES.INCORRECT_DONE:
 			this.displayThinkCloud("UH OH! The number you have made is not " + 
 				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
-				"! You need more eggs!");
+				"! You need more!");
 		break;
-		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER:
+		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS:
 			this.displayThinkCloud("You're trying to make " + 
 				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
 				". Count your eggs! Have you already got the correct number?");
+		break;
+		case this.ERROR_TYPES.PACK_DRAG_TO_ONES:
+			this.displayThinkCloud("WHOOPS! The packs of tens do not go there!");
+		break;
+		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS:
+			alert(1);
+			this.displayThinkCloud("You're trying to make " + 
+				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
+				". Count your packs! Have you got enough?");
 		break;
 	}
 	
@@ -743,14 +880,14 @@ GroupingGameView.prototype.errorMade = function (errorType) {
 	}
 }
 
+// Calculate the current total the student has already performed
 GroupingGameView.prototype.calculateTotal = function () {
 	var ones = parseInt(this.onesTextWidget.getText());
 	var tens = parseInt(this.tensTextWidget.getText() * 10);
 	return (tens + ones);
 };
 
-// finsih score:
-// 0 for fail, 1 to 3 for stars
+// Finsih the game. Score: 0 for fail, 1 to 3 for stars
 GroupingGameView.prototype.finish = function(score) {
 	var finishTitleImage = null;
 	var starsImage = null;
@@ -844,7 +981,7 @@ GroupingGameView.prototype.finish = function(score) {
 		});
 		app.layer.add(buttonNext);	
 		buttonNext.on('click tap', function () {
-			alert("next");
+			app.controller.nextGame();
 		});
 	}
 	
