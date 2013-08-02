@@ -17,5 +17,6 @@ MenuController.prototype.home = function () {
 };
 
 MenuController.prototype.unitSelect = function(unit) {
-	app.route("MenuUnit1");
+	app.currentUnit = unit;
+	app.route("MenuUnit");
 }

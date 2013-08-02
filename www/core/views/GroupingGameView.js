@@ -106,7 +106,6 @@ function GroupingGameView() {
 
 	this.images.rabbit = "images/grouping_game/rabbit.png";
 	this.images.thinkCloud = "images/widgets/think_cloud.png";
-	this.images.thinkCloud2 = "images/widgets/think_cloud2.png";
 	this.images.belts = "images/grouping_game/belts.png";
 	this.images.coverFront = "images/grouping_game/cover_front.png";
 	this.images.coverBack = "images/grouping_game/cover_back.png";

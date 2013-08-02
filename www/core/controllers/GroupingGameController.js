@@ -3,9 +3,6 @@ function GroupingGameController(view, params) {
 	if (params == null) {
 		params = {};
 	}
-
-	this.nextPage = params.nextPage;
-	this.nextParams = params.nextParams;
 	
 	// sets goal number
 	this.goalNumber = params.goalNumber;
@@ -15,18 +12,20 @@ function GroupingGameController(view, params) {
 	this.variation = params.variation;
 	if (this.variation == null) this.variation = 1;
 	
+	
+	// variations
+	if (this.variation == 2 || this.variation == 3) {
+		view.drawPacks();
+	}	
+	if (this.variation == 3 ) {
+		this.goalNumber += MathUtil.random(0,9);
+	}
+	
 	// tell the view to draw according to our number
 	view.draw(this.goalNumber, this.variation);	
 	
-	// the first variation of the game
-	if (this.variation == 1) {
-		
-	}
-	
-	// the second variation of the game
-	if (this.variation == 2) {
-		view.drawPacks();
-	}
+
+
 	
 	
 };
@@ -37,17 +36,18 @@ GroupingGameController.prototype.finalize = function() {
 };
 
 GroupingGameController.prototype.restart = function(sameNumber) {
-	if (sameNumber) {
-		app.route("GroupingGame", {goalNumber:this.goalNumber});
-	} else {
-		app.route("GroupingGame");
-	}
+	app.route(app.getCurrentPage(), app.getCurrentPageParams());
 };
 
 GroupingGameController.prototype.menu = function() {
-	app.route("MenuUnit1");
+	app.route("MenuUnit");
 };
 
 GroupingGameController.prototype.nextGame = function() {
-	app.route(this.nextPage, this.nextParams);
+	if (app.nextGame()) {
+		app.route(app.getCurrentPage(), app.getCurrentPageParams());
+	} else {
+		app.route("MenuUnit");
+	}
 };
+

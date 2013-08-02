@@ -1,36 +1,5 @@
-function MenuUnit1View() {
-	
-	this.LEVEL_COUNT = 19;
-	
-	// level names
-	
-	this.LEVEL_NAMES = [
-		"eleven",
-		"twelve",
-		"thirteen",
-		"four-teen",
-		"fifteen",
-		"sixteen",
-		"seven-teen",
-		"eighteen",
-		"nineteen",
+function MenuUnitView() {
 		
-		'"four" "teen"',
-		'"six" "teen"',
-		'"seven" "teen"',
-		'"eight" "teen"',
-		'"nine" "teen"',
-		
-		'thir "teen"',
-		'fif "teen"',
-		
-		'"eleven"',
-		'"twelve"',
-		
-		'Practice'
-	];
-	
-	
 	// Images. These will automatically be loaded
 	this.images = {};
 	this.images.title = "images/menu_unit1/label_title.png";
@@ -46,11 +15,11 @@ function MenuUnit1View() {
 	this.sounds = {};
 };
 
-MenuUnit1View.prototype.finalize = function() {
+MenuUnitView.prototype.finalize = function() {
 
 };
 
-MenuUnit1View.prototype.draw = function(params) {
+MenuUnitView.prototype.draw = function(params) {
 	this.starsEarned = params.starsEarned;
 
 	// draw widgets here
@@ -62,7 +31,7 @@ MenuUnit1View.prototype.draw = function(params) {
 	app.stage.draw();
 };
 
-MenuUnit1View.prototype.drawTitle = function() {
+MenuUnitView.prototype.drawTitle = function() {
 	var	title = new Kinetic.Image({image: this.images.title});
 	WidgetUtil.glue(title, {
 		width: 0.5,
@@ -73,7 +42,7 @@ MenuUnit1View.prototype.drawTitle = function() {
 	app.layer.add(title);
 };
 
-MenuUnit1View.prototype.drawButtonBack = function() {
+MenuUnitView.prototype.drawButtonBack = function() {
 	var	buttonBack = new Kinetic.Image({image: this.images.buttonBack});
 	WidgetUtil.glue(buttonBack, {
 		width: 0.10,
@@ -88,10 +57,10 @@ MenuUnit1View.prototype.drawButtonBack = function() {
 	});
 };
 
-MenuUnit1View.prototype.drawBoxes = function() {
+MenuUnitView.prototype.drawBoxes = function() {
 	// belongs in groups
 	
-	for(var boxNumber = 0; boxNumber < this.LEVEL_COUNT; boxNumber++) {
+	for(var boxNumber = 0; boxNumber < app.UNIT_GAMES[app.currentUnit].length; boxNumber++) {
 		var x = 0.07 + (boxNumber % 7) * 0.13;
 		var y = 0.28 + Math.floor(boxNumber / 7) * 0.225;
 			
@@ -128,7 +97,7 @@ MenuUnit1View.prototype.drawBoxes = function() {
 			width: DimensionUtil.decimalToActualWidth(0.099 / (1/1024*DimensionUtil.width)),
 			scaleX: 1/1024*DimensionUtil.width,
 			scaleY: 1/768*DimensionUtil.height,
-			text: this.LEVEL_NAMES[boxNumber],
+			text: app.UNIT_GAMES[app.currentUnit][boxNumber].name,
 			fontSize: 25,
 			fontFamily: 'COMIC SANS MS',
 			fill: 'black',
