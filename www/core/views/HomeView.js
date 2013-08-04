@@ -1,15 +1,7 @@
-function HomeView() {
-	
-	// Images. These will automatically be loaded
-	this.images = {};
-	this.images.background = "images/widgets/home_screen.png";
-	this.images.playButton = "images/widgets/button_play.png";
-	this.images.optionsButton = "images/widgets/button_options.png";
-
-	// Sounds
-	this.sounds = {};
-	this.sounds.select = "sounds/menu/menu_select.wav";
+function HomeView(controller) {
+	this.controller = controller;
 };
+HomeView.prototype = new View();
 
 HomeView.prototype.finalize = function() {
 

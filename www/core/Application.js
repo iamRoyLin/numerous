@@ -20,29 +20,29 @@ function App() {
 	
 	// Unit 1 games
 	this.UNIT_GAMES[0] = [
-		{name:"eleven",         page:"GroupingGame", params:{goalNumber:11}},
-		{name:"twelve",         page:"GroupingGame", params:{goalNumber:12}},
-		{name:"thirteen",       page:"GroupingGame", params:{goalNumber:13}},
-		{name:"fourteen",       page:"GroupingGame", params:{goalNumber:14}},
-		{name:"fifteen",        page:"GroupingGame", params:{goalNumber:15}},
-		{name:"sixteen",        page:"GroupingGame", params:{goalNumber:16}},
-		{name:"seven-teen",     page:"GroupingGame", params:{goalNumber:17}},
-		{name:"eighteen",       page:"GroupingGame", params:{goalNumber:18}},
-		{name:"nineteen",       page:"GroupingGame", params:{goalNumber:19}},
+		{name:"eleven",         page:"GroupingGame", goalNumber:11},
+		{name:"twelve",         page:"GroupingGame", goalNumber:12},
+		{name:"thirteen",       page:"GroupingGame", goalNumber:13},
+		{name:"fourteen",       page:"GroupingGame", goalNumber:14},
+		{name:"fifteen",        page:"GroupingGame", goalNumber:15},
+		{name:"sixteen",        page:"GroupingGame", goalNumber:16},
+		{name:"seven-teen",     page:"GroupingGame", goalNumber:17},
+		{name:"eighteen",       page:"GroupingGame", goalNumber:18},
+		{name:"nineteen",       page:"GroupingGame", goalNumber:19},
 		
-		{name:'"four" "teen"',  page:"GroupingGame", params:{goalNumber:14, variation:2}},
-		{name:'"six" "teen"',   page:"GroupingGame", params:{goalNumber:16, variation:2}},
-		{name:'"seven" "teen"', page:"GroupingGame", params:{goalNumber:17, variation:2}},
-		{name:'"eight" "teen"', page:"GroupingGame", params:{goalNumber:18, variation:2}},
-		{name:'"nine" "teen"',  page:"GroupingGame", params:{goalNumber:19, variation:2}},
+		{name:'"four" "teen"',  page:"GroupingGame2", goalNumber:14},
+		{name:'"six" "teen"',   page:"GroupingGame2", goalNumber:16},
+		{name:'"seven" "teen"', page:"GroupingGame2", goalNumber:17},
+		{name:'"eight" "teen"', page:"GroupingGame2", goalNumber:18},
+		{name:'"nine" "teen"',  page:"GroupingGame2", goalNumber:19},
 		
-		{name:'thir "teen"',    page:"GroupingGame", params:{goalNumber:13, variation:2}},
-		{name:'fif "teen"',     page:"GroupingGame", params:{goalNumber:15, variation:2}},
+		{name:'thir "teen"',    page:"GroupingGame2", goalNumber:13},
+		{name:'fif "teen"',     page:"GroupingGame2", goalNumber:15},
 		
-		{name:'"eleven"',       page:"GroupingGame", params:{goalNumber:11, variation:2}},
-		{name:'"twelve"',       page:"GroupingGame", params:{goalNumber:12, variation:2}},
+		{name:'"eleven"',       page:"GroupingGame2", goalNumber:11},
+		{name:'"twelve"',       page:"GroupingGame2", goalNumber:12},
 		
-		{name:"Practice", page:"GroupingGamePractice", params:{}}
+		{name:"Practice", page:"GroupingGamePractice"}
 	];
 	
 	// Unit 2 games
@@ -57,6 +57,14 @@ function App() {
 		{name:"90 to 99",  page:"GroupingGame", params:{goalNumber:90, variation:3}},
 		
 		{name:"Practice", page:"GroupingGamePractice", params:{}}
+	];
+	
+	this.UNIT_GAMES[2] = [
+	
+	];
+	
+	this.UNIT_GAMES[3] = [
+	
 	];
 	
 };
@@ -80,22 +88,26 @@ App.prototype.route = function(page, pageParams) {
 	
 	
 	// creates new view
-	eval("this.view = new " +page+ "View();");
+	// eval("this.view = new " +page+ "View();");
+	
+	// creates new controller
+	eval("this.controller = new " + app.page + "Controller(app.view, app.pageParams);");
 	
 	// loads all images
-	LoaderUtil.load(this.view.images, this._loaded);
+	LoaderUtil.load(this.controller.images, this._loaded);
 	
-}
+};
 
 App.prototype._loaded = function() {
 
-	// creates new controller
-	eval("app.controller = new " + app.page + "Controller(app.view, app.pageParams);");
+	// tell the controller to perform
+	app.controller.initialize();
 	
+	// eval("app.controller = new " + app.page + "Controller(app.view, app.pageParams);");
 	// link the views and controllers
-	app.controller.view = app.view;
-	app.view.controller = app.controller;
-}
+	// app.controller.view = app.view;
+	// app.view.controller = app.controller;
+};
 
 App.prototype.nextGame = function () {
 	if (app.currentGame >= app.UNIT_GAMES[app.currentUnit].length-1) {
@@ -114,5 +126,5 @@ App.prototype.getCurrentPageParams = function () {
 
 $(function () {
 	app = new App();
-	app.route("Menu");
+	app.route("Home");
 });

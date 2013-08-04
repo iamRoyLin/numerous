@@ -1,4 +1,4 @@
-function GroupingGameController() {
+function GroupingGame2Controller() {
 	
 	// Image that are automatically loaded
 	this.images = {};
@@ -63,7 +63,7 @@ function GroupingGameController() {
 	
 };
 
-GroupingGameController.prototype.initialize = function() {
+GroupingGame2Controller.prototype.initialize = function() {
 	this.view = new GroupingGameView(this);
 	app.view = this.view;
 	
@@ -83,24 +83,25 @@ GroupingGameController.prototype.initialize = function() {
 	this.view.drawEggs();	
 	this.view.drawNumbers();
 	
+	this.view.drawPacks();
 	
 	app.stage.draw();
 };
 
 // destructor
-GroupingGameController.prototype.finalize = function() {
+GroupingGame2Controller.prototype.finalize = function() {
 	
 };
 
-GroupingGameController.prototype.restart = function(sameNumber) {
+GroupingGame2Controller.prototype.restart = function(sameNumber) {
 	app.route(app.getCurrentPage(), app.getCurrentPageParams());
 };
 
-GroupingGameController.prototype.menu = function() {
+GroupingGame2Controller.prototype.menu = function() {
 	app.route("MenuUnit");
 };
 
-GroupingGameController.prototype.nextGame = function() {
+GroupingGame2Controller.prototype.nextGame = function() {
 	if (app.nextGame()) {
 		app.route(app.getCurrentPage(), app.getCurrentPageParams());
 	} else {

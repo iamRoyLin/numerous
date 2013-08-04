@@ -1,35 +1,13 @@
-function MenuUnitView() {
-		
-	// Images. These will automatically be loaded
-	this.images = {};
-	this.images.title = "images/menu_unit1/label_title.png";
-	this.images.buttonBack = "images/menu_unit1/button_back.png";
-	this.images.box = "images/menu_unit1/box.png";
-	
-	this.images.stars = [];
-	for(var i = 0; i < 4; i++) {
-		this.images.stars[i] = "images/menu_unit1/star" + i + ".png";
-	}
-	
-	// Sounds
-	this.sounds = {};
+function MenuUnitView(controller) {
+	this.controller = controller;
 };
+MenuUnitView.prototype = new View();
+
 
 MenuUnitView.prototype.finalize = function() {
 
 };
 
-MenuUnitView.prototype.draw = function(params) {
-	this.starsEarned = params.starsEarned;
-
-	// draw widgets here
-	this.drawTitle();
-	this.drawButtonBack();
-	this.drawBoxes();
-	
-	// redraw all widgets
-	app.stage.draw();
-};
 
 MenuUnitView.prototype.drawTitle = function() {
 	var	title = new Kinetic.Image({image: this.images.title});
@@ -57,7 +35,7 @@ MenuUnitView.prototype.drawButtonBack = function() {
 	});
 };
 
-MenuUnitView.prototype.drawBoxes = function() {
+MenuUnitView.prototype.drawBoxes = function(starsEarned) {
 	// belongs in groups
 	
 	for(var boxNumber = 0; boxNumber < app.UNIT_GAMES[app.currentUnit].length; boxNumber++) {
@@ -81,7 +59,7 @@ MenuUnitView.prototype.drawBoxes = function() {
 		group.add(box);
 		
 		// stars
-		var stars = new Kinetic.Image({image: this.images.stars[this.starsEarned[boxNumber]]});
+		var stars = new Kinetic.Image({image: this.images.stars[starsEarned[boxNumber]]});
 		WidgetUtil.glue(stars, {
 			width: 0.1,
 			height: 0.05,

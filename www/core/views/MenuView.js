@@ -1,29 +1,10 @@
-function MenuView() {
-
-	// constants
-	this.UNIT_COUNT = 4;
-	
-	// Images. These will automatically be loaded
-	this.images = {};
-	this.images.numerousTitle = "images/widgets/numerous_title.png";
-	this.images.arrowLeft = "images/widgets/arrow_left.png";
-	this.images.arrowRight = "images/widgets/arrow_right.png";
-	this.images.homeButton = "images/widgets/button_back_to_home.png";
-	
-	this.images.unitLabels = [];
-	this.images.unitPlayButtons = [];
-	for(var i = 0; i < this.UNIT_COUNT; i++){
-		this.images.unitLabels[i] = "images/widgets/label_unit" + (i+1) + ".png";
-		this.images.unitPlayButtons[i] = "images/widgets/button_unit" + (i+1) + "_play.png";
-	}
-	
-	// Sounds
-	this.sounds = {};
-	this.sounds.select = "sounds/menu/menu_select.wav";
+function MenuView(controller) {
+	this.controller = controller;
 	
 	// the current unit being viewed
 	this.currentUnit = 0;
 };
+MenuView.prototype = new View();
 
 MenuView.prototype.finalize = function () {
 
@@ -36,8 +17,6 @@ MenuView.prototype.draw = function () {
 	this.drawHomeButton();
 	this.drawArrows();
 	this.drawGroups();
-	
-	//this._arrowLeft.hide();
 	
 	// redraw all widgets
 	app.stage.draw();
@@ -101,7 +80,7 @@ MenuView.prototype.drawArrows = function() {
 
 MenuView.prototype.drawGroups = function() {
 	this.unitsGroupArray = [];
-	for(var i = 0; i < this.UNIT_COUNT; i++) {
+	for(var i = 0; i < app.UNIT_GAMES.length; i++) {
 		this.unitsGroupArray[i] = new Kinetic.Group({});
 		
 		var myLabel = new Kinetic.Image({image: this.images.unitLabels[i]});
@@ -201,11 +180,11 @@ MenuView.prototype.right = function () {
 }
 
 MenuView.prototype.hideArrows = function() {
-	if (this.currentUnit == 0){
+	if (this.currentUnit == 0) {
 		this.arrowLeft.hide();
-	}else if(this.currentUnit == this.UNIT_COUNT-1){
+	} else if (this.currentUnit == app.UNIT_GAMES.length-1) {
 		this.arrowRight.hide();
-	}else{
+	} else {
 		this.arrowLeft.show();
 		this.arrowRight.show();
 	}

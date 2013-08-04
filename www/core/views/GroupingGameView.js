@@ -1,4 +1,5 @@
-function GroupingGameView() {
+function GroupingGameView(controller) {
+	this.controller = controller;
 	
 	// constants
 	
@@ -89,67 +90,6 @@ function GroupingGameView() {
 	
 	this.PACK_DESTINATION_LOCATION = {x: 0.08, y: 0.485}
 	
-	// Map of numbers to their words
-	this.NUMBER_TO_WORDS_MAP = [];
-	this.NUMBER_TO_WORDS_MAP[11] = "ELEVEN";
-	this.NUMBER_TO_WORDS_MAP[12] = "TWELVE";
-	this.NUMBER_TO_WORDS_MAP[13] = "THIRTEEN";
-	this.NUMBER_TO_WORDS_MAP[14] = "FOURTEEN";
-	this.NUMBER_TO_WORDS_MAP[15] = "FIFTEEN";
-	this.NUMBER_TO_WORDS_MAP[16] = "SIXTEEN";
-	this.NUMBER_TO_WORDS_MAP[17] = "SEVENTEEN";
-	this.NUMBER_TO_WORDS_MAP[18] = "EIGHTEEN";
-	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
-	
-	// Image that are automatically loaded
-	this.images = {};
-
-	this.images.rabbit = "images/grouping_game/rabbit.png";
-	this.images.thinkCloud = "images/widgets/think_cloud.png";
-	this.images.belts = "images/grouping_game/belts.png";
-	this.images.coverFront = "images/grouping_game/cover_front.png";
-	this.images.coverBack = "images/grouping_game/cover_back.png";
-	this.images.tray = "images/grouping_game/tray.png";
-	this.images.pack = "images/grouping_game/pack.png";
-	
-	this.images.star1 = "images/widgets/star1.png";
-	this.images.star2 = "images/widgets/star2.png";
-	this.images.star3 = "images/widgets/star3.png";
-
-	this.images.labelPaused = "images/widgets/label_paused.png";
-	this.images.labelTryAgain = "images/widgets/label_try_again.png";
-	this.images.labelPerfect = "images/widgets/label_perfect.png";
-	this.images.labelGood = "images/widgets/label_good.png";
-	this.images.labelExcellent = "images/widgets/label_excellent.png";
-
-	this.images.buttonPause = "images/widgets/button_pause.png";
-	this.images.buttonMenu = "images/widgets/button_menu.png";
-	this.images.buttonRestart = "images/widgets/button_restart.png";
-	this.images.buttonResume = "images/widgets/button_resume.png";
-	this.images.buttonDone = "images/widgets/button_done.png";
-	this.images.buttonRetry = "images/widgets/button_retry.png";
-	this.images.buttonNext = "images/widgets/button_next.png";
-
-	this.images.eggs = [
-		"images/grouping_game/eggs/egg1.png",
-		"images/grouping_game/eggs/egg2.png",
-		"images/grouping_game/eggs/egg3.png",
-		"images/grouping_game/eggs/egg4.png",
-		"images/grouping_game/eggs/egg5.png",
-		"images/grouping_game/eggs/egg6.png",
-		"images/grouping_game/eggs/egg7.png",
-		"images/grouping_game/eggs/egg8.png",
-		"images/grouping_game/eggs/egg9.png"
-	];
-	
-	// sounds
-	this.sounds = {};
-	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
-	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.wav";
-	this.sounds.select = "sounds/menu/menu_select.wav";
-	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
-	this.sounds.done = "sounds/grouping_game/done.wav";
-	
 	// pack count
 	this.packCount = 0;
 	
@@ -187,6 +127,7 @@ function GroupingGameView() {
 	this.onesWidgetGroup = new Kinetic.Group({});
 	app.layer.add(this.onesWidgetGroup);
 };
+GroupingGameView.prototype = new View();
 
 // destructor
 GroupingGameView.prototype.finalize = function () {
@@ -194,24 +135,6 @@ GroupingGameView.prototype.finalize = function () {
 		clearTimeout(this.timeOuts[i]);
 	}
 	this.timeOuts = [];
-};
-
-// draws all the widgets on the screen
-GroupingGameView.prototype.draw = function (goalNumber, variation) {
-	this.goalNumber = goalNumber;
-	this.variation = variation;
-
-	this.drawRabbit();
-	this.drawThinkCloud();
-	this.drawBelts();
-	this.drawTrays();
-	this.drawTitle();	
-	this.drawPauseWidgets();	
-	this.drawDoneButton();
-	this.drawEggs();	
-	this.drawNumbers();
-	
-	app.stage.draw();
 };
 
 // draws the rabbit
@@ -253,7 +176,7 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 		lineHeight: 1.3
 	});
 	app.layer.add(this.thinkCloudTextWidget);
-	this.displayThinkCloud("Drag " + this.NUMBER_TO_WORDS_MAP[this.goalNumber] + " of my easter eggs onto the belt!");
+	this.displayThinkCloud("Drag " + app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] + " of my easter eggs onto the belt!");
 };
 
 // Displays a message in the think cloud
@@ -303,9 +226,8 @@ GroupingGameView.prototype.drawTrays = function() {
 };
 
 // draws the number the student needs to perform
-GroupingGameView.prototype.drawTitle = function() {
-	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
-	 GroupingGameView.titleTextWidget = new Kinetic.Text({
+GroupingGameView.prototype.drawTitle = function(title) {
+	 this.titleTextWidget = new Kinetic.Text({
     	x: DimensionUtil.decimalToActualWidth(0.15),
 		y: DimensionUtil.decimalToActualHeight(0.02),
 		scaleX: 1/1024*DimensionUtil.width,
@@ -315,7 +237,7 @@ GroupingGameView.prototype.drawTitle = function() {
     	fontFamily: 'COMIC SANS MS',
     	fill: 'black'
     });
-    app.layer.add(GroupingGameView.titleTextWidget);
+    app.layer.add(this.titleTextWidget);
 };
 
 // draws the done button
@@ -331,7 +253,7 @@ GroupingGameView.prototype.drawDoneButton = function() {
 	buttonDone.on('click tap', function () {
 		Music.play(app.view.sounds.done);
 		var total = app.view.calculateTotal();
-		if (total == app.view.goalNumber) {
+		if (total == app.controller.goalNumber) {
 			app.view.finish(app.view.allowableErrorsCount - app.view.errorsMade);
 		} else {
 			app.view.errorMade(app.view.ERROR_TYPES.INCORRECT_DONE);	
@@ -371,7 +293,6 @@ GroupingGameView.prototype.drawNumbers = function() {
     app.layer.add(this.tensTextWidget);
 };
 
-// draw packs for variation 2
 GroupingGameView.prototype.drawPacks = function () {
 	for (var i=0; i<this.INITIAL_PACK_COUNT; i++) {
 		this.drawNewPack();
@@ -664,7 +585,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 GroupingGameView.prototype.acceptEgg = function(egg) {
 	
 	// check to see if total is greater than goal Number
-	if (this.calculateTotal() >= this.goalNumber) {
+	if (this.calculateTotal() >= app.controller.goalNumber) {
 		this.errorMade(this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 		this.declineEgg(egg);
 		return;
@@ -855,12 +776,12 @@ GroupingGameView.prototype.errorMade = function (errorType) {
 		break;
 		case this.ERROR_TYPES.INCORRECT_DONE:
 			this.displayThinkCloud("UH OH! The number you have made is not " + 
-				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
+				app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] +
 				"! You need more!");
 		break;
 		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS:
 			this.displayThinkCloud("You're trying to make " + 
-				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
+				app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] +
 				". Count your eggs! Have you already got the correct number?");
 		break;
 		case this.ERROR_TYPES.PACK_DRAG_TO_ONES:
@@ -869,7 +790,7 @@ GroupingGameView.prototype.errorMade = function (errorType) {
 		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS:
 			alert(1);
 			this.displayThinkCloud("You're trying to make " + 
-				this.NUMBER_TO_WORDS_MAP[this.goalNumber] +
+				app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] +
 				". Count your packs! Have you got enough?");
 		break;
 	}
