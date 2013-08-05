@@ -72,6 +72,7 @@ GroupingGame2Controller.prototype.initialize = function() {
 	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
 	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
+	var onesLimitation = this.goalNumber - 10;
 	
 	this.view.drawRabbit();
 	this.view.drawThinkCloud();
@@ -80,7 +81,7 @@ GroupingGame2Controller.prototype.initialize = function() {
 	this.view.drawTitle(title);	
 	this.view.drawPauseWidgets();	
 	this.view.drawDoneButton();
-	this.view.drawEggs();	
+	this.view.drawEggs(onesLimitation);
 	this.view.drawNumbers();
 	
 	this.view.drawPacks();

@@ -64,7 +64,8 @@ function GroupingGameView(controller) {
 		INCORRECT_DONE : 1,
 		EXCEEDED_GOAL_NUMBER_WITH_EGGS : 2,
 		PACK_DRAG_TO_ONES : 3,
-		EXCEEDED_GOAL_NUMBER_WITH_PACKS : 4
+		EXCEEDED_GOAL_NUMBER_WITH_PACKS : 4,
+		
 	}
 		
 	// widgets
@@ -492,13 +493,16 @@ GroupingGameView.prototype.unpause = function() {
 };
 
 // Draws eggs in a specified area
-GroupingGameView.prototype.drawEggs = function() {
+GroupingGameView.prototype.drawEggs = function(onesLimitation) {
+	if (onesLimitation == null) {
+		onesLimitation = 10;
+	}
 
 	for (var i=0; i<this.INITIAL_EGG_COUNT; i++) {
-		this.drawNewEgg();
+		this.drawNewEgg(onesLimitation);
 	}
 	
-	/*if (Env.debug) {
+	if (Env.debug) {
 		// draw out the region ones
 		for (var i = 0; i < GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY.length; i++) {
 			var ellipse = new Kinetic.Ellipse({
@@ -526,11 +530,11 @@ GroupingGameView.prototype.drawEggs = function() {
 			});
 			GroupingGameView.backgroundLayer.add(ellipse);
 		}
-	}*/
+	}
 };
 
 // Draws one egg in a specified area
-GroupingGameView.prototype.drawNewEgg = function() {
+GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
 	var egg = new Kinetic.Image({
 		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length)],
 		draggable: true
@@ -561,10 +565,12 @@ GroupingGameView.prototype.drawNewEgg = function() {
 		
 		
 		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
-		if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)
-				&& (app.view.eggsAtDestination.length != 10)) {
-			app.view.acceptEgg(this);
-			
+		if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)) {
+			if (app.view.eggsAtDestination.length < onesLimitation) {
+				app.view.acceptEgg(this);
+			} else {
+				app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
+			}
 		} else if (WidgetUtil.isNearPoints(this, app.view.BELT_TENS_AREA.X_ARRAY, app.view.BELT_TENS_AREA.Y_ARRAY, app.view.BELT_TENS_AREA.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
 			app.view.declineEgg(this);
