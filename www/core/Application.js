@@ -23,7 +23,7 @@ function App() {
 		{name:"eleven",         page:"GroupingGame", goalNumber:11},
 		{name:"twelve",         page:"GroupingGame", goalNumber:12},
 		{name:"thirteen",       page:"GroupingGame", goalNumber:13},
-		{name:"fourteen",       page:"GroupingGame", goalNumber:14},
+		{name:"four-teen",       page:"GroupingGame", goalNumber:14},
 		{name:"fifteen",        page:"GroupingGame", goalNumber:15},
 		{name:"sixteen",        page:"GroupingGame", goalNumber:16},
 		{name:"seven-teen",     page:"GroupingGame", goalNumber:17},
@@ -47,16 +47,16 @@ function App() {
 	
 	// Unit 2 games
 	this.UNIT_GAMES[1] = [
-		{name:"20 to 29",  page:"GroupingGame", params:{goalNumber:20, variation:3}},
-		{name:"30 to 39",  page:"GroupingGame", params:{goalNumber:30, variation:3}},
-		{name:"40 to 49",  page:"GroupingGame", params:{goalNumber:40, variation:3}},
-		{name:"50 to 59",  page:"GroupingGame", params:{goalNumber:50, variation:3}},
-		{name:"60 to 69",  page:"GroupingGame", params:{goalNumber:60, variation:3}},
-		{name:"70 to 79",  page:"GroupingGame", params:{goalNumber:70, variation:3}},
-		{name:"80 to 89",  page:"GroupingGame", params:{goalNumber:80, variation:3}},
-		{name:"90 to 99",  page:"GroupingGame", params:{goalNumber:90, variation:3}},
+		{name:"20 to 29",  page:"GroupingGame3", goalNumber:20, variation:3},
+		{name:"30 to 39",  page:"GroupingGame3", goalNumber:30, variation:3},
+		{name:"40 to 49",  page:"GroupingGame3", goalNumber:40, variation:3},
+		{name:"50 to 59",  page:"GroupingGame3", goalNumber:50, variation:3},
+		{name:"60 to 69",  page:"GroupingGame3", goalNumber:60, variation:3},
+		{name:"70 to 79",  page:"GroupingGame3", goalNumber:70, variation:3},
+		{name:"80 to 89",  page:"GroupingGame3", goalNumber:80, variation:3},
+		{name:"90 to 99",  page:"GroupingGame3", goalNumber:90, variation:3},
 		
-		{name:"Practice", page:"GroupingGamePractice", params:{}}
+		{name:"Practice", page:"GroupingGamePractice"}
 	];
 	
 	this.UNIT_GAMES[2] = [
@@ -126,5 +126,8 @@ App.prototype.getCurrentPageParams = function () {
 
 $(function () {
 	app = new App();
-	app.route("Home");
+	
+	app.currentUnit=1;
+	app.currentGame=0;
+	app.route("GroupingGame3");
 });

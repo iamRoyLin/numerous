@@ -1,63 +1,6 @@
 function GroupingGameView(controller) {
 	this.controller = controller;
 	
-	// constants
-	
-	// Number of packs at the origin at the beginning
-	this.INITIAL_PACK_COUNT = 3;
-	
-	// Number of eggs at the origin at the beginning
-	this.INITIAL_EGG_COUNT = 50;
-	
-	// size of the eggs
-	this.INITIAL_EGG_DIMENSIONS = {width:60, height: 75};
-	
-	// The areas of the 'ones' belts that accepts the egg
-	this.BELT_ONES_AREA = {};
-	this.BELT_ONES_AREA.X_ARRAY =      [0.54, 0.48, 0.42, 0.36];
-	this.BELT_ONES_AREA.Y_ARRAY =      [0.56, 0.64, 0.72, 0.80];
-	this.BELT_ONES_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11, 0.11];
-
-	// The areas of the 'tens' belts that accepts the egg
-	this.BELT_TENS_AREA = {};
-	this.BELT_TENS_AREA.X_ARRAY =      [0.24, 0.18, 0.12];
-	this.BELT_TENS_AREA.Y_ARRAY =      [0.56, 0.64, 0.72];
-	this.BELT_TENS_AREA.RADIUS_ARRAY = [0.11, 0.11, 0.11];
-
-	// complements
-	this.COMPLIMENTS = [
-		"Good work!",
-		"Well done!",
-		"Great job!",
-		"Nice going!",
-		"Great!",
-		"Perfect!",
-		"Awesome!",
-		"Looks good!",
-		"Brilliant",
-		"Good!",
-		"Super!",
-		"Superb!"
-	];
-
-	// The destination locations where eggs will be locked in to
-	this.EGG_DESTINATION_LOCATIONS = [
-		{x:0.470, y: 0.465},
-		{x:0.532, y: 0.465},
-		
-		{x:0.431, y: 0.526},
-		{x:0.495, y: 0.526},
-		
-		{x:0.395, y: 0.585},
-		{x:0.458, y: 0.585},
-		
-		{x:0.356, y: 0.648},
-		{x:0.420, y: 0.648},
-		
-		{x:0.315, y: 0.710},
-		{x:0.378, y: 0.710},
-	];
-
 	// error types
 	this.ERROR_TYPES = {
 		DRAG_TO_TENS : 0,
@@ -65,30 +8,8 @@ function GroupingGameView(controller) {
 		EXCEEDED_GOAL_NUMBER_WITH_EGGS : 2,
 		PACK_DRAG_TO_ONES : 3,
 		EXCEEDED_GOAL_NUMBER_WITH_PACKS : 4,
-	}
-		
-	// widgets
-	this.RABBIT_DIMENSIONS = {x:0.69, y:0.25, width:0.265, height:0.75};
-	this.BELT_DIMENSIONS = {x:0, y:0.187, width:0.68, height:0.813};
-	this.THINK_CLOUD_DIMENSIONS = {x:0.62, y:-0.02, width:0.41, height:0.45};
-	this.PAUSE_BUTTON_DIMENSIONS = {x:0.02, y:0.035, width:0.09, height:0.12};
+	}	
 	
-	// Tray and cover sizes and positions
-	this.TRAY_SIZE = {width:0.395, height:0.42};
-	this.TRAY_CURRENT_POSITION = {x:0.25, y:0.415};
-	this.TRAY_NEXT_POSITION = {x:0.05, y:0.71};
-	this.TRAY_BELOW_NEXT_POSITION = {x:-0.15, y:1.005};
-	this.INITIAL_COVER_POSITION = {x:0.25, y:-0.415};
-
-	// Initial egg positions
-	this.INITIAL_EGG_RECTANGLE = {x:0.70, y:0.69, width:0.2, height:0.01};
-	this.INITIAL_EGG_SIZE = {width:0.06, height:0.093};
-	
-	// Initial pack positions
-	this.INITIAL_PACK_RECTANGLE = {x:0.59, y:0.80, width:0.2, height:0.05};
-	this.INITIAL_PACK_SIZE = {width:0.2, height:0.2};
-	
-	this.PACK_DESTINATION_LOCATION = {x: 0.08, y: 0.485}
 	
 	// pack count
 	this.packCount = 0;
@@ -141,10 +62,10 @@ GroupingGameView.prototype.finalize = function () {
 GroupingGameView.prototype.drawRabbit = function () {
 	var rabbit = new Kinetic.Image({image: this.images.rabbit});
 	WidgetUtil.glue(rabbit, {
-		width: this.RABBIT_DIMENSIONS.width,
-		height: this.RABBIT_DIMENSIONS.height,
-		dx: this.RABBIT_DIMENSIONS.x,
-		dy: this.RABBIT_DIMENSIONS.y
+		width: this.viewVars.rabbitDimensions.width,
+		height: this.viewVars.rabbitDimensions.height,
+		dx: this.viewVars.rabbitDimensions.x,
+		dy: this.viewVars.rabbitDimensions.y
 	});
 	app.layer.add(rabbit);
 };
@@ -155,17 +76,17 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 	// think cloud
 	this.thinkCloud = new Kinetic.Image({image: this.images.thinkCloud});
 	WidgetUtil.glue(this.thinkCloud, {
-		width: this.THINK_CLOUD_DIMENSIONS.width,
-		height: this.THINK_CLOUD_DIMENSIONS.height,
-		dx: this.THINK_CLOUD_DIMENSIONS.x,
-		dy: this.THINK_CLOUD_DIMENSIONS.y
+		width: this.viewVars.thinkCloudDimensions.width,
+		height: this.viewVars.thinkCloudDimensions.height,
+		dx: this.viewVars.thinkCloudDimensions.x,
+		dy: this.viewVars.thinkCloudDimensions.y
 	});
 	app.layer.add(this.thinkCloud);
 	
 	// text in the think cloud
 	this.thinkCloudTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.68),
-		y: DimensionUtil.decimalToActualHeight(0.08),
+		x: DimensionUtil.decimalToActualWidth(this.viewVars.thinkCloudTextLocation.x),
+		y: DimensionUtil.decimalToActualHeight(this.viewVars.thinkCloudTextLocation.y),
 		width: DimensionUtil.decimalToActualWidth(0.28 / (1/1024*DimensionUtil.width)),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
@@ -194,10 +115,10 @@ GroupingGameView.prototype.displayThinkCloud = function(message, fontSize) {
 GroupingGameView.prototype.drawBelts = function() {
 	var belts = new Kinetic.Image({image: this.images.belts});
 	WidgetUtil.glue(belts, {
-		width: this.BELT_DIMENSIONS.width,
-		height: this.BELT_DIMENSIONS.height,
-		dx: this.BELT_DIMENSIONS.x,
-		dy: this.BELT_DIMENSIONS.y
+		width: this.viewVars.beltDimensions.width,
+		height: this.viewVars.beltDimensions.height,
+		dx: this.viewVars.beltDimensions.x,
+		dy: this.viewVars.beltDimensions.y
 	});
 	app.layer.add(belts);
 };
@@ -210,20 +131,20 @@ GroupingGameView.prototype.drawTrays = function() {
 	// tray current
 	this.trays.current = new Kinetic.Image({image: this.images.tray});
 	WidgetUtil.glue(this.trays.current, {
-		width: this.TRAY_SIZE.width,
-		height: this.TRAY_SIZE.height,
-		dx: this.TRAY_CURRENT_POSITION.x,
-		dy: this.TRAY_CURRENT_POSITION.y
+		width: this.viewVars.traySize.width,
+		height: this.viewVars.traySize.height,
+		dx: this.viewVars.trayCurrentPosition.x,
+		dy: this.viewVars.trayCurrentPosition.y
 	});
 	this.onesWidgetGroup.add(this.trays.current);
 	
 	// tray next
 	this.trays.next = new Kinetic.Image({image: this.images.tray});
 	WidgetUtil.glue(this.trays.next, {
-		width: this.TRAY_SIZE.width,
-		height: this.TRAY_SIZE.height,
-		dx: this.TRAY_NEXT_POSITION.x,
-		dy: this.TRAY_NEXT_POSITION.y
+		width: this.viewVars.traySize.width,
+		height: this.viewVars.traySize.height,
+		dx: this.viewVars.trayNextPosition.x,
+		dy: this.viewVars.trayNextPosition.y
 	});
 	
 	app.layer.add(this.onesWidgetGroup);
@@ -272,10 +193,10 @@ GroupingGameView.prototype.drawTitle = function(title) {
 GroupingGameView.prototype.drawDoneButton = function() {
 	var buttonDone = new Kinetic.Image({image: this.images.buttonDone});
 	WidgetUtil.glue(buttonDone, {
-		width: 0.15,
-		height: 0.2,
-		dx: 0.02,
-		dy: 0.25
+		width: this.viewVars.doneButtonDimensions.width,
+		height: this.viewVars.doneButtonDimensions.height,
+		dx: this.viewVars.doneButtonDimensions.x,
+		dy: this.viewVars.doneButtonDimensions.y
 	});
 	
 	buttonDone.on('click tap', function () {
@@ -296,8 +217,8 @@ GroupingGameView.prototype.drawNumbers = function() {
 
 	// ones number
 	this.onesTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.52),
-		y: DimensionUtil.decimalToActualHeight(0.28),
+		x: DimensionUtil.decimalToActualWidth(this.viewVars.numberWidgetDimensions.onesX),
+		y: DimensionUtil.decimalToActualHeight(this.viewVars.numberWidgetDimensions.onesY),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
     	text: 0,
@@ -309,8 +230,8 @@ GroupingGameView.prototype.drawNumbers = function() {
 	
 	// tens number
 	this.tensTextWidget = new Kinetic.Text({
-    	x: DimensionUtil.decimalToActualWidth(0.26),
-		y: DimensionUtil.decimalToActualHeight(0.28),
+    	x: DimensionUtil.decimalToActualWidth(this.viewVars.numberWidgetDimensions.tensX),
+		y: DimensionUtil.decimalToActualHeight(this.viewVars.numberWidgetDimensions.tensY),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
     	text: 0,
@@ -322,7 +243,7 @@ GroupingGameView.prototype.drawNumbers = function() {
 };
 
 GroupingGameView.prototype.drawPacks = function () {
-	for (var i=0; i<this.INITIAL_PACK_COUNT; i++) {
+	for (var i=0; i<this.viewVars.initialPackCount; i++) {
 		this.drawNewPack();
 	}
 };
@@ -337,12 +258,12 @@ GroupingGameView.prototype.drawNewPack = function () {
 	pack.id = this.packCount;	
 	this.packCount++;
 	
-	var xInit = MathUtil.random(this.INITIAL_PACK_RECTANGLE.x * 100, (this.INITIAL_PACK_RECTANGLE.x + this.INITIAL_PACK_RECTANGLE.width)*100)/100;
-	var yInit = MathUtil.random(this.INITIAL_PACK_RECTANGLE.y * 100, (this.INITIAL_PACK_RECTANGLE.y + this.INITIAL_PACK_RECTANGLE.height)*100)/100;
+	var xInit = MathUtil.random(this.viewVars.initialPackRectangle.x * 100, (this.viewVars.initialPackRectangle.x + this.viewVars.initialPackRectangle.width)*100)/100;
+	var yInit = MathUtil.random(this.viewVars.initialPackRectangle.y * 100, (this.viewVars.initialPackRectangle.y + this.viewVars.initialPackRectangle.height)*100)/100;
 	this.packInitialLocations[pack.id] = {x:xInit, y:yInit};
 	WidgetUtil.glue(pack, {
-		width: this.INITIAL_PACK_SIZE.width,
-		height: this.INITIAL_PACK_SIZE.height,
+		width: this.viewVars.initialPackSize.width,
+		height: this.viewVars.initialPackSize.height,
 		dx: xInit,
 		dy: yInit
 	});
@@ -356,11 +277,11 @@ GroupingGameView.prototype.drawNewPack = function () {
 		}
 		
 		// accepts the pack at the destination if dropped close enough and not full or else return the pack to its starting position
-		if (WidgetUtil.isNearPoints(this, app.view.BELT_TENS_AREA.X_ARRAY, app.view.BELT_TENS_AREA.Y_ARRAY, app.view.BELT_TENS_AREA.RADIUS_ARRAY)
+		if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)
 				&& (!app.view.packAtDestination)) {
 			app.view.acceptPack(this);
 			
-		} else if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)) {
+		} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 			// decline the pack and also record an error
 			app.view.declinePack(this);
 			app.view.errorMade(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
@@ -378,7 +299,7 @@ GroupingGameView.prototype.drawNewPack = function () {
 GroupingGameView.prototype.acceptPack = function (pack) {
 	
 	// say a compliment
-	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
+	var compliment = this.viewVars.compliments[MathUtil.random(0,this.viewVars.compliments.length-1)];
 	this.displayThinkCloud(compliment, 50);
 	
 	// increase the count
@@ -390,14 +311,9 @@ GroupingGameView.prototype.acceptPack = function (pack) {
 	
 	// make the egg not draggable
 	pack.setDraggable(false);
-
-	// add it to the group
-	//egg.remove();
-	//this.onesWidgetGroup.add(egg);
-	//egg.moveToTop();
 	
-	pack.setX(DimensionUtil.decimalToActualWidth(this.PACK_DESTINATION_LOCATION.x));
-	pack.setY(DimensionUtil.decimalToActualHeight(this.PACK_DESTINATION_LOCATION.y));
+	pack.setX(DimensionUtil.decimalToActualWidth(this.viewVars.packDestinationLocations[0].x));
+	pack.setY(DimensionUtil.decimalToActualHeight(this.viewVars.packDestinationLocations[0].y));
 	
 	app.stage.draw();
 	
@@ -420,10 +336,10 @@ GroupingGameView.prototype.drawPauseWidgets = function() {
 	// pause button
 	var buttonPause = new Kinetic.Image({image: this.images.buttonPause});
 	WidgetUtil.glue(buttonPause, {
-		width: this.PAUSE_BUTTON_DIMENSIONS.width,
-		height: this.PAUSE_BUTTON_DIMENSIONS.height,
-		dx: this.PAUSE_BUTTON_DIMENSIONS.x,
-		dy: this.PAUSE_BUTTON_DIMENSIONS.y
+		width: this.viewVars.pauseButtonDimensions.width,
+		height: this.viewVars.pauseButtonDimensions.height,
+		dx: this.viewVars.pauseButtonDimensions.x,
+		dy: this.viewVars.pauseButtonDimensions.y
 	});
 	app.layer.add(buttonPause);
 	buttonPause.on('click tap', function() {
@@ -527,37 +443,37 @@ GroupingGameView.prototype.drawEggs = function(onesLimitation) {
 		this.onesLimitation = onesLimitation;
 	}
 
-	for (var i=0; i<this.INITIAL_EGG_COUNT; i++) {
+	for (var i=0; i<this.viewVars.initialEggCount; i++) {
 		this.drawNewEgg();
 	}
 	
 	if (Env.debug) {
 		// draw out the region ones
-		for (var i = 0; i < GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY.length; i++) {
+		for (var i = 0; i < this.viewVars.beltOnesArea.RADIUS_ARRAY.length; i++) {
 			var ellipse = new Kinetic.Ellipse({
-				x: DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_ONES_AREA.X_ARRAY[i]),
-				y: DimensionUtil.decimalToActualHeight(GroupingGameView.BELT_ONES_AREA.Y_ARRAY[i]),
+				x: DimensionUtil.decimalToActualWidth(this.viewVars.beltOnesArea.X_ARRAY[i]),
+				y: DimensionUtil.decimalToActualHeight(this.viewVars.beltOnesArea.Y_ARRAY[i]),
 				radius: 
-					{x:DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY[i]), 
-					y:DimensionUtil.decimalToActualHeight(GroupingGameView.BELT_ONES_AREA.RADIUS_ARRAY[i])},
+					{x:DimensionUtil.decimalToActualWidth(this.viewVars.beltOnesArea.RADIUS_ARRAY[i]), 
+					y:DimensionUtil.decimalToActualHeight(this.viewVars.beltOnesArea.RADIUS_ARRAY[i])},
 				stroke: 'red',
 				strokeWidth: 6
 			});
-			GroupingGameView.backgroundLayer.add(ellipse);
+			app.layer.add(ellipse);
 		}
 		
 		// draws out the region for tens
-		for (var i = 0; i < GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY.length; i++) {
+		for (var i = 0; i < this.viewVars.beltTensArea.RADIUS_ARRAY.length; i++) {
 			var ellipse = new Kinetic.Ellipse({
-				x: DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_TENS_AREA.X_ARRAY[i]),
-				y: DimensionUtil.decimalToActualHeight(GroupingGameView.BELT_TENS_AREA.Y_ARRAY[i]),
+				x: DimensionUtil.decimalToActualWidth(this.viewVars.beltTensArea.X_ARRAY[i]),
+				y: DimensionUtil.decimalToActualHeight(this.viewVars.beltTensArea.Y_ARRAY[i]),
 				radius: 
-					{x:DimensionUtil.decimalToActualWidth(GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY[i]), 
-					y:DimensionUtil.decimalToActualHeight(GroupingGameView.BELT_TENS_AREA.RADIUS_ARRAY[i])},
+					{x:DimensionUtil.decimalToActualWidth(this.viewVars.beltTensArea.RADIUS_ARRAY[i]), 
+					y:DimensionUtil.decimalToActualHeight(this.viewVars.beltTensArea.RADIUS_ARRAY[i])},
 				stroke: 'red',
 				strokeWidth: 6
 			});
-			GroupingGameView.backgroundLayer.add(ellipse);
+			app.layer.add(ellipse);
 		}
 	}
 };
@@ -572,13 +488,13 @@ GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
 	egg.id = this.eggCount;	
 	this.eggCount++;
 	
-	var xInit = MathUtil.random(this.INITIAL_EGG_RECTANGLE.x * 1000, (this.INITIAL_EGG_RECTANGLE.x + this.INITIAL_EGG_RECTANGLE.width)*1000)/1000;
-	var yInit = MathUtil.random(this.INITIAL_EGG_RECTANGLE.y * 1000, (this.INITIAL_EGG_RECTANGLE.y + this.INITIAL_EGG_RECTANGLE.height)*1000)/1000;
+	var xInit = MathUtil.random(this.viewVars.initialEggRectangle.x * 1000, (this.viewVars.initialEggRectangle.x + this.viewVars.initialEggRectangle.width)*1000)/1000;
+	var yInit = MathUtil.random(this.viewVars.initialEggRectangle.y * 1000, (this.viewVars.initialEggRectangle.y + this.viewVars.initialEggRectangle.height)*1000)/1000;
 	this.eggInitialLocations[egg.id] = {x:xInit, y:yInit};
 	
 	WidgetUtil.glue(egg, {
-		width: this.INITIAL_EGG_SIZE.width,
-		height: this.INITIAL_EGG_SIZE.height,
+		width: this.viewVars.initialEggSize.width,
+		height: this.viewVars.initialEggSize.height,
 		dx: xInit,
 		dy: yInit
 	});
@@ -594,7 +510,7 @@ GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
 		
 		
 		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
-		if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)) {
+		if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 			if (app.view.eggsAtDestination.length < app.view.onesLimitation) {
 				app.view.acceptEgg(this);
 			} else {
@@ -602,7 +518,7 @@ GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
 				app.view.declineEgg(this);
 				return
 			}
-		} else if (WidgetUtil.isNearPoints(this, app.view.BELT_TENS_AREA.X_ARRAY, app.view.BELT_TENS_AREA.Y_ARRAY, app.view.BELT_TENS_AREA.RADIUS_ARRAY)) {
+		} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
 			app.view.declineEgg(this);
 			app.view.errorMade(app.view.ERROR_TYPES.DRAG_TO_TENS);
@@ -622,6 +538,7 @@ GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
 
 // accepts the egg and add it to the accepted array
 GroupingGameView.prototype.acceptEgg = function(egg) {
+	this.onesWidgetGroup.moveToTop();
 	
 	// check to see if total is greater than goal Number
 	if (this.calculateTotal() >= app.controller.goalNumber) {
@@ -631,7 +548,7 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 	}
 	
 	// say a compliment
-	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
+	var compliment = this.viewVars.compliments[MathUtil.random(0,this.viewVars.compliments.length-1)];
 	this.displayThinkCloud(compliment, 50);	
 	
 	// play the accept egg sound
@@ -647,8 +564,8 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 	this.onesWidgetGroup.add(egg);
 	egg.moveToTop();
 	
-	egg.setX(DimensionUtil.decimalToActualWidth(this.EGG_DESTINATION_LOCATIONS[index].x));
-	egg.setY(DimensionUtil.decimalToActualHeight(this.EGG_DESTINATION_LOCATIONS[index].y));
+	egg.setX(DimensionUtil.decimalToActualWidth(this.viewVars.eggDestinationLocations[index].x));
+	egg.setY(DimensionUtil.decimalToActualHeight(this.viewVars.eggDestinationLocations[index].y));
 	
 	app.stage.draw();
 	// add it to the destination array
@@ -691,10 +608,10 @@ GroupingGameView.prototype.trayFull = function() {
 	// Draw the cover's front
 	var coverFront = new Kinetic.Image({image: this.images.coverFront});
 	WidgetUtil.glue(coverFront, {
-		width: this.TRAY_SIZE.width,
-		height: this.TRAY_SIZE.height,
-		dx: this.INITIAL_COVER_POSITION.x,
-		dy: this.INITIAL_COVER_POSITION.y
+		width: this.viewVars.traySize.width,
+		height: this.viewVars.traySize.height,
+		dx: this.viewVars.initialCoverPosition.x,
+		dy: this.viewVars.initialCoverPosition.y
 	});
 	this.onesWidgetGroup.add(coverFront);
 	coverFront.moveToTop();
@@ -702,10 +619,10 @@ GroupingGameView.prototype.trayFull = function() {
 	// Draw the cover's back
 	var coverBack = new Kinetic.Image({image: this.images.coverBack});
 	WidgetUtil.glue(coverBack, {
-		width: this.TRAY_SIZE.width,
-		height: this.TRAY_SIZE.height,
-		dx: this.INITIAL_COVER_POSITION.x,
-		dy: this.INITIAL_COVER_POSITION.y
+		width: this.viewVars.traySize.width,
+		height: this.viewVars.traySize.height,
+		dx: this.viewVars.initialCoverPosition.x,
+		dy: this.viewVars.initialCoverPosition.y
 	});
 	this.onesWidgetGroup.add(coverBack);
 	coverBack.moveToBottom();
@@ -718,15 +635,15 @@ GroupingGameView.prototype.trayFull = function() {
 	var dropCoverFrontTween = new Kinetic.Tween({
 		node: coverFront,
 		duration: fallCoverDurationSeconds,
-		x: DimensionUtil.decimalToActualWidth(this.TRAY_CURRENT_POSITION.x),
-		y: DimensionUtil.decimalToActualHeight(this.TRAY_CURRENT_POSITION.y)
+		x: DimensionUtil.decimalToActualWidth(this.viewVars.trayCurrentPosition.x),
+		y: DimensionUtil.decimalToActualHeight(this.viewVars.trayCurrentPosition.y)
 	});
 	
 	var dropCoverBackTween = new Kinetic.Tween({
 		node: coverBack,
 		duration: fallCoverDurationSeconds,
-		x: DimensionUtil.decimalToActualWidth(this.TRAY_CURRENT_POSITION.x),
-		y: DimensionUtil.decimalToActualHeight(this.TRAY_CURRENT_POSITION.y),
+		x: DimensionUtil.decimalToActualWidth(this.viewVars.trayCurrentPosition.x),
+		y: DimensionUtil.decimalToActualHeight(this.viewVars.trayCurrentPosition.y),
 	});
 	dropCoverFrontTween.play();
 	dropCoverBackTween.play();
@@ -763,10 +680,10 @@ GroupingGameView.prototype.trayFull = function() {
 		// create new next tray
 		app.view.trays.next = new Kinetic.Image({image: app.view.images.tray});
 		WidgetUtil.glue(app.view.trays.next, {
-			width: app.view.TRAY_SIZE.width,
-			height: app.view.TRAY_SIZE.height,
-			dx: app.view.TRAY_BELOW_NEXT_POSITION.x,
-			dy: app.view.TRAY_BELOW_NEXT_POSITION.y
+			width: app.view.viewVars.traySize.width,
+			height: app.view.viewVars.traySize.height,
+			dx: app.view.viewVars.trayBelowNextPosition.x,
+			dy: app.view.viewVars.trayBelowNextPosition.y
 		});
 		app.layer.add(app.view.trays.next);		
 		
@@ -827,7 +744,6 @@ GroupingGameView.prototype.errorMade = function (errorType) {
 			this.displayThinkCloud("WHOOPS! The packs of tens do not go there!");
 		break;
 		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS:
-			alert(1);
 			this.displayThinkCloud("You're trying to make " + 
 				app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] +
 				". Count your packs! Have you got enough?");

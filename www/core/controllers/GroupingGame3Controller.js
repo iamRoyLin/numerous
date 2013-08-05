@@ -1,15 +1,12 @@
-function GroupingGameController() {
+function GroupingGame3Controller() {
 	
 	// Image that are automatically loaded
 	this.images = {};
 
 	this.images.rabbit = "images/grouping_game/rabbit.png";
 	this.images.thinkCloud = "images/widgets/think_cloud.png";
-	this.images.belts = "images/grouping_game/belts.png";
-	this.images.coverFront = "images/grouping_game/cover_front.png";
-	this.images.coverBack = "images/grouping_game/cover_back.png";
-	this.images.tray = "images/grouping_game/tray.png";
-	this.images.pack = "images/grouping_game/pack.png";
+	this.images.belts = "images/grouping_game/unit2/belts.png";
+	this.images.pack = "images/grouping_game/unit2/pack.png";
 	
 	this.images.star1 = "images/widgets/star1.png";
 	this.images.star2 = "images/widgets/star2.png";
@@ -60,10 +57,14 @@ function GroupingGameController() {
 	this.NUMBER_TO_WORDS_MAP[17] = "SEVENTEEN";
 	this.NUMBER_TO_WORDS_MAP[18] = "EIGHTEEN";
 	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
+	this.NUMBER_TO_WORDS_MAP[20] = "TWENTY";
+	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
+	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
+	
 	
 };
 
-GroupingGameController.prototype.initialize = function() {
+GroupingGame3Controller.prototype.initialize = function() {
 	this.view = new GroupingGameView(this);
 	app.view = this.view;
 	
@@ -83,24 +84,25 @@ GroupingGameController.prototype.initialize = function() {
 	
 	// The areas of the 'ones' belts that accepts the egg
 	app.view.viewVars.beltOnesArea = {};
-	app.view.viewVars.beltOnesArea.X_ARRAY =      [0.54, 0.48, 0.42, 0.36];
-	app.view.viewVars.beltOnesArea.Y_ARRAY =      [0.56, 0.64, 0.72, 0.80];
+	app.view.viewVars.beltOnesArea.X_ARRAY =      [0.73, 0.79, 0.85, 0.91];
+	app.view.viewVars.beltOnesArea.Y_ARRAY =      [0.50, 0.58, 0.66, 0.74];
 	app.view.viewVars.beltOnesArea.RADIUS_ARRAY = [0.11, 0.11, 0.11, 0.11];
 
 	// The areas of the 'tens' belts that accepts the egg
 	app.view.viewVars.beltTensArea = {};
-	app.view.viewVars.beltTensArea.X_ARRAY =      [0.24, 0.18, 0.12];
-	app.view.viewVars.beltTensArea.Y_ARRAY =      [0.56, 0.64, 0.72];
-	app.view.viewVars.beltTensArea.RADIUS_ARRAY = [0.11, 0.11, 0.11];
+	app.view.viewVars.beltTensArea.X_ARRAY =      [0.38, 0.44, 0.50, 0.56, 0.62, 0.68];
+	app.view.viewVars.beltTensArea.Y_ARRAY =      [0.50, 0.58, 0.66, 0.74, 0.82, 0.90];
+	app.view.viewVars.beltTensArea.RADIUS_ARRAY = [0.13, 0.13, 0.13, 0.13, 0.13, 0.13];
 
 	// widgets
-	app.view.viewVars.rabbitDimensions = {x:0.69, y:0.25, width:0.265, height:0.75};
-	app.view.viewVars.beltDimensions = {x:0, y:0.187, width:0.68, height:0.813};
-	app.view.viewVars.thinkCloudDimensions = {x:0.62, y:-0.02, width:0.41, height:0.45};
-	app.view.viewVars.thinkCloudTextLocation = {x:0.68, y:0.08};
+	app.view.viewVars.rabbitDimensions = {x:0.03, y:0.40, width:0.22, height:0.60};
+	app.view.viewVars.beltDimensions = {x:0.2, y:0.42, width:0.80, height:0.58};
+	app.view.viewVars.thinkCloudDimensions = {x:-0.03, y:0.133, width:0.41, height:0.45};
+	app.view.viewVars.thinkCloudTextLocation = {x:0.033, y:0.24};
 	app.view.viewVars.pauseButtonDimensions = {x:0.02, y:0.035, width:0.09, height:0.12};
-	app.view.viewVars.numberWidgetDimensions = {onesX: 0.52, onesY: 0.28, tensX: 0.26, tensY: 0.28};
-	app.view.viewVars.doneButtonDimensions = {x:0.02, y:0.25, width:0.15, height:0.2};
+	app.view.viewVars.numberWidgetDimensions = {onesX: 0.62, onesY: 0.25, tensX: 0.36, tensY: 0.25};
+	app.view.viewVars.doneButtonDimensions = {x:0.80, y:0.228, width:0.15, height:0.2};
+
 	
 	// Tray and cover sizes and positions
 	app.view.viewVars.traySize = {width:0.395, height:0.42};
@@ -110,30 +112,31 @@ GroupingGameController.prototype.initialize = function() {
 	app.view.viewVars.initialCoverPosition = {x:0.25, y:-0.415};
 
 	// Initial egg positions
-	app.view.viewVars.initialEggRectangle = {x:0.70, y:0.69, width:0.2, height:0.01};
+	app.view.viewVars.initialEggRectangle = {x:0.07, y:0.75, width:0.15, height:0.01};
 	app.view.viewVars.initialEggSize = {width:0.06, height:0.093};
 	
 	// Initial pack positions
-	app.view.viewVars.initialPackRectangle = {x:0.59, y:0.80, width:0.2, height:0.05};
-	app.view.viewVars.initialPackSize = {width:0.2, height:0.2};
+	app.view.viewVars.initialPackRectangle = {x:0.1, y:0.85, width:0.2, height:0.05};
+	app.view.viewVars.initialPackSize = {width:0.2, height:0.07};
 	app.view.viewVars.packDestinationLocations = [{x: 0.08, y: 0.485}];
-
+	
 	// The destination locations where eggs will be locked in to
 	app.view.viewVars.eggDestinationLocations = [
-		{x:0.470, y: 0.465},
-		{x:0.532, y: 0.465},
+		//{x:0.470, y: 0.465},
+		{x:0.665, y: 0.405},
+		{x:0.727, y: 0.405},
 		
-		{x:0.431, y: 0.526},
-		{x:0.495, y: 0.526},
+		{x:0.715, y: 0.458},
+		{x:0.777, y: 0.458},
 		
-		{x:0.395, y: 0.585},
-		{x:0.458, y: 0.585},
+		{x:0.765, y: 0.511},
+		{x:0.827, y: 0.511},
 		
-		{x:0.356, y: 0.648},
-		{x:0.420, y: 0.648},
+		{x:0.815, y: 0.564},
+		{x:0.877, y: 0.564},
 		
-		{x:0.315, y: 0.710},
-		{x:0.378, y: 0.710},
+		{x:0.865, y: 0.617},
+		{x:0.927, y: 0.617},
 	];
 	
 	// complements
@@ -152,36 +155,43 @@ GroupingGameController.prototype.initialize = function() {
 		"Superb!"
 	];	
 	
-	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
 	
-	this.view.drawRabbit();
-	this.view.drawThinkCloud();
+	
+	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
+	this.gloalNumber += MathUtil.random(0,9);
+	
+	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
+	var onesLimitation = this.goalNumber - 10;
+	
+	
+
 	this.view.drawBelts();
-	this.view.drawTrays();
+	this.view.drawRabbit();
+	this.view.drawThinkCloud();	
 	this.view.drawPauseWidgets();	
 	this.view.drawDoneButton();
-	this.view.drawEggs();	
+	this.view.drawEggs(onesLimitation);
 	this.view.drawNumbers();
+	this.view.drawPacks();
 	this.view.drawTitle(title);	
 	
 	app.stage.draw();
 };
 
 // destructor
-GroupingGameController.prototype.finalize = function() {
+GroupingGame3Controller.prototype.finalize = function() {
 	
 };
 
-GroupingGameController.prototype.restart = function(sameNumber) {
+GroupingGame3Controller.prototype.restart = function(sameNumber) {
 	app.route(app.getCurrentPage(), app.getCurrentPageParams());
 };
 
-GroupingGameController.prototype.menu = function() {
+GroupingGame3Controller.prototype.menu = function() {
 	app.route("MenuUnit");
 };
 
-GroupingGameController.prototype.nextGame = function() {
+GroupingGame3Controller.prototype.nextGame = function() {
 	if (app.nextGame()) {
 		app.route(app.getCurrentPage(), app.getCurrentPageParams());
 	} else {
