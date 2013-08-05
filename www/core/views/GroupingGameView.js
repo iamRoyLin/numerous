@@ -65,7 +65,6 @@ function GroupingGameView(controller) {
 		EXCEEDED_GOAL_NUMBER_WITH_EGGS : 2,
 		PACK_DRAG_TO_ONES : 3,
 		EXCEEDED_GOAL_NUMBER_WITH_PACKS : 4,
-		
 	}
 		
 	// widgets
@@ -171,7 +170,7 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 25,
-		fontFamily: 'COMIC SANS MS',
+		fontFamily: 'mainFont',
 		fill: 'black',
 		align: 'center',
 		lineHeight: 1.3
@@ -181,7 +180,12 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 };
 
 // Displays a message in the think cloud
-GroupingGameView.prototype.displayThinkCloud = function(message) {
+GroupingGameView.prototype.displayThinkCloud = function(message, fontSize) {
+	if (fontSize == null) {
+		fontSize = 25;
+	}
+
+	this.thinkCloudTextWidget.setFontSize(fontSize);
 	this.thinkCloudTextWidget.setText(message);
 	app.stage.draw();
 };
@@ -229,16 +233,39 @@ GroupingGameView.prototype.drawTrays = function() {
 // draws the number the student needs to perform
 GroupingGameView.prototype.drawTitle = function(title) {
 	 this.titleTextWidget = new Kinetic.Text({
-    	x: DimensionUtil.decimalToActualWidth(0.15),
+		x: DimensionUtil.decimalToActualWidth(0.15),
 		y: DimensionUtil.decimalToActualHeight(0.02),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
+		
+		scaleX: 0,
+		scaleY: 0,
     	text: title,
-    	fontSize: 90,
-    	fontFamily: 'COMIC SANS MS',
-    	fill: 'black'
+		fontFamily: 'mainFont',
+    	fontSize: 95,
+		fill: 'black', // #2B8F4E
+		lineJoin: 'round',
+		fontStyle: 'bold',
+        shadowColor: 'white',
+        shadowBlur: 10,
+        shadowOffset: 5,
+        shadowOpacity: 1,
     });
     app.layer.add(this.titleTextWidget);
+	
+	setTimeout(function() {
+		var flyIn = new Kinetic.Tween({
+			node: app.view.titleTextWidget,
+			duration: 0.7,
+			
+			scaleX: 1/1024*DimensionUtil.width,
+			scaleY: 1/768*DimensionUtil.height,
+			x: DimensionUtil.decimalToActualWidth(0.15),
+			y: DimensionUtil.decimalToActualHeight(0.02),
+			
+		});
+		flyIn.play();
+	}, 300);
+	
+
 };
 
 // draws the done button
@@ -352,7 +379,7 @@ GroupingGameView.prototype.acceptPack = function (pack) {
 	
 	// say a compliment
 	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
-	this.displayThinkCloud(compliment);
+	this.displayThinkCloud(compliment, 50);
 	
 	// increase the count
 	this.packAtDestination = true;
@@ -495,11 +522,13 @@ GroupingGameView.prototype.unpause = function() {
 // Draws eggs in a specified area
 GroupingGameView.prototype.drawEggs = function(onesLimitation) {
 	if (onesLimitation == null) {
-		onesLimitation = 10;
+		this.onesLimitation = 10;
+	} else {
+		this.onesLimitation = onesLimitation;
 	}
 
 	for (var i=0; i<this.INITIAL_EGG_COUNT; i++) {
-		this.drawNewEgg(onesLimitation);
+		this.drawNewEgg();
 	}
 	
 	if (Env.debug) {
@@ -566,10 +595,12 @@ GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
 		
 		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
 		if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)) {
-			if (app.view.eggsAtDestination.length < onesLimitation) {
+			if (app.view.eggsAtDestination.length < app.view.onesLimitation) {
 				app.view.acceptEgg(this);
 			} else {
 				app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
+				app.view.declineEgg(this);
+				return
 			}
 		} else if (WidgetUtil.isNearPoints(this, app.view.BELT_TENS_AREA.X_ARRAY, app.view.BELT_TENS_AREA.Y_ARRAY, app.view.BELT_TENS_AREA.RADIUS_ARRAY)) {
 			// decline the egg and also record an error
@@ -601,7 +632,7 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 	
 	// say a compliment
 	var compliment = this.COMPLIMENTS[MathUtil.random(0,this.COMPLIMENTS.length-1)];
-	this.displayThinkCloud(compliment);	
+	this.displayThinkCloud(compliment, 50);	
 	
 	// play the accept egg sound
 	Music.play(this.sounds.acceptEgg);

@@ -78,13 +78,12 @@ GroupingGame2Controller.prototype.initialize = function() {
 	this.view.drawThinkCloud();
 	this.view.drawBelts();
 	this.view.drawTrays();
-	this.view.drawTitle(title);	
 	this.view.drawPauseWidgets();	
 	this.view.drawDoneButton();
 	this.view.drawEggs(onesLimitation);
 	this.view.drawNumbers();
-	
 	this.view.drawPacks();
+	this.view.drawTitle(title);	
 	
 	app.stage.draw();
 };
