@@ -1,20 +1,11 @@
-function TemplateView() {
-	
-	// Images. These will automatically be loaded
-	this.images = {};
-	
-	// Sounds
-	this.sounds = {};
+function TemplateView(controller) {
+	this.controller = controller;
 };
+// Simulate inheritance
+TemplateView.prototype = new View();
 
+// destructor (is automatically called when you leave the page)
 TemplateView.prototype.finalize = function() {
 
-};
-
-TemplateView.prototype.draw = function() {
-	// draw widgets here
-	
-	// redraw all widgets
-	app.stage.draw();
 };
 

@@ -558,6 +558,8 @@ GroupingGameView.prototype.drawNewEgg = function() {
 			return;
 		}
 		
+		
+		
 		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
 		if (WidgetUtil.isNearPoints(this, app.view.BELT_ONES_AREA.X_ARRAY, app.view.BELT_ONES_AREA.Y_ARRAY, app.view.BELT_ONES_AREA.RADIUS_ARRAY)
 				&& (app.view.eggsAtDestination.length != 10)) {
