@@ -86,27 +86,16 @@ App.prototype.route = function(page, pageParams) {
 	this.layer = new Kinetic.Layer();
 	this.stage.add(this.layer);	
 	
-	
-	// creates new view
-	// eval("this.view = new " +page+ "View();");
-	
 	// creates new controller
 	eval("this.controller = new " + app.page + "Controller(app.view, app.pageParams);");
 	
 	// loads all images
 	LoaderUtil.load(this.controller.images, this._loaded);
-	
 };
 
 App.prototype._loaded = function() {
-
 	// tell the controller to perform
 	app.controller.initialize();
-	
-	// eval("app.controller = new " + app.page + "Controller(app.view, app.pageParams);");
-	// link the views and controllers
-	// app.controller.view = app.view;
-	// app.view.controller = app.controller;
 };
 
 App.prototype.nextGame = function () {

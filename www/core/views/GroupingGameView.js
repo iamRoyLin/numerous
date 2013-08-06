@@ -14,9 +14,6 @@ function GroupingGameView(controller) {
 	// pack count
 	this.packCount = 0;
 	
-	// boolean represent if there is already a pack at "tens" destination
-	this.packAtDestination = false;
-	
 	// Array holding packs initial locations of when it was randomly generated
 	this.packInitialLocations = [];
 	
@@ -97,7 +94,7 @@ GroupingGameView.prototype.drawThinkCloud = function () {
 		lineHeight: 1.3
 	});
 	app.layer.add(this.thinkCloudTextWidget);
-	this.displayThinkCloud("Drag " + app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] + " of my easter eggs onto the belt!");
+	this.displayThinkCloud("Drag " + MathUtil.convertNumberToWord(app.controller.goalNumber) + " of my easter eggs onto the belt!");
 };
 
 // Displays a message in the think cloud
@@ -276,21 +273,35 @@ GroupingGameView.prototype.drawNewPack = function () {
 			return;
 		}
 		
-		// accepts the pack at the destination if dropped close enough and not full or else return the pack to its starting position
-		if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)
-				&& (!app.view.packAtDestination)) {
-			app.view.acceptPack(this);
+		
+		
+		if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
+			// dropped it in correct location (so far so good)
 			
+			if (parseInt(app.view.tensTextWidget.getText()) < MathUtil.getTens(app.controller.goalNumber)) {
+				app.view.acceptPack(this);
+			} else {
+				app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS);
+				app.view.declinePack(this);
+			}
+
+		
 		} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
-			// decline the pack and also record an error
-			app.view.declinePack(this);
-			app.view.errorMade(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
+			// dropped pack to ones (error)	
+			app.view.declineEgg(this);
+			app.view.declinePack(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
 		} else {
-			app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS);
-			app.view.declinePack(pack);
+			// dropped somewhere else (doesn't matter)
+			app.view.declinePack(this);
 		}
 		
 	});
+	
+	if (Env.debug) {
+		pack.on('touchmove dragmove', function() {
+			console.log("x:" + DimensionUtil.actualToDecimalWidth(this.getX()) + ", " + "y:" + DimensionUtil.actualToDecimalHeight(this.getY()));
+		});
+	}
 	
 	app.layer.add(pack);
 	app.stage.draw();
@@ -301,10 +312,9 @@ GroupingGameView.prototype.acceptPack = function (pack) {
 	// say a compliment
 	var compliment = this.viewVars.compliments[MathUtil.random(0,this.viewVars.compliments.length-1)];
 	this.displayThinkCloud(compliment, 50);
-	
-	// increase the count
-	this.packAtDestination = true;
-	this.tensTextWidget.setText(parseInt(this.tensTextWidget.getText())+1);
+
+	var tensCount = parseInt(this.tensTextWidget.getText());
+	this.tensTextWidget.setText(tensCount+1);
 	
 	// play the accept egg sound
 	Music.play(this.sounds.acceptEgg);
@@ -312,8 +322,8 @@ GroupingGameView.prototype.acceptPack = function (pack) {
 	// make the egg not draggable
 	pack.setDraggable(false);
 	
-	pack.setX(DimensionUtil.decimalToActualWidth(this.viewVars.packDestinationLocations[0].x));
-	pack.setY(DimensionUtil.decimalToActualHeight(this.viewVars.packDestinationLocations[0].y));
+	pack.setX(DimensionUtil.decimalToActualWidth(this.viewVars.packDestinationLocations[tensCount].x));
+	pack.setY(DimensionUtil.decimalToActualHeight(this.viewVars.packDestinationLocations[tensCount].y));
 	
 	app.stage.draw();
 	
@@ -436,12 +446,8 @@ GroupingGameView.prototype.unpause = function() {
 };
 
 // Draws eggs in a specified area
-GroupingGameView.prototype.drawEggs = function(onesLimitation) {
-	if (onesLimitation == null) {
-		this.onesLimitation = 10;
-	} else {
-		this.onesLimitation = onesLimitation;
-	}
+GroupingGameView.prototype.drawEggs = function() {
+
 
 	for (var i=0; i<this.viewVars.initialEggCount; i++) {
 		this.drawNewEgg();
@@ -479,7 +485,7 @@ GroupingGameView.prototype.drawEggs = function(onesLimitation) {
 };
 
 // Draws one egg in a specified area
-GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
+GroupingGameView.prototype.drawNewEgg = function() {
 	var egg = new Kinetic.Image({
 		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length)],
 		draggable: true
@@ -508,29 +514,35 @@ GroupingGameView.prototype.drawNewEgg = function(onesLimitation) {
 		}
 		
 		
-		
-		// accepts the egg at the destination if dropped close enough and not full or else return the egg to its starting position
 		if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
-			if (app.view.eggsAtDestination.length < app.view.onesLimitation) {
-				app.view.acceptEgg(this);
+			// dropped it in correct location (so far so good)
+			
+			if (app.view.viewVars.usePacks) {
+				// using packs (so eggs should not exceed the goalnumber's ones
+				if (parseInt(app.view.onesTextWidget.getText()) < MathUtil.getOnes(app.controller.goalNumber)) {
+					app.view.acceptEgg(this);
+				} else {
+					app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
+					app.view.declineEgg(this);
+				}
 			} else {
-				app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
-				app.view.declineEgg(this);
-				return
+				// not using packs, so we can accept egg if it is under total number
+				if (app.view.eggsAtDestination.length < app.controller.goalNumber) {
+					app.view.accpetEgg(this);
+				} else {
+					app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
+					app.view.declineEgg(this);
+				}
 			}
+		
 		} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
-			// decline the egg and also record an error
+			// dropped egg in tens (error)	
 			app.view.declineEgg(this);
 			app.view.errorMade(app.view.ERROR_TYPES.DRAG_TO_TENS);
 		} else {
+			// dropped somewhere else (doesn't matter)
 			app.view.declineEgg(this);
 		}
-		
-		// If we reach 10 eggs in our tray
-		if (app.view.eggsAtDestination.length == 10) {
-			app.view.trayFull();
-		}
-		
 	});
 	
 	app.layer.add(egg);
@@ -732,12 +744,12 @@ GroupingGameView.prototype.errorMade = function (errorType) {
 		break;
 		case this.ERROR_TYPES.INCORRECT_DONE:
 			this.displayThinkCloud("UH OH! The number you have made is not " + 
-				app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] +
+				MathUtil.convertNumberToWord(app.controller.goalNumber) +
 				"! You need more!");
 		break;
 		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS:
 			this.displayThinkCloud("You're trying to make " + 
-				app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] +
+				MathUtil.convertNumberToWord(app.controller.goalNumber) +
 				". Count your eggs! Have you already got the correct number?");
 		break;
 		case this.ERROR_TYPES.PACK_DRAG_TO_ONES:
@@ -745,7 +757,7 @@ GroupingGameView.prototype.errorMade = function (errorType) {
 		break;
 		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS:
 			this.displayThinkCloud("You're trying to make " + 
-				app.controller.NUMBER_TO_WORDS_MAP[app.controller.goalNumber] +
+				MathUtil.convertNumberToWord(app.controller.goalNumber) +
 				". Count your packs! Have you got enough?");
 		break;
 	}
@@ -826,16 +838,27 @@ GroupingGameView.prototype.finish = function(score) {
 			
 	}
 	
-	var buttonRetry = null;
+
 	
 	// draw buttons 
+	var buttonRetry = null;	
+	var buttonMenu = null;
 	if (score == 0) {
 		// draw retry button only
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
 		WidgetUtil.glue(buttonRetry, {
 			width: 0.15,
 			height: 0.25,
-			dx: 0.425,
+			dx: 0.36,
+			dy: 0.45
+		});
+		
+		// draw retry button only
+		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
+		WidgetUtil.glue(buttonMenu, {
+			width: 0.15,
+			height: 0.25,
+			dx: 0.54,
 			dy: 0.45
 		});
 	} else {
@@ -843,7 +866,16 @@ GroupingGameView.prototype.finish = function(score) {
 		WidgetUtil.glue(buttonRetry, {
 			width: 0.1,
 			height: 0.17,
-			dx: 0.36,
+			dx: 0.30,
+			dy: 0.6
+		});
+		
+		// draw retry button only
+		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
+		WidgetUtil.glue(buttonMenu, {
+			width: 0.15,
+			height: 0.25,
+			dx: 0.425,
 			dy: 0.6
 		});
 		
@@ -851,7 +883,7 @@ GroupingGameView.prototype.finish = function(score) {
 		WidgetUtil.glue(buttonNext, {
 			width: 0.1,
 			height: 0.17,
-			dx: 0.54,
+			dx: 0.60,
 			dy: 0.6
 		});
 		app.layer.add(buttonNext);	
@@ -864,7 +896,12 @@ GroupingGameView.prototype.finish = function(score) {
 		Music.play(app.view.sounds.select);
 		app.controller.restart(true);
 	});
+	buttonRetry.on('click tap', function () {
+		Music.play(app.view.sounds.select);
+		app.controller.menu();
+	});
 	
+	app.layer.add(buttonMenu);
 	app.layer.add(buttonRetry);	
 	
 	app.stage.draw();

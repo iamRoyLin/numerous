@@ -46,21 +46,6 @@ function GroupingGame3Controller() {
 	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 	this.sounds.done = "sounds/grouping_game/done.wav";
 	
-	// Map of numbers to their words
-	this.NUMBER_TO_WORDS_MAP = [];
-	this.NUMBER_TO_WORDS_MAP[11] = "ELEVEN";
-	this.NUMBER_TO_WORDS_MAP[12] = "TWELVE";
-	this.NUMBER_TO_WORDS_MAP[13] = "THIRTEEN";
-	this.NUMBER_TO_WORDS_MAP[14] = "FOURTEEN";
-	this.NUMBER_TO_WORDS_MAP[15] = "FIFTEEN";
-	this.NUMBER_TO_WORDS_MAP[16] = "SIXTEEN";
-	this.NUMBER_TO_WORDS_MAP[17] = "SEVENTEEN";
-	this.NUMBER_TO_WORDS_MAP[18] = "EIGHTEEN";
-	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
-	this.NUMBER_TO_WORDS_MAP[20] = "TWENTY";
-	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
-	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
-	
 	
 };
 
@@ -118,7 +103,19 @@ GroupingGame3Controller.prototype.initialize = function() {
 	// Initial pack positions
 	app.view.viewVars.initialPackRectangle = {x:0.1, y:0.85, width:0.2, height:0.05};
 	app.view.viewVars.initialPackSize = {width:0.2, height:0.07};
-	app.view.viewVars.packDestinationLocations = [{x: 0.08, y: 0.485}];
+	
+	// The destination locations where packs will be locked in to
+	app.view.viewVars.packDestinationLocations = [
+		{x: 0.298, y: 0.444},
+		{x: 0.338, y: 0.502},
+		{x: 0.378, y: 0.560},
+		{x: 0.418, y: 0.618},
+		{x: 0.458, y: 0.676},
+		{x: 0.498, y: 0.734},
+		{x: 0.538, y: 0.792},
+		{x: 0.578, y: 0.850},
+		{x: 0.618, y: 0.908},
+	];
 	
 	// The destination locations where eggs will be locked in to
 	app.view.viewVars.eggDestinationLocations = [
@@ -155,13 +152,13 @@ GroupingGame3Controller.prototype.initialize = function() {
 		"Superb!"
 	];	
 	
-	
+	// determines whether packs are being used.
+	app.view.viewVars.usePacks = true;
 	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-	this.gloalNumber += MathUtil.random(0,9);
+	this.goalNumber += MathUtil.random(0,9);
 	
-	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
-	var onesLimitation = this.goalNumber - 10;
+	var title = MathUtil.convertNumberToWord(this.goalNumber);
 	
 	
 
@@ -170,7 +167,7 @@ GroupingGame3Controller.prototype.initialize = function() {
 	this.view.drawThinkCloud();	
 	this.view.drawPauseWidgets();	
 	this.view.drawDoneButton();
-	this.view.drawEggs(onesLimitation);
+	this.view.drawEggs();
 	this.view.drawNumbers();
 	this.view.drawPacks();
 	this.view.drawTitle(title);	

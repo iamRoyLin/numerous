@@ -48,19 +48,7 @@ function GroupingGame2Controller() {
 	this.sounds.select = "sounds/menu/menu_select.wav";
 	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 	this.sounds.done = "sounds/grouping_game/done.wav";
-	
-	// Map of numbers to their words
-	this.NUMBER_TO_WORDS_MAP = [];
-	this.NUMBER_TO_WORDS_MAP[11] = "ELEVEN";
-	this.NUMBER_TO_WORDS_MAP[12] = "TWELVE";
-	this.NUMBER_TO_WORDS_MAP[13] = "THIRTEEN";
-	this.NUMBER_TO_WORDS_MAP[14] = "FOURTEEN";
-	this.NUMBER_TO_WORDS_MAP[15] = "FIFTEEN";
-	this.NUMBER_TO_WORDS_MAP[16] = "SIXTEEN";
-	this.NUMBER_TO_WORDS_MAP[17] = "SEVENTEEN";
-	this.NUMBER_TO_WORDS_MAP[18] = "EIGHTEEN";
-	this.NUMBER_TO_WORDS_MAP[19] = "NINETEEN";
-	
+
 };
 
 GroupingGame2Controller.prototype.initialize = function() {
@@ -152,11 +140,11 @@ GroupingGame2Controller.prototype.initialize = function() {
 		"Superb!"
 	];	
 	
-	
+	// determines whether packs are being used.
+	app.view.viewVars.usePacks = true;
 	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-	var title = this.NUMBER_TO_WORDS_MAP[this.goalNumber];
-	var onesLimitation = this.goalNumber - 10;
+	var title = MathUtil.convertNumberToWord(this.goalNumber);
 	
 	this.view.drawRabbit();
 	this.view.drawThinkCloud();
@@ -164,7 +152,6 @@ GroupingGame2Controller.prototype.initialize = function() {
 	this.view.drawTrays();
 	this.view.drawPauseWidgets();	
 	this.view.drawDoneButton();
-	this.view.drawEggs(onesLimitation);
 	this.view.drawNumbers();
 	this.view.drawPacks();
 	this.view.drawTitle(title);	
