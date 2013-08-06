@@ -129,5 +129,5 @@ $(function () {
 	
 	app.currentUnit=1;
 	app.currentGame=0;
-	app.route("GroupingGame3");
+	app.route("Home");
 });
