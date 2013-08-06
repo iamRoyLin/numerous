@@ -141,7 +141,7 @@ GroupingGameController.prototype.initialize = function() {
 	];	
 	
 	// determines whether packs are being used.
-	app.view.viewVars.usePacks = true;
+	app.view.viewVars.usePacks = false;
 	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
 	var title = MathUtil.convertNumberToWord(this.goalNumber);

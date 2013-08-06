@@ -528,7 +528,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 			} else {
 				// not using packs, so we can accept egg if it is under total number
 				if (app.view.eggsAtDestination.length < app.controller.goalNumber) {
-					app.view.accpetEgg(this);
+					app.view.acceptEgg(this);
 				} else {
 					app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 					app.view.declineEgg(this);
@@ -542,6 +542,10 @@ GroupingGameView.prototype.drawNewEgg = function() {
 		} else {
 			// dropped somewhere else (doesn't matter)
 			app.view.declineEgg(this);
+		}
+		
+		if ((!app.view.viewVars.usePacks) && (app.view.eggsAtDestination.length == 10)) {
+			app.view.trayFull();
 		}
 	});
 	
@@ -896,7 +900,7 @@ GroupingGameView.prototype.finish = function(score) {
 		Music.play(app.view.sounds.select);
 		app.controller.restart(true);
 	});
-	buttonRetry.on('click tap', function () {
+	buttonMenu.on('click tap', function () {
 		Music.play(app.view.sounds.select);
 		app.controller.menu();
 	});
