@@ -42,7 +42,7 @@ function App() {
 		{name:'"eleven"',       page:"GroupingGame2", goalNumber:11},
 		{name:'"twelve"',       page:"GroupingGame2", goalNumber:12},
 		
-		{name:"Practice", page:"GroupingGamePractice"}
+		{name:"Practice", page:"Practice1"}
 	];
 	
 	// Unit 2 games
@@ -56,7 +56,7 @@ function App() {
 		{name:"80 to 89",  page:"GroupingGame3", goalNumber:80, variation:3},
 		{name:"90 to 99",  page:"GroupingGame3", goalNumber:90, variation:3},
 		
-		{name:"Practice", page:"GroupingGamePractice"}
+		{name:"Practice", page:"Practice2"}
 	];
 	
 	this.UNIT_GAMES[2] = [

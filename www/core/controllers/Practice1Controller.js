@@ -1,4 +1,4 @@
-function PracticeController() {
+function Practice1Controller() {
 
 	// Images. These will automatically be loaded
 	this.images = {};
@@ -28,7 +28,7 @@ function PracticeController() {
 };
 
 // Happens when images are loaded
-PracticeController.prototype.initialize = function () {
+Practice1Controller.prototype.initialize = function () {
 	this.view = new PracticeView(this);
 	app.view = this.view;
 	
@@ -118,7 +118,7 @@ PracticeController.prototype.initialize = function () {
 };
 
 // destructor (is automatically called when you leave the page)
-PracticeController.prototype.finalize = function() {
+Practice1Controller.prototype.finalize = function() {
 	
 }
 
