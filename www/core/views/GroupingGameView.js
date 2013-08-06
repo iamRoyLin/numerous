@@ -898,7 +898,7 @@ GroupingGameView.prototype.finish = function(score) {
 	
 	buttonRetry.on('click tap', function () {
 		Music.play(app.view.sounds.select);
-		app.controller.restart(true);
+		app.controller.restart();
 	});
 	buttonMenu.on('click tap', function () {
 		Music.play(app.view.sounds.select);

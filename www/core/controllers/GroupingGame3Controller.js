@@ -155,8 +155,15 @@ GroupingGame3Controller.prototype.initialize = function() {
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = true;
 	
-	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-	this.goalNumber += MathUtil.random(0,9);
+	if (app.groupingGame3RestartNumber != null) {
+		this.goalNumber = app.groupingGame3RestartNumber;
+		app.groupingGame3RestartNumber = null;
+	} else {
+		this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
+		this.goalNumber += MathUtil.random(0,9);
+	}
+	
+
 	
 	var title = MathUtil.convertNumberToWord(this.goalNumber);
 	
@@ -181,6 +188,9 @@ GroupingGame3Controller.prototype.finalize = function() {
 };
 
 GroupingGame3Controller.prototype.restart = function(sameNumber) {
+	if (sameNumber) {
+		app.groupingGame3RestartNumber = this.goalNumber;
+	}
 	app.route(app.getCurrentPage(), app.getCurrentPageParams());
 };
 
