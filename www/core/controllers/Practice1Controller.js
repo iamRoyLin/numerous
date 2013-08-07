@@ -37,6 +37,14 @@ function Practice1Controller() {
 		"images/grouping_game/practice/egg9.png"
 	];
 	
+	// sounds
+	this.sounds = {};
+	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
+	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.wav";
+	this.sounds.select = "sounds/menu/menu_select.wav";
+	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
+	this.sounds.done = "sounds/grouping_game/done.wav";
+	
 	//view.draw();
 };
 
@@ -44,6 +52,10 @@ function Practice1Controller() {
 Practice1Controller.prototype.initialize = function () {
 	this.view = new PracticeView(this);
 	app.view = this.view;
+	
+	//dimensions
+	app.view.viewVars = {};
+	app.view.viewVars.pauseButtonDimensions = {x:0.02, y:0.035, width:0.09, height:0.12};
 	
 	app.view.totalNumberOfSets = 4;
 	app.view.numberOfQuestionsPerSet = 3;
@@ -130,6 +142,7 @@ Practice1Controller.prototype.initialize = function () {
 	this.view.drawBlackBoard();
 	this.view.drawRabbit();
 	this.view.drawQuestion();
+	this.view.drawPauseWidgets();
 	//this.view.drawOptionButtons();
 	this.view.questionCallback();
 	
@@ -140,4 +153,12 @@ Practice1Controller.prototype.initialize = function () {
 Practice1Controller.prototype.finalize = function() {
 	
 }
+
+Practice1Controller.prototype.restart = function(sameNumber) {
+
+};
+
+Practice1Controller.prototype.menu = function() {
+	app.route("MenuUnit");
+};
 

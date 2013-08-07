@@ -348,17 +348,122 @@ PracticeView.prototype.finish = function(score) {
 	}
 	
 	buttonRetry.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		//Music.play(app.view.sounds.select);
 		app.controller.restart();
 	});
 	buttonMenu.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		//Music.play(app.view.sounds.select);
 		app.controller.menu();
 	});
 	
 	app.layer.add(buttonMenu);
 	app.layer.add(buttonRetry);	
 	
+	app.stage.draw();
+};
+
+// draws all the pause widgets then hides them. Shows when the pause function is called
+PracticeView.prototype.drawPauseWidgets = function() {
+
+	// pause button
+	var buttonPause = new Kinetic.Image({image: this.images.buttonPause});
+	WidgetUtil.glue(buttonPause, {
+		width: this.viewVars.pauseButtonDimensions.width,
+		height: this.viewVars.pauseButtonDimensions.height,
+		dx: this.viewVars.pauseButtonDimensions.x,
+		dy: this.viewVars.pauseButtonDimensions.y
+	});
+	app.layer.add(buttonPause);
+	buttonPause.on('click tap', function() {
+		//Music.play(this.sounds.select);
+		app.view.pause();
+	});
+	
+	// pause group
+	this.pauseWidgetsGroup = new Kinetic.Group({});
+
+	// overlay
+	var overlay = new Kinetic.Rect({
+		fill: 'black',
+		opacity: 0.62
+	});
+	WidgetUtil.glue(overlay, {
+		width: 1,
+		height: 1,
+		dx: 0,
+		dy: 0
+	});
+	this.pauseWidgetsGroup.add(overlay);	
+	
+	// paused label
+	var labelPaused = new Kinetic.Image({image: this.images.labelPaused});
+	WidgetUtil.glue(labelPaused, {
+		width: 0.3,
+		height: 0.1,
+		dx: 0.35,
+		dy: 0.25
+	});
+	this.pauseWidgetsGroup.add(labelPaused);
+
+	// resume button
+	var buttonResume = new Kinetic.Image({image: this.images.buttonResume});
+	WidgetUtil.glue(buttonResume, {
+		width: 0.18,
+		height: 0.25,
+		dx: 0.21,
+		dy: 0.42
+	});
+	this.pauseWidgetsGroup.add(buttonResume);
+	
+	buttonResume.on('click tap', function () {
+		//Music.play(this.sounds.select);
+		app.view.unpause();
+	});
+	
+	// menu button
+	var buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
+	WidgetUtil.glue(buttonMenu, {
+		width: 0.18,
+		height: 0.25,
+		dx: 0.41,
+		dy: 0.42
+	});
+	this.pauseWidgetsGroup.add(buttonMenu);
+	
+	buttonMenu.on('click tap', function () {
+		//Music.play(this.sounds.select);
+		app.controller.menu();
+	});
+	
+	// restart button
+	var buttonRestart = new Kinetic.Image({image: this.images.buttonRestart});
+	WidgetUtil.glue(buttonRestart, {
+		width: 0.18,
+		height: 0.25,
+		dx: 0.61,
+		dy: 0.42
+	});
+	this.pauseWidgetsGroup.add(buttonRestart);
+	
+	buttonRestart.on('click tap', function () {
+		//Music.play(this.sounds.select);
+		app.controller.restart(true);
+	});
+	
+	app.layer.add(this.pauseWidgetsGroup);
+	this.pauseWidgetsGroup.hide();
+};
+
+// pause the game
+PracticeView.prototype.pause = function() {
+	this.pauseWidgetsGroup.show();
+	this.pauseWidgetsGroup.moveToTop();
+	app.stage.draw();
+};
+
+// unpause the game
+PracticeView.prototype.unpause = function() {
+	this.pauseWidgetsGroup.hide();
 	app.stage.draw();
 };
 
