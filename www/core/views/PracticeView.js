@@ -44,7 +44,7 @@ PracticeView.prototype.drawBlackBoard = function() {
 };
 
 //draw option buttons
-PracticeView.prototype.drawOptionButtons = function() {
+/*PracticeView.prototype.drawOptionButtons = function() {
 	var count = 0;
 	for (var i = 0; i < 3; i++){
 		for (var j = 0; j < 3; j++){
@@ -60,59 +60,153 @@ PracticeView.prototype.drawOptionButtons = function() {
 		}
 	}
 	
-};
+};*/
 
 //Qustions controller
 PracticeView.prototype.questionCallback = function() {
+	this.questionSets.current++;
 	if (this.questionSets.current < this.totalNumberOfSets*this.numberOfQuestionsPerSet){
+		//update current question number
+		this.updateCurrentQuestionNumber();
 		//current set of questions
-		var i = this.questionSets.current/this.numberOfQuestionsPerSet;
+		var i = Math.floor(this.questionSets.current/this.numberOfQuestionsPerSet);
 		var questionSet = this.questionSets.sets[i];
 		//current keyboard
-		var questionAnswers = this.questionSets.keyboards[i];
+		this.questionAnswers = this.questionSets.keyboards[i];
 		//randomly select a question
-		var question = questionSet[MathUtil.random(0, questionSet.length)];
+		this.question = questionSet[MathUtil.random(0, questionSet.length)];
 		//remove this question from this question set
-		questionSet.splice(questionSet.indexOf(question), 1);
+		questionSet.splice(questionSet.indexOf(this.question), 1);
 		//call draw question to draw the text of this question
-		this.drawQuestion(question, questionAnswers);
+		this.updateQuestion();
 	}else{}
 			
 }
+
+PracticeView.prototype.updateCurrentQuestionNumber = function() {
+	app.view.questionNumber.setText((this.questionSets.current+1) + "/" +  this.totalNumberOfSets*this.numberOfQuestionsPerSet);
+	app.stage.draw();
+}
+
+PracticeView.prototype.updateQuestion = function() {
+	app.view.title1.setText(this.question.q1);
+	app.view.title2.setText(this.question.q2);
+	var count = 0;
+	for (var i = 0; i < 3; i++){
+		for (var j = 0; j < 3; j++){
+			app.view.buttonText[count].setText(this.questionAnswers[count]);
+			count ++;
+		}
+	}
+	app.stage.draw();
+}
+
+
+PracticeView.prototype.checkCorrectness = function(count) {
+	var updatedLine2 = this.question.q2.replace("__", this.questionAnswers[count]);
+	updatedLine2 = updatedLine2.replace("?", ".");
+	app.view.title2.setText(updatedLine2);
+	app.stage.draw();
+	if(this.question.a == this.questionAnswers[count]){
+		app.view.correctnessText.show();
+		app.view.correctnessText.setText("Correct!");
+		app.view.correctnessText.setFill('green');
+		app.view.correctnessText.setX(500);
+		app.stage.draw();
+		setTimeout(function() {
+			app.view.removeCorrectness();
+			app.view.questionCallback();
+		}, 2000);
+	}else{
+		app.view.correctnessText.show();
+		app.view.correctnessText.setText("Whoops! Answer is " + this.question.a + ".");
+		app.view.correctnessText.setFill('red');
+		app.view.correctnessText.setX(350);
+		app.stage.draw();
+		setTimeout(function() {
+			app.view.removeCorrectness();
+			app.view.questionCallback();
+		}, 5000);
+	}
+	
+}
+
+PracticeView.prototype.removeCorrectness = function() {
+	app.view.correctnessText.hide();
+	app.stage.draw();
+}
+				
 //draw questions and optional answers
-PracticeView.prototype.drawQuestion = function(question, questionAnswers) {
-	var title1 = new Kinetic.Text({
+PracticeView.prototype.drawQuestion = function() {
+
+	app.view.questionNumber = new Kinetic.Text({
+		x: 850,
+		y: 60,
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+		fontSize: 30,
+		fontFamily: 'mainFont',
+		fill: 'white',
+		align: 'center',
+		lineHeight: 1.3
+	});
+	app.layer.add(app.view.questionNumber);
+	
+	app.view.title1 = new Kinetic.Text({
 		x: 300,
-		y: 100,
+		y: 90,
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 45,
 		fontFamily: 'mainFont',
 		fill: 'white',
 		align: 'center',
-		lineHeight: 1.3,
-		text: question.q1
+		lineHeight: 1.3
 	});
-	app.layer.add(title1);
-	var title2 = new Kinetic.Text({
+	app.layer.add(app.view.title1);
+	
+	app.view.title2 = new Kinetic.Text({
 		x: 300,
-		y: 150,
+		y: 140,
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
-		fontSize: 40,
+		fontSize: 36,
 		fontFamily: 'mainFont',
 		fill: 'white',
 		align: 'center',
-		lineHeight: 1.3,
-		text: question.q2
+		lineHeight: 1.3
 	});
-	app.layer.add(title2);
+	app.layer.add(app.view.title2);
+	
+	app.view.correctnessText = new Kinetic.Text({
+		x: 400,
+		y: 190,
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+		fontSize: 36,
+		fontFamily: 'mainFont',
+		align: 'center',
+		lineHeight: 1.3
+	});
+	app.layer.add(app.view.correctnessText);
 	
 	//draw keyboards
 	var count = 0;
+	app.view.button = {};
+	app.view.buttonText = {};
 	for (var i = 0; i < 3; i++){
 		for (var j = 0; j < 3; j++){
-			var buttonText = new Kinetic.Text({
+			
+			app.view.button[count] = new Kinetic.Image({image: this.images.options[count]});
+			WidgetUtil.glue(app.view.button[count], {
+				width: 0.18,
+				height: 0.22,
+				dx: 0.4 + j*0.18,
+				dy: 0.4 + i*0.19
+			});
+			app.layer.add(app.view.button[count]);
+			
+			app.view.buttonText[count] = new Kinetic.Text({
 				x: 460 + j*190,
 				y: 330 + i*135,
 				scaleX: 1/1024*DimensionUtil.width,
@@ -122,12 +216,21 @@ PracticeView.prototype.drawQuestion = function(question, questionAnswers) {
 				fill: 'black',
 				align: 'center',
 				lineHeight: 1.3,
-				text: questionAnswers[count]
+				//text: questionAnswers[count]
 			});
-			app.layer.add(buttonText);
+			app.layer.add(app.view.buttonText[count]);
+			
+			app.view.button[count].id = count;
+			app.view.button[count].on('click tap', function () {
+					app.view.checkCorrectness(this.id);
+			});
+			app.view.buttonText[count].id = count;
+			app.view.buttonText[count].on('click tap', function () {
+					app.view.checkCorrectness(this.id);
+			});
 			count ++;
-				
+			
 		}
-	}
+	}	
 };
 

@@ -57,26 +57,26 @@ Practice1Controller.prototype.initialize = function () {
 		{q1: "Nineteen", q2: " is the same as __ and ten?", a: "Nine"}
 	];
 	var set2 = [
-		{q: "Ten and one", q2: " is the same as __?", a: "Eleven"},
-		{q: "Ten and two", q2: " is the same as __?", a: "Twelve"},
-		{q: "Three and ten", q2: " is the same as __?", a: "Thirteen"},
-		{q: "Four and ten", q2: " is the same as __?", a: "Fourteen"},
-		{q: "Ten and five", q2: " is the same as __?", a: "Fifteen"},
-		{q: "Ten and six", q2: " is the same as __?", a: "Sixteen"},
-		{q: "Seven and ten", q2: " is the same as __?", a: "Seventeen"},
-		{q: "Eight and ten", q2: " is the same as __?", a: "Eighteen"},
-		{q: "Ten and nine", q2: " is the same as __?", a: "Nineteen"}
+		{q1: "Ten and one", q2: " is the same as __?", a: "Eleven"},
+		{q1: "Ten and two", q2: " is the same as __?", a: "Twelve"},
+		{q1: "Three and ten", q2: " is the same as __?", a: "Thirteen"},
+		{q1: "Four and ten", q2: " is the same as __?", a: "Fourteen"},
+		{q1: "Ten and five", q2: " is the same as __?", a: "Fifteen"},
+		{q1: "Ten and six", q2: " is the same as __?", a: "Sixteen"},
+		{q1: "Seven and ten", q2: " is the same as __?", a: "Seventeen"},
+		{q1: "Eight and ten", q2: " is the same as __?", a: "Eighteen"},
+		{q1: "Ten and nine", q2: " is the same as __?", a: "Nineteen"}
 	];
 	var set3 = [
-		{q: "Ten and one", q2: " is the same as __?", a: "11"},
-		{q: "Ten and two", q2: " is the same as __?", a: "12"},
-		{q: "Three and ten", q2: " is the same as __?", a: "13"},
-		{q: "Four and ten", q2: " is the same as __?", a: "14"},
-		{q: "Ten and five", q2: " is the same as __?", a: "15"},
-		{q: "Ten and six", q2: " is the same as __?", a: "16"},
-		{q: "Seven and ten", q2: " is the same as __?", a: "17"},
-		{q: "Eight and ten", q2: " is the same as __?", a: "18"},
-		{q: "Ten and nine", q2: " is the same as __?", a: "19"}
+		{q1: "Ten and one", q2: " is the same as __?", a: "11"},
+		{q1: "Ten and two", q2: " is the same as __?", a: "12"},
+		{q1: "Three and ten", q2: " is the same as __?", a: "13"},
+		{q1: "Four and ten", q2: " is the same as __?", a: "14"},
+		{q1: "Ten and five", q2: " is the same as __?", a: "15"},
+		{q1: "Ten and six", q2: " is the same as __?", a: "16"},
+		{q1: "Seven and ten", q2: " is the same as __?", a: "17"},
+		{q1: "Eight and ten", q2: " is the same as __?", a: "18"},
+		{q1: "Ten and nine", q2: " is the same as __?", a: "19"}
 	];
 	var set4 = [
 		{q1: "11", q2: " is the same as __ and ten?", a: "One"},
@@ -106,12 +106,13 @@ Practice1Controller.prototype.initialize = function () {
 	
 	app.view.questionSets.sets = [set1, set2, set3, set4];
 	app.view.questionSets.keyboards = [keyboard2, keyboard1, keyboard3, keyboard2];
-	app.view.questionSets.current = 0;
+	app.view.questionSets.current = -1;
 	
 	this.view.setImages(this.images);
 	this.view.drawBlackBoard();
 	this.view.drawRabbit();
-	this.view.drawOptionButtons();
+	this.view.drawQuestion();
+	//this.view.drawOptionButtons();
 	this.view.questionCallback();
 	
 	app.stage.draw();
