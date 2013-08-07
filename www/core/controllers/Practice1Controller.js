@@ -6,11 +6,24 @@ function Practice1Controller() {
 	this.images.rabbitBody = "images/grouping_game/practice/rabbit_body.png";
 	this.images.rabbitHead = "images/grouping_game/practice/rabbit_head.png";
 	this.images.blackBoard = "images/grouping_game/practice/black_board.png";
-	this.images.pauseButton = "images/widgets/button_pause.png";
-	this.images.pauseLabel = "images/widgets/label_paused.png";
-	this.images.resumeButton = "images/widgets/button_resume.png";
-	this.images.menuButton = "images/widgets/button_menu.png";
-	this.images.restartButton = "images/widgets/button_restart.png";
+	
+	this.images.star1 = "images/widgets/star1.png";
+	this.images.star2 = "images/widgets/star2.png";
+	this.images.star3 = "images/widgets/star3.png";
+
+	this.images.labelPaused = "images/widgets/label_paused.png";
+	this.images.labelTryAgain = "images/widgets/label_try_again.png";
+	this.images.labelPerfect = "images/widgets/label_perfect.png";
+	this.images.labelGood = "images/widgets/label_good.png";
+	this.images.labelExcellent = "images/widgets/label_excellent.png";
+
+	this.images.buttonPause = "images/widgets/button_pause.png";
+	this.images.buttonMenu = "images/widgets/button_menu.png";
+	this.images.buttonRestart = "images/widgets/button_restart.png";
+	this.images.buttonResume = "images/widgets/button_resume.png";
+	this.images.buttonDone = "images/widgets/button_done.png";
+	this.images.buttonRetry = "images/widgets/button_retry.png";
+	this.images.buttonNext = "images/widgets/button_next.png";
 	
 	this.images.options = [
 		"images/grouping_game/practice/egg1.png",
@@ -107,6 +120,11 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.questionSets.sets = [set1, set2, set3, set4];
 	app.view.questionSets.keyboards = [keyboard2, keyboard1, keyboard3, keyboard2];
 	app.view.questionSets.current = -1;
+	
+	//score
+	app.view.allowableErrorsCount = 6;
+	app.view.errorsMade = 0;
+	app.view.errorsRange = 2;
 	
 	this.view.setImages(this.images);
 	this.view.drawBlackBoard();

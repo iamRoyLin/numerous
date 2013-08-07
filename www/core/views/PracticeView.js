@@ -65,6 +65,10 @@ PracticeView.prototype.drawBlackBoard = function() {
 //Qustions controller
 PracticeView.prototype.questionCallback = function() {
 	this.questionSets.current++;
+	//check if failed
+	if(app.view.allowableErrorsCount == app.view.errorsMade){
+		app.view.finish(Math.floor((app.view.allowableErrorsCount - app.view.errorsMade)/app.view.errorsRange));
+	}
 	if (this.questionSets.current < this.totalNumberOfSets*this.numberOfQuestionsPerSet){
 		//update current question number
 		this.updateCurrentQuestionNumber();
@@ -79,7 +83,9 @@ PracticeView.prototype.questionCallback = function() {
 		questionSet.splice(questionSet.indexOf(this.question), 1);
 		//call draw question to draw the text of this question
 		this.updateQuestion();
-	}else{}
+	}else{
+		app.view.finish(Math.floor((app.view.allowableErrorsCount - app.view.errorsMade)/app.view.errorsRange));
+	}
 			
 }
 
@@ -116,8 +122,9 @@ PracticeView.prototype.checkCorrectness = function(count) {
 		setTimeout(function() {
 			app.view.removeCorrectness();
 			app.view.questionCallback();
-		}, 2000);
+		}, 1000);
 	}else{
+		app.view.errorsMade++;
 		app.view.correctnessText.show();
 		app.view.correctnessText.setText("Whoops! Answer is " + this.question.a + ".");
 		app.view.correctnessText.setFill('red');
@@ -126,7 +133,7 @@ PracticeView.prototype.checkCorrectness = function(count) {
 		setTimeout(function() {
 			app.view.removeCorrectness();
 			app.view.questionCallback();
-		}, 5000);
+		}, 2000);
 	}
 	
 }
@@ -232,5 +239,126 @@ PracticeView.prototype.drawQuestion = function() {
 			
 		}
 	}	
+};
+
+
+// Finsih the game. Score: 0 for fail, 1 to 3 for stars
+PracticeView.prototype.finish = function(score) {
+	var finishTitleImage = null;
+	var starsImage = null;
+	
+	switch(score) {
+		case 0:
+			finishTitleImage = this.images.labelTryAgain;
+			starsImage = null;
+			
+		break;
+		case 1:
+			finishTitleImage = this.images.labelGood;
+			starsImage = this.images.star1;
+		
+		break;
+		case 2:
+			finishTitleImage = this.images.labelExcellent;
+			starsImage = this.images.star2;
+			
+		break;			
+		case 3:
+			finishTitleImage = this.images.labelPerfect;
+			starsImage = this.images.star3;
+			
+		break;
+	}
+
+	// draw overlay
+	var overlay = new Kinetic.Rect({
+		fill: 'black',
+		opacity: 0.62
+	});
+	WidgetUtil.glue(overlay, {
+		width: 1,
+		height: 1,
+		dx: 0,
+		dy: 0
+	});
+	app.layer.add(overlay);
+	
+	// draw title
+	var finishTitle = new Kinetic.Image({image: finishTitleImage});
+	WidgetUtil.glue(finishTitle, {
+		width: 0.45,
+		height: 0.15,
+		dx: 0.27,
+		dy: 0.2
+	});
+	app.layer.add(finishTitle);
+	
+	if (starsImage != null) {
+		// draw stars
+		var starsWidget = new Kinetic.Image({image: starsImage});
+		WidgetUtil.glue(starsWidget, {
+			width: 0.35,
+			height: 0.14,
+			dx: 0.325,
+			dy: 0.35
+		});
+		app.layer.add(starsWidget);
+			
+	}
+	
+	// draw buttons 
+	var buttonRetry = null;	
+	var buttonMenu = null;
+	if (score == 0) {
+		// draw retry button only
+		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
+		WidgetUtil.glue(buttonRetry, {
+			width: 0.18,
+			height: 0.25,
+			dx: 0.32,
+			dy: 0.45
+		});
+		
+		// draw retry button only
+		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
+		WidgetUtil.glue(buttonMenu, {
+			width: 0.18,
+			height: 0.25,
+			dx: 0.52,
+			dy: 0.45
+		});
+	} else {
+		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
+		WidgetUtil.glue(buttonRetry, {
+			width: 0.18,
+			height: 0.25,
+			dx: 0.32,
+			dy: 0.6
+		});
+		
+		// draw retry button only
+		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
+		WidgetUtil.glue(buttonMenu, {
+			width: 0.18,
+			height: 0.25,
+			dx: 0.52,
+			dy: 0.6
+		});
+		
+	}
+	
+	buttonRetry.on('click tap', function () {
+		Music.play(app.view.sounds.select);
+		app.controller.restart();
+	});
+	buttonMenu.on('click tap', function () {
+		Music.play(app.view.sounds.select);
+		app.controller.menu();
+	});
+	
+	app.layer.add(buttonMenu);
+	app.layer.add(buttonRetry);	
+	
+	app.stage.draw();
 };
 
