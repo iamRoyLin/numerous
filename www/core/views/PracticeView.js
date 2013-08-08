@@ -147,47 +147,44 @@ PracticeView.prototype.removeCorrectness = function() {
 PracticeView.prototype.drawQuestion = function() {
 
 	app.view.questionNumber = new Kinetic.Text({
-		x: 850,
-		y: 60,
+		x: DimensionUtil.decimalToActualWidth(0.83),
+		y: DimensionUtil.decimalToActualHeight(0.078),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 30,
 		fontFamily: 'mainFont',
 		fill: 'white',
-		align: 'center',
 		lineHeight: 1.3
 	});
 	app.layer.add(app.view.questionNumber);
 	
 	app.view.title1 = new Kinetic.Text({
-		x: 300,
-		y: 90,
+		x: DimensionUtil.decimalToActualWidth(0.293),
+		y: DimensionUtil.decimalToActualHeight(0.117),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 45,
 		fontFamily: 'mainFont',
 		fill: 'white',
-		align: 'center',
 		lineHeight: 1.3
 	});
 	app.layer.add(app.view.title1);
 	
 	app.view.title2 = new Kinetic.Text({
-		x: 300,
-		y: 140,
+		x: DimensionUtil.decimalToActualWidth(0.293),
+		y: DimensionUtil.decimalToActualHeight(0.182),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 36,
 		fontFamily: 'mainFont',
 		fill: 'white',
-		align: 'center',
 		lineHeight: 1.3
 	});
 	app.layer.add(app.view.title2);
 	
 	app.view.correctnessText = new Kinetic.Text({
-		x: 400,
-		y: 190,
+		x: DimensionUtil.decimalToActualWidth(0.39),
+		y: DimensionUtil.decimalToActualHeight(0.247),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 36,
@@ -214,8 +211,9 @@ PracticeView.prototype.drawQuestion = function() {
 			app.layer.add(app.view.button[count]);
 			
 			app.view.buttonText[count] = new Kinetic.Text({
-				x: 460 + j*190,
-				y: 330 + i*135,
+				x: DimensionUtil.decimalToActualWidth(0.414 + j*0.181), //460 + j*190
+				y: DimensionUtil.decimalToActualHeight(0.49 + i*0.196), // 330 + i*135,
+				width: DimensionUtil.decimalToActualWidth(0.15 / (1/1024*DimensionUtil.width)),
 				scaleX: 1/1024*DimensionUtil.width,
 				scaleY: 1/768*DimensionUtil.height,
 				fontSize: 25,
