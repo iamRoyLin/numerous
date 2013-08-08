@@ -288,8 +288,8 @@ GroupingGameView.prototype.drawNewPack = function () {
 		
 		} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 			// dropped pack to ones (error)	
-			app.view.declineEgg(this);
-			app.view.declinePack(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
+			app.view.declinePack(this);
+			app.view.errorMade(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
 		} else {
 			// dropped somewhere else (doesn't matter)
 			app.view.declinePack(this);
@@ -297,11 +297,13 @@ GroupingGameView.prototype.drawNewPack = function () {
 		
 	});
 	
+	/*
 	if (Env.debug) {
 		pack.on('touchmove dragmove', function() {
 			console.log("x:" + DimensionUtil.actualToDecimalWidth(this.getX()) + ", " + "y:" + DimensionUtil.actualToDecimalHeight(this.getY()));
 		});
 	}
+	*/
 	
 	app.layer.add(pack);
 	app.stage.draw();
@@ -877,8 +879,8 @@ GroupingGameView.prototype.finish = function(score) {
 		// draw retry button only
 		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
 		WidgetUtil.glue(buttonMenu, {
-			width: 0.15,
-			height: 0.25,
+			width: 0.1,
+			height: 0.17,
 			dx: 0.425,
 			dy: 0.6
 		});

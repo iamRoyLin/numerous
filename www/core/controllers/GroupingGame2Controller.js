@@ -152,6 +152,7 @@ GroupingGame2Controller.prototype.initialize = function() {
 	this.view.drawTrays();
 	this.view.drawPauseWidgets();	
 	this.view.drawDoneButton();
+	this.view.drawEggs();
 	this.view.drawNumbers();
 	this.view.drawPacks();
 	this.view.drawTitle(title);	
