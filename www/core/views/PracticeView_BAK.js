@@ -13,19 +13,19 @@ PracticeView.prototype.finalize = function() {
 PracticeView.prototype.drawRabbit = function() {
 	var body = new Kinetic.Image({image: this.images.rabbitBody});
 	WidgetUtil.glue(body, {
-		width: 0.36,
-		height: 0.664,
-		dx: 0.03,
-		dy: 0.29
+		width: 0.45,
+		height: 0.83,
+		dx: 0,
+		dy: 0.17
 	});
 	app.layer.add(body);
 	
 	var head = new Kinetic.Image({image: this.images.rabbitHead});
 	WidgetUtil.glue(head, {
-		width: 0.36,
-		height: 0.664,
-		dx: 0.05,
-		dy: 0.29
+		width: 0.45,
+		height: 0.83,
+		dx: 0,
+		dy: 0.17
 	});
 	app.layer.add(head);
 };
@@ -43,104 +43,25 @@ PracticeView.prototype.drawBlackBoard = function() {
 	
 };
 
-//draw questions and optional answers
-PracticeView.prototype.drawQuestion = function() {
-
-	this.questionNumberTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.83),
-		y: DimensionUtil.decimalToActualHeight(0.078),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-		fontSize: 30,
-		fontFamily: 'mainFont',
-		fill: 'white',
-		lineHeight: 1.3
-	});
-	app.layer.add(this.questionNumberTextWidget);
-	
-	this.questionTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.25),
-		y: DimensionUtil.decimalToActualHeight(0.13),
-		width: DimensionUtil.decimalToActualWidth(0.67 / (1/1024*DimensionUtil.width)),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-		fontSize: 45,
-		fontFamily: 'mainFont',
-		fill: 'white',
-		align: 'center',
-		lineHeight: 1.8
-	});
-	app.layer.add(this.questionTextWidget);
-	
-	/*
-	app.view.correctnessText = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.39),
-		y: DimensionUtil.decimalToActualHeight(0.247),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-		fontSize: 36,
-		fontFamily: 'mainFont',
-		align: 'center',
-		lineHeight: 1.3
-	});
-	app.layer.add(app.view.correctnessText);
-	*/
-};
-
-PracticeView.prototype.drawKeyboard = function() {
-	for (var groupNumber = 0; groupNumber < 9; groupNumber++) {
-		var x = 0.4 + (groupNumber % 3) * 0.18;
-		var y = 0.4 + Math.floor(groupNumber / 3) * 0.19;
-	
-		// group
-		var group = new Kinetic.Group({
-			x: DimensionUtil.decimalToActualWidth(x),
-			y: DimensionUtil.decimalToActualHeight(y),
-		});
-		app.layer.add(group);
-		
-		var button = new Kinetic.Image({
-			image: this.images.eggs[groupNumber],
-			width: DimensionUtil.decimalToActualWidth(0.18),
-			height: DimensionUtil.decimalToActualHeight(0.22)
-		});
-		group.add(button);
-		
-		var text = new Kinetic.Text({
-			width: DimensionUtil.decimalToActualWidth(0.15 / (1/1024*DimensionUtil.width)),
-			scaleX: 1/1024*DimensionUtil.width,
-			scaleY: 1/768*DimensionUtil.height,
-			fontSize: 25,
-			fontFamily: 'mainFont',
-			fill: 'black',
-			align: 'center',
-			lineHeight: 1.3,
-		});
-		app.layer.add(text);
-		
-		group.id = groupNumber;
-		group.on('click tap', function () {
-			app.view.checkCorrectness(this.id);
-		});
-		
+//draw option buttons
+/*PracticeView.prototype.drawOptionButtons = function() {
+	var count = 0;
+	for (var i = 0; i < 3; i++){
+		for (var j = 0; j < 3; j++){
+			var button = new Kinetic.Image({image: this.images.options[count]});
+			WidgetUtil.glue(button, {
+				width: 0.18,
+				height: 0.22,
+				dx: 0.4 + j*0.18,
+				dy: 0.4 + i*0.19
+			});
+			app.layer.add(button);
+			count ++;
+		}
 	}
-};
-
-PracticeView.prototype.presentNextQuestion = function () {
-	app.controller.currentQuestion++;
 	
-	// display question number
-	this.questionNumberTextWidget.setText( (app.controller.currentQuestion+1) + " / " + app.controller.gameQuestions.length);
-	
-	// display the question
-	this.questionTextWidget.setText(app.controller.getCurrentQuestionText());
-	app.stage.draw();
-};
+};*/
 
-
-
-
-/*
 //Qustions controller
 PracticeView.prototype.questionCallback = function() {
 	this.questionSets.current++;
@@ -188,7 +109,7 @@ PracticeView.prototype.updateQuestion = function() {
 
 
 PracticeView.prototype.checkCorrectness = function(count) {
-	app.controller.activitiesEnabled = false;
+	app.view.activitiesEnabled = false;
 	var updatedLine2 = this.question.q2.replace("__", this.questionAnswers[count]);
 	updatedLine2 = updatedLine2.replace("?", ".");
 	app.view.title2.setText(updatedLine2);
@@ -202,7 +123,7 @@ PracticeView.prototype.checkCorrectness = function(count) {
 		setTimeout(function() {
 			app.view.removeCorrectness();
 			app.view.questionCallback();
-			app.controller.activitiesEnabled = true;
+			app.view.activitiesEnabled = true;
 		}, 1000);
 	}else{
 		app.view.errorsMade++;
@@ -214,7 +135,7 @@ PracticeView.prototype.checkCorrectness = function(count) {
 		setTimeout(function() {
 			app.view.removeCorrectness();
 			app.view.questionCallback();
-			app.controller.activitiesEnabled = true;
+			app.view.activitiesEnabled = true;
 		}, 2000);
 	}
 	
@@ -228,7 +149,105 @@ PracticeView.prototype.removeCorrectness = function() {
 	app.stage.draw();
 }
 				
-*/
+//draw questions and optional answers
+PracticeView.prototype.drawQuestion = function() {
+
+	app.view.questionNumber = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.83),
+		y: DimensionUtil.decimalToActualHeight(0.078),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+		fontSize: 30,
+		fontFamily: 'mainFont',
+		fill: 'white',
+		lineHeight: 1.3
+	});
+	app.layer.add(app.view.questionNumber);
+	
+	app.view.title1 = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.293),
+		y: DimensionUtil.decimalToActualHeight(0.117),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+		fontSize: 45,
+		fontFamily: 'mainFont',
+		fill: 'white',
+		lineHeight: 1.3
+	});
+	app.layer.add(app.view.title1);
+	
+	app.view.title2 = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.293),
+		y: DimensionUtil.decimalToActualHeight(0.182),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+		fontSize: 36,
+		fontFamily: 'mainFont',
+		fill: 'white',
+		lineHeight: 1.3
+	});
+	app.layer.add(app.view.title2);
+	
+	app.view.correctnessText = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.39),
+		y: DimensionUtil.decimalToActualHeight(0.247),
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+		fontSize: 36,
+		fontFamily: 'mainFont',
+		align: 'center',
+		lineHeight: 1.3
+	});
+	app.layer.add(app.view.correctnessText);
+	
+	//draw keyboards
+	var count = 0;
+	app.view.button = {};
+	app.view.buttonText = {};
+	for (var i = 0; i < 3; i++){
+		for (var j = 0; j < 3; j++){
+			
+			app.view.button[count] = new Kinetic.Image({image: this.images.options[count]});
+			WidgetUtil.glue(app.view.button[count], {
+				width: 0.18,
+				height: 0.22,
+				dx: 0.4 + j*0.18,
+				dy: 0.4 + i*0.19
+			});
+			app.layer.add(app.view.button[count]);
+			
+			app.view.buttonText[count] = new Kinetic.Text({
+				x: DimensionUtil.decimalToActualWidth(0.414 + j*0.181), //460 + j*190
+				y: DimensionUtil.decimalToActualHeight(0.49 + i*0.196), // 330 + i*135,
+				width: DimensionUtil.decimalToActualWidth(0.15 / (1/1024*DimensionUtil.width)),
+				scaleX: 1/1024*DimensionUtil.width,
+				scaleY: 1/768*DimensionUtil.height,
+				fontSize: 25,
+				fontFamily: 'mainFont',
+				fill: 'black',
+				align: 'center',
+				lineHeight: 1.3,
+				//text: questionAnswers[count]
+			});
+			app.layer.add(app.view.buttonText[count]);
+			
+			app.view.button[count].id = count;
+			app.view.button[count].on('click tap', function () {
+				if (app.view.activitiesEnabled) {
+					app.view.checkCorrectness(this.id);
+				}
+			});
+			app.view.buttonText[count].id = count;
+			app.view.buttonText[count].on('click tap', function () {
+				if (app.view.activitiesEnabled) {
+					app.view.checkCorrectness(this.id);
+				}
+			});
+			count ++;
+			
+		}
+	}	
+};
 
 
 // Finsih the game. Score: 0 for fail, 1 to 3 for stars

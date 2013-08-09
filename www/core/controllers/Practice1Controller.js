@@ -25,7 +25,7 @@ function Practice1Controller() {
 	this.images.buttonRetry = "images/widgets/button_retry.png";
 	this.images.buttonNext = "images/widgets/button_next.png";
 	
-	this.images.options = [
+	this.images.eggs = [
 		"images/grouping_game/practice/egg1.png",
 		"images/grouping_game/practice/egg2.png",
 		"images/grouping_game/practice/egg3.png",
@@ -60,81 +60,68 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.totalNumberOfSets = 4;
 	app.view.numberOfQuestionsPerSet = 3;
 	app.view.questionSets = {};
-	var set1 = [
-		/*{q: "Eleven is the same as one and __ ?", a: "ten"},
-		{q: "Twelve is the same as two and __ ?", a: "ten"},
-		{q: "Thirteen is the same as three and __ ?", a: "ten"},
-		{q: "Fourteen is the same as four and __ ?", a: "ten"},
-		{q: "Fifteen is the same as five and __ ?", a: "ten"},
-		{q: "Sixteen is the same as six and __ ?", a: "ten"},
-		{q: "Seventeen is the same as seven and __ ?", a: "ten"},
-		{q: "Eighteen is the same as eight and __ ?", a: "ten"},
-		{q: "Nineteen is the same as nine and __ ?", a: "ten"},*/
-		
-		{q1: "Eleven", q2: " is the same as __ and ten?", a: "One"},
-		{q1: "Twelve", q2: " is the same as __ and ten?", a: "Two"},
-		{q1: "Thirteen", q2: " is the same as __ and ten?", a: "Three"},
-		{q1: "Fourteen", q2: " is the same as __ and ten?", a: "Four"},
-		{q1: "Fifteen", q2: " is the same as __ and ten?", a: "Five"},
-		{q1: "Sixteen", q2: " is the same as __ and ten?", a: "Six"},
-		{q1: "Seventeen", q2: " is the same as __ and ten?", a: "Seven"},
-		{q1: "Eighteen", q2: " is the same as __ and ten?", a: "Eight"},
-		{q1: "Nineteen", q2: " is the same as __ and ten?", a: "Nine"}
-	];
-	var set2 = [
-		{q1: "Ten and one", q2: " is the same as __?", a: "Eleven"},
-		{q1: "Ten and two", q2: " is the same as __?", a: "Twelve"},
-		{q1: "Three and ten", q2: " is the same as __?", a: "Thirteen"},
-		{q1: "Four and ten", q2: " is the same as __?", a: "Fourteen"},
-		{q1: "Ten and five", q2: " is the same as __?", a: "Fifteen"},
-		{q1: "Ten and six", q2: " is the same as __?", a: "Sixteen"},
-		{q1: "Seven and ten", q2: " is the same as __?", a: "Seventeen"},
-		{q1: "Eight and ten", q2: " is the same as __?", a: "Eighteen"},
-		{q1: "Ten and nine", q2: " is the same as __?", a: "Nineteen"}
-	];
-	var set3 = [
-		{q1: "Ten and one", q2: " is the same as __?", a: "11"},
-		{q1: "Ten and two", q2: " is the same as __?", a: "12"},
-		{q1: "Three and ten", q2: " is the same as __?", a: "13"},
-		{q1: "Four and ten", q2: " is the same as __?", a: "14"},
-		{q1: "Ten and five", q2: " is the same as __?", a: "15"},
-		{q1: "Ten and six", q2: " is the same as __?", a: "16"},
-		{q1: "Seven and ten", q2: " is the same as __?", a: "17"},
-		{q1: "Eight and ten", q2: " is the same as __?", a: "18"},
-		{q1: "Ten and nine", q2: " is the same as __?", a: "19"}
-	];
-	var set4 = [
-		{q1: "11", q2: " is the same as __ and ten?", a: "One"},
-		{q1: "12", q2: " is the same as __ and ten?", a: "Two"},
-		{q1: "13", q2: " is the same as __ and ten?", a: "Three"},
-		{q1: "14", q2: " is the same as __ and ten?", a: "Four"},
-		{q1: "15", q2: " is the same as __ and ten?", a: "Five"},
-		{q1: "16", q2: " is the same as __ and ten?", a: "Six"},
-		{q1: "17", q2: " is the same as __ and ten?", a: "Seven"},
-		{q1: "18", q2: " is the same as __ and ten?", a: "Eight"},
-		{q1: "19", q2: " is the same as __ and ten?", a: "Nine"}
-	];
-	/*app.view.questionSets.set5 = [
-		{q1: "11", q2: " is the same as __ ?", a: "Eleven"},
-		{q1: "12", q2: " is the same as __ ?", a: "Twelve"},
-		{q1: "13", q2: " is the same as __ ?", a: "Thirteen"},
-		{q1: "14", q2: " is the same as __ ?", a: "Fourteen"},
-		{q1: "15", q2: " is the same as __ ?", a: "Fifteen"},
-		{q1: "16", q2: " is the same as __ ?", a: "Sixteen"},
-		{q1: "17", q2: " is the same as __ ?", a: "Seventeen"},
-		{q1: "18", q2: " is the same as __ ?", a: "Eighteen"},
-		{q1: "19", q2: " is the same as __ ?", a: "Nineteen"}
-	];*/
-	var keyboard1 = ["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-	var keyboard2 = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-	var keyboard3 = ["11", "12", "13", "14", "15", "16", "17", "18", "19"];
 	
-	app.view.questionSets.sets = [set1, set2, set3, set4];
-	app.view.questionSets.keyboards = [keyboard2, keyboard1, keyboard3, keyboard2];
-	app.view.questionSets.current = -1;
+	
+	this.keyboards = [
+		["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"],
+		["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
+		["11", "12", "13", "14", "15", "16", "17", "18", "19"]
+	]
+	
+	this.questionSets = [
+		[
+			{question: "Eleven is the same as ____ and ten?", answer: "One", keyboardId: 1},
+			{question: "Twelve is the same as ____ and ten?", answer: "Two", keyboardId: 1},
+			{question: "Thirteen is the same as ____ and ten?", answer: "Three", keyboardId: 1},
+			{question: "Fourteen is the same as ____ and ten?", answer: "Four", keyboardId: 1},
+			{question: "Fifteen is the same as ____ and ten?", answer: "Five", keyboardId: 1},
+			{question: "Sixteen is the same as ____ and ten?", answer: "Six", keyboardId: 1},
+			{question: "Seventeen is the same as ____ and ten?", answer: "Seven", keyboardId: 1},
+			{question: "Eighteen is the same as ____ and ten?", answer: "Eight", keyboardId: 1},
+			{question: "Nineteen is the same as ____ and ten?", answer: "Nine", keyboardId: 1}	
+		],
+		[ 
+			{question: "Ten and one is the same as ____?", answer: "Eleven", keyboardId: 0},
+			{question: "Ten and two is the same as ____?", answer: "Twelve", keyboardId: 0},
+			{question: "Three and ten is the same as ____?", answer: "Thirteen", keyboardId: 0},
+			{question: "Four and ten is the same as ____?", answer: "Fourteen", keyboardId: 0},
+			{question: "Ten and five is the same as ____?", answer: "Fifteen", keyboardId: 0},
+			{question: "Ten and six is the same as ____?", answer: "Sixteen", keyboardId: 0},
+			{question: "Seven and ten is the same as ____?", answer: "Seventeen", keyboardId: 0},
+			{question: "Eight and ten is the same as ____?", answer: "Eighteen", keyboardId: 0},
+			{question: "Ten and nine is the same as ____?", answer: "Nineteen", keyboardId: 0}
+		],
+		[
+			{question: "Ten and one is the same as ____?", answer: "11", keyboardId: 2},
+			{question: "Ten and two is the same as ____?", answer: "12", keyboardId: 2},
+			{question: "Three and ten is the same as ____?", answer: "13", keyboardId: 2},
+			{question: "Four and ten is the same as ____?", answer: "14", keyboardId: 2},
+			{question: "Ten and five is the same as ____?", answer: "15", keyboardId: 2},
+			{question: "Ten and six is the same as ____?", answer: "16", keyboardId: 2},
+			{question: "Seven and ten is the same as ____?", answer: "17", keyboardId: 2},
+			{question: "Eight and ten is the same as ____?", answer: "18", keyboardId: 2},
+			{question: "Ten and nine is the same as ____?", answer: "19", keyboardId: 2}
+		],
+		[
+			{question: "11 is the same as ____ and ten?", answer: "One", keyboardId: 1},
+			{question: "12 is the same as ____ and ten?", answer: "Two", keyboardId: 1},
+			{question: "13 is the same as ____ and ten?", answer: "Three", keyboardId: 1},
+			{question: "14 is the same as ____ and ten?", answer: "Four", keyboardId: 1},
+			{question: "15 is the same as ____ and ten?", answer: "Five", keyboardId: 1},
+			{question: "16 is the same as ____ and ten?", answer: "Six", keyboardId: 1},
+			{question: "17 is the same as ____ and ten?", answer: "Seven", keyboardId: 1},
+			{question: "18 is the same as ____ and ten?", answer: "Eight", keyboardId: 1},
+			{question: "19 is the same as ____ and ten?", answer: "Nine", keyboardId: 1}
+		]
+		
+	]
+	
+	app.view.viewVars.keyboards = this.keyboards;
+	app.view.viewVars.questionSets = this.questionSets;
+	app.view.viewVars.currentQuestionSet = -1;
 	
 	//button enabled
-	app.view.activitiesEnabled = true;
+	this.activitiesEnabled = true;
 	
 	//score
 	app.view.allowableErrorsCount = 6;
@@ -145,11 +132,15 @@ Practice1Controller.prototype.initialize = function () {
 	this.view.drawBlackBoard();
 	this.view.drawRabbit();
 	this.view.drawQuestion();
+	this.view.drawKeyboard();
 	this.view.drawPauseWidgets();
-	//this.view.drawOptionButtons();
-	this.view.questionCallback();
+	//this.view.questionCallback();
 	
 	app.stage.draw();
+	
+	this.pickQuestions();
+	this.currentQuestion = -1;
+	app.view.presentNextQuestion();
 };
 
 // destructor (is automatically called when you leave the page)
@@ -165,3 +156,22 @@ Practice1Controller.prototype.menu = function() {
 	app.route("MenuUnit");
 };
 
+Practice1Controller.prototype.pickQuestions = function() {
+	this.gameQuestions = [];
+	
+	for(var setNumber = 0; setNumber < this.questionSets.length; setNumber++) {
+		// create an array of numbers
+		var list = [];
+		while(list.length < 3) {
+			var questionNumber = MathUtil.random(0, this.questionSets[setNumber].length);
+			if (list.indexOf(questionNumber) == -1) {
+				list.push(questionNumber);
+				this.gameQuestions.push({set: setNumber, question: questionNumber});
+			}
+		}
+	}
+};
+
+Practice1Controller.prototype.getCurrentQuestionText = function() {
+	return this.questionSets[this.gameQuestions[this.currentQuestion].set][this.gameQuestions[this.currentQuestion].question].question;
+};
