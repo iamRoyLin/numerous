@@ -98,7 +98,7 @@ GroupingGameController.prototype.initialize = function() {
 	app.view.viewVars.initialCoverPosition = {x:0.25, y:-0.415};
 
 	// Initial egg positions
-	app.view.viewVars.initialEggRectangle = {x:0.70, y:0.69, width:0.2, height:0.01};
+	app.view.viewVars.initialEggRectangle = {x:0.70, y:0.72, width:0.2, height:0.01};
 	app.view.viewVars.initialEggSize = {width:0.06, height:0.093};
 	
 	// Initial pack positions

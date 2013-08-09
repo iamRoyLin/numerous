@@ -39,7 +39,7 @@ function GroupingGameView(controller) {
 	this.errorsMade = 0;
 	
 	// Number of allowable errors
-	this.allowableErrorsCount = 3;
+	this.allowableErrorsCount = 2;
 	
 	// create the egg ones group
 	this.onesWidgetGroup = new Kinetic.Group({});
@@ -789,22 +789,18 @@ GroupingGameView.prototype.finish = function(score) {
 		case 0:
 			finishTitleImage = this.images.labelTryAgain;
 			starsImage = null;
-			
 		break;
 		case 1:
 			finishTitleImage = this.images.labelGood;
 			starsImage = this.images.star1;
-		
 		break;
 		case 2:
 			finishTitleImage = this.images.labelExcellent;
 			starsImage = this.images.star2;
-			
 		break;			
 		case 3:
 			finishTitleImage = this.images.labelPerfect;
 			starsImage = this.images.star3;
-			
 		break;
 	}
 
@@ -840,11 +836,8 @@ GroupingGameView.prototype.finish = function(score) {
 			dx: 0.325,
 			dy: 0.35
 		});
-		app.layer.add(starsWidget);
-			
+		app.layer.add(starsWidget);		
 	}
-	
-
 	
 	// draw buttons 
 	var buttonRetry = null;	
@@ -881,7 +874,7 @@ GroupingGameView.prototype.finish = function(score) {
 		WidgetUtil.glue(buttonMenu, {
 			width: 0.1,
 			height: 0.17,
-			dx: 0.425,
+			dx: 0.45,
 			dy: 0.6
 		});
 		
