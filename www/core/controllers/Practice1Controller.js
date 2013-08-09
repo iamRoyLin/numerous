@@ -133,6 +133,9 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.questionSets.keyboards = [keyboard2, keyboard1, keyboard3, keyboard2];
 	app.view.questionSets.current = -1;
 	
+	//button enabled
+	app.view.activitiesEnabled = true;
+	
 	//score
 	app.view.allowableErrorsCount = 6;
 	app.view.errorsMade = 0;
@@ -155,7 +158,7 @@ Practice1Controller.prototype.finalize = function() {
 }
 
 Practice1Controller.prototype.restart = function(sameNumber) {
-
+	app.route("Practice1");
 };
 
 Practice1Controller.prototype.menu = function() {

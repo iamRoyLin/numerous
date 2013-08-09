@@ -109,6 +109,7 @@ PracticeView.prototype.updateQuestion = function() {
 
 
 PracticeView.prototype.checkCorrectness = function(count) {
+	app.view.activitiesEnabled = false;
 	var updatedLine2 = this.question.q2.replace("__", this.questionAnswers[count]);
 	updatedLine2 = updatedLine2.replace("?", ".");
 	app.view.title2.setText(updatedLine2);
@@ -122,6 +123,7 @@ PracticeView.prototype.checkCorrectness = function(count) {
 		setTimeout(function() {
 			app.view.removeCorrectness();
 			app.view.questionCallback();
+			app.view.activitiesEnabled = true;
 		}, 1000);
 	}else{
 		app.view.errorsMade++;
@@ -133,11 +135,15 @@ PracticeView.prototype.checkCorrectness = function(count) {
 		setTimeout(function() {
 			app.view.removeCorrectness();
 			app.view.questionCallback();
+			app.view.activitiesEnabled = true;
 		}, 2000);
 	}
 	
 }
 
+PracticeView.prototype.disableButtons = function() {
+	
+}
 PracticeView.prototype.removeCorrectness = function() {
 	app.view.correctnessText.hide();
 	app.stage.draw();
@@ -227,11 +233,15 @@ PracticeView.prototype.drawQuestion = function() {
 			
 			app.view.button[count].id = count;
 			app.view.button[count].on('click tap', function () {
+				if (app.view.activitiesEnabled) {
 					app.view.checkCorrectness(this.id);
+				}
 			});
 			app.view.buttonText[count].id = count;
 			app.view.buttonText[count].on('click tap', function () {
+				if (app.view.activitiesEnabled) {
 					app.view.checkCorrectness(this.id);
+				}
 			});
 			count ++;
 			
@@ -445,7 +455,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	
 	buttonRestart.on('click tap', function () {
 		//Music.play(this.sounds.select);
-		app.controller.restart(true);
+		app.controller.restart();
 	});
 	
 	app.layer.add(this.pauseWidgetsGroup);
