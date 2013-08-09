@@ -3,7 +3,7 @@ var DimensionUtil = new function () {
 	this.height = Env.height;
 
 
-	this.decimalToActualHeight = function (h, glueTop) {
+	this.decimalToActualHeight = function (h) {
 		return h * this.height;
 	}
 	this.actualToDecimalHeight = function(h) {

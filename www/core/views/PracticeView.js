@@ -72,6 +72,22 @@ PracticeView.prototype.drawQuestion = function() {
 	});
 	app.layer.add(this.questionTextWidget);
 	
+	
+	this.placeHolderEgg = new Kinetic.Image({
+		image: this.images.placeHolderEgg,
+		width: DimensionUtil.decimalToActualWidth(0.18),
+		height: DimensionUtil.decimalToActualHeight(0.22)
+	});
+	app.layer.add(this.placeHolderEgg);
+	this.placeHolderEgg.hide();
+	
+	if (Env.debug) {
+		this.placeHolderEgg.setDraggable(true);
+		this.placeHolderEgg.on('dragend touchend', function () {
+			console.log("placeholder egg at x:" + DimensionUtil.actualToDecimalWidth(this.getX()) + " y:" + DimensionUtil.actualToDecimalHeight(this.getY()));
+		});
+	}
+	
 	/*
 	app.view.correctnessText = new Kinetic.Text({
 		x: DimensionUtil.decimalToActualWidth(0.39),
@@ -87,26 +103,63 @@ PracticeView.prototype.drawQuestion = function() {
 	*/
 };
 
+
+
+
+PracticeView.prototype.presentNextQuestion = function () {
+	app.controller.currentQuestion++;
+	
+	var questionObject = app.controller.getCurrentQuestion();
+	
+	// display question number
+	this.questionNumberTextWidget.setText( (app.controller.currentQuestion+1) + " / " + app.controller.gameQuestions.length);
+	
+	// display the question
+	this.questionTextWidget.setText(questionObject.question);
+	
+	// set place holder egg
+	this.placeHolderEgg.setX(DimensionUtil.decimalToActualWidth(questionObject.blankX));
+	this.placeHolderEgg.setY(DimensionUtil.decimalToActualHeight(questionObject.blankY));
+	this.placeHolderEgg.moveToTop();
+	this.placeHolderEgg.show();
+	
+	// prepareKeyboard
+	this.changeKeyboard(questionObject.keyboardId);
+	
+	app.stage.draw();
+};
+
+
 PracticeView.prototype.drawKeyboard = function() {
+
+	this.keyboard = {};
+	this.keyboard.groups = [];
+	this.keyboard.buttons = [];
+	this.keyboard.texts = [];
+	
 	for (var groupNumber = 0; groupNumber < 9; groupNumber++) {
 		var x = 0.4 + (groupNumber % 3) * 0.18;
 		var y = 0.4 + Math.floor(groupNumber / 3) * 0.19;
 	
 		// group
-		var group = new Kinetic.Group({
+		this.keyboard.groups[groupNumber] = new Kinetic.Group({
 			x: DimensionUtil.decimalToActualWidth(x),
 			y: DimensionUtil.decimalToActualHeight(y),
 		});
-		app.layer.add(group);
-		
-		var button = new Kinetic.Image({
+		app.layer.add(this.keyboard.groups[groupNumber]);
+
+		// keyboard button
+		this.keyboard.buttons[groupNumber] = new Kinetic.Image({
 			image: this.images.eggs[groupNumber],
 			width: DimensionUtil.decimalToActualWidth(0.18),
 			height: DimensionUtil.decimalToActualHeight(0.22)
 		});
-		group.add(button);
+		this.keyboard.groups[groupNumber].add(this.keyboard.buttons[groupNumber]);
 		
-		var text = new Kinetic.Text({
+		// keyboard button text
+		this.keyboard.texts[groupNumber] = new Kinetic.Text({
+			x: DimensionUtil.decimalToActualWidth(0.01),
+			y: DimensionUtil.decimalToActualHeight(0.1),
 			width: DimensionUtil.decimalToActualWidth(0.15 / (1/1024*DimensionUtil.width)),
 			scaleX: 1/1024*DimensionUtil.width,
 			scaleY: 1/768*DimensionUtil.height,
@@ -116,28 +169,42 @@ PracticeView.prototype.drawKeyboard = function() {
 			align: 'center',
 			lineHeight: 1.3,
 		});
-		app.layer.add(text);
+		this.keyboard.groups[groupNumber].add(this.keyboard.texts[groupNumber]);
 		
-		group.id = groupNumber;
-		group.on('click tap', function () {
-			app.view.checkCorrectness(this.id);
+		this.keyboard.groups[groupNumber].id = groupNumber;
+		this.keyboard.groups[groupNumber].on('click tap', function () {
+			app.view.keyboardClick(this);
 		});
-		
 	}
 };
 
-PracticeView.prototype.presentNextQuestion = function () {
-	app.controller.currentQuestion++;
-	
-	// display question number
-	this.questionNumberTextWidget.setText( (app.controller.currentQuestion+1) + " / " + app.controller.gameQuestions.length);
-	
-	// display the question
-	this.questionTextWidget.setText(app.controller.getCurrentQuestionText());
-	app.stage.draw();
+PracticeView.prototype.changeKeyboard = function(keyboardId) {
+	for(var i = 0; i < this.keyboard.texts.length; i++) {
+		this.keyboard.texts[i].setText(this.viewVars.keyboardTexts[keyboardId][i]);
+	}
 };
 
+PracticeView.prototype.keyboardClick = function(keyboardGroup) {
+	keyboardGroup.moveToTop();
 
+	var questionObject = app.controller.getCurrentQuestion();
+
+	if (keyboardGroup.id == questionObject.answer) {
+		// right answer
+		
+		var tween = new Kinetic.Tween({
+			node: keyboardGroup,
+			duration: 0.8,
+			x: DimensionUtil.decimalToActualWidth(questionObject.blankX),
+			y: DimensionUtil.decimalToActualHeight(questionObject.blankY)
+		});
+		tween.play();
+		
+	} else {
+		// wrong answer
+		
+	}
+};
 
 
 /*

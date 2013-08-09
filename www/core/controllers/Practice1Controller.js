@@ -36,6 +36,7 @@ function Practice1Controller() {
 		"images/grouping_game/practice/egg8.png",
 		"images/grouping_game/practice/egg9.png"
 	];
+	this.images.placeHolderEgg = "images/grouping_game/practice/egg0.png";
 	
 	// sounds
 	this.sounds = {};
@@ -62,7 +63,7 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.questionSets = {};
 	
 	
-	this.keyboards = [
+	this.keyboardTexts = [
 		["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"],
 		["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
 		["11", "12", "13", "14", "15", "16", "17", "18", "19"]
@@ -70,53 +71,53 @@ Practice1Controller.prototype.initialize = function () {
 	
 	this.questionSets = [
 		[
-			{question: "Eleven is the same as ____ and ten?", answer: "One", keyboardId: 1},
-			{question: "Twelve is the same as ____ and ten?", answer: "Two", keyboardId: 1},
-			{question: "Thirteen is the same as ____ and ten?", answer: "Three", keyboardId: 1},
-			{question: "Fourteen is the same as ____ and ten?", answer: "Four", keyboardId: 1},
-			{question: "Fifteen is the same as ____ and ten?", answer: "Five", keyboardId: 1},
-			{question: "Sixteen is the same as ____ and ten?", answer: "Six", keyboardId: 1},
-			{question: "Seventeen is the same as ____ and ten?", answer: "Seven", keyboardId: 1},
-			{question: "Eighteen is the same as ____ and ten?", answer: "Eight", keyboardId: 1},
-			{question: "Nineteen is the same as ____ and ten?", answer: "Nine", keyboardId: 1}	
+			{question: "Eleven is the same as _____ and ten?",    answer: 0, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Twelve is the same as _____ and ten?",    answer: 1, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Thirteen is the same as _____ and ten?",  answer: 2, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Fourteen is the same as _____ and ten?",  answer: 3, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Fifteen is the same as _____ and ten?",   answer: 4, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Sixteen is the same as _____ and ten?",   answer: 5, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Seventeen is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Eighteen is the same as _____ and ten?",  answer: 7, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Nineteen is the same as _____ and ten?",  answer: 8, keyboardId: 1, blankX: 0.378, blankY:0.160}
 		],
 		[ 
-			{question: "Ten and one is the same as ____?", answer: "Eleven", keyboardId: 0},
-			{question: "Ten and two is the same as ____?", answer: "Twelve", keyboardId: 0},
-			{question: "Three and ten is the same as ____?", answer: "Thirteen", keyboardId: 0},
-			{question: "Four and ten is the same as ____?", answer: "Fourteen", keyboardId: 0},
-			{question: "Ten and five is the same as ____?", answer: "Fifteen", keyboardId: 0},
-			{question: "Ten and six is the same as ____?", answer: "Sixteen", keyboardId: 0},
-			{question: "Seven and ten is the same as ____?", answer: "Seventeen", keyboardId: 0},
-			{question: "Eight and ten is the same as ____?", answer: "Eighteen", keyboardId: 0},
-			{question: "Ten and nine is the same as ____?", answer: "Nineteen", keyboardId: 0}
+			{question: "Ten and one is the same as _____?",   answer: 0, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Ten and two is the same as _____?",   answer: 1, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Four and ten is the same as _____?",  answer: 3, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Ten and five is the same as _____?",  answer: 4, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 0, blankX: 0.518, blankY:0.160}
 		],
 		[
-			{question: "Ten and one is the same as ____?", answer: "11", keyboardId: 2},
-			{question: "Ten and two is the same as ____?", answer: "12", keyboardId: 2},
-			{question: "Three and ten is the same as ____?", answer: "13", keyboardId: 2},
-			{question: "Four and ten is the same as ____?", answer: "14", keyboardId: 2},
-			{question: "Ten and five is the same as ____?", answer: "15", keyboardId: 2},
-			{question: "Ten and six is the same as ____?", answer: "16", keyboardId: 2},
-			{question: "Seven and ten is the same as ____?", answer: "17", keyboardId: 2},
-			{question: "Eight and ten is the same as ____?", answer: "18", keyboardId: 2},
-			{question: "Ten and nine is the same as ____?", answer: "19", keyboardId: 2}
+			{question: "Ten and one is the same as _____?",   answer: 0, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Ten and two is the same as _____?",   answer: 1, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Four and ten is the same as _____?",  answer: 3, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Ten and five is the same as _____?",  answer: 4, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 2, blankX: 0.518, blankY:0.160},
 		],
 		[
-			{question: "11 is the same as ____ and ten?", answer: "One", keyboardId: 1},
-			{question: "12 is the same as ____ and ten?", answer: "Two", keyboardId: 1},
-			{question: "13 is the same as ____ and ten?", answer: "Three", keyboardId: 1},
-			{question: "14 is the same as ____ and ten?", answer: "Four", keyboardId: 1},
-			{question: "15 is the same as ____ and ten?", answer: "Five", keyboardId: 1},
-			{question: "16 is the same as ____ and ten?", answer: "Six", keyboardId: 1},
-			{question: "17 is the same as ____ and ten?", answer: "Seven", keyboardId: 1},
-			{question: "18 is the same as ____ and ten?", answer: "Eight", keyboardId: 1},
-			{question: "19 is the same as ____ and ten?", answer: "Nine", keyboardId: 1}
+			{question: "11 is the same as _____ and ten?", answer: 0, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "12 is the same as _____ and ten?", answer: 1, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "13 is the same as _____ and ten?", answer: 2, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "14 is the same as _____ and ten?", answer: 3, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "15 is the same as _____ and ten?", answer: 4, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "16 is the same as _____ and ten?", answer: 5, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "17 is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "18 is the same as _____ and ten?", answer: 7, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "19 is the same as _____ and ten?", answer: 8, keyboardId: 1, blankX: 0.719, blankY:0.059},,
 		]
 		
 	]
 	
-	app.view.viewVars.keyboards = this.keyboards;
+	app.view.viewVars.keyboardTexts = this.keyboardTexts;
 	app.view.viewVars.questionSets = this.questionSets;
 	app.view.viewVars.currentQuestionSet = -1;
 	
@@ -139,6 +140,15 @@ Practice1Controller.prototype.initialize = function () {
 	app.stage.draw();
 	
 	this.pickQuestions();
+	
+	/*
+	if (Env.debug) {
+		this.gameQuestions = [
+			{set:3, question:0}
+		];
+	}
+	*/
+	
 	this.currentQuestion = -1;
 	app.view.presentNextQuestion();
 };
@@ -172,6 +182,6 @@ Practice1Controller.prototype.pickQuestions = function() {
 	}
 };
 
-Practice1Controller.prototype.getCurrentQuestionText = function() {
-	return this.questionSets[this.gameQuestions[this.currentQuestion].set][this.gameQuestions[this.currentQuestion].question].question;
+Practice1Controller.prototype.getCurrentQuestion = function() {
+	return this.questionSets[this.gameQuestions[this.currentQuestion].set][this.gameQuestions[this.currentQuestion].question];
 };
