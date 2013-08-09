@@ -69,9 +69,13 @@ MenuView.prototype.drawArrows = function() {
 	app.layer.add(this.arrowRight);
 	
 	this.arrowLeft.on('click tap', function () {
+		this.moveToTop();
+		app.stage.draw();
 		app.view.left();
 	});
 	this.arrowRight.on('click tap', function () {
+		this.moveToTop();
+		app.stage.draw();
 		app.view.right();
 	});
 	
