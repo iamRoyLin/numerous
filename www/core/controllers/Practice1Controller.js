@@ -24,6 +24,7 @@ function Practice1Controller() {
 	this.images.buttonDone = "images/widgets/button_done.png";
 	this.images.buttonRetry = "images/widgets/button_retry.png";
 	this.images.buttonNext = "images/widgets/button_next.png";
+	this.images.buttonNextBig = "images/grouping_game/practice/button_next.png";
 	
 	this.images.eggs = [
 		"images/grouping_game/practice/egg1.png",
@@ -62,12 +63,11 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.numberOfQuestionsPerSet = 3;
 	app.view.questionSets = {};
 	
-	
 	this.keyboardTexts = [
 		["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"],
 		["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
 		["11", "12", "13", "14", "15", "16", "17", "18", "19"]
-	]
+	];
 	
 	this.questionSets = [
 		[
@@ -84,23 +84,23 @@ Practice1Controller.prototype.initialize = function () {
 		[ 
 			{question: "Ten and one is the same as _____?",   answer: 0, keyboardId: 0, blankX: 0.518, blankY:0.160},
 			{question: "Ten and two is the same as _____?",   answer: 1, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 0, blankX: 0.588, blankY:0.160},
 			{question: "Four and ten is the same as _____?",  answer: 3, keyboardId: 0, blankX: 0.518, blankY:0.160},
 			{question: "Ten and five is the same as _____?",  answer: 4, keyboardId: 0, blankX: 0.518, blankY:0.160},
 			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 0, blankX: 0.518, blankY:0.160},
+			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 0, blankX: 0.588, blankY:0.160},
+			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 0, blankX: 0.588, blankY:0.160},
 			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 0, blankX: 0.518, blankY:0.160}
 		],
 		[
 			{question: "Ten and one is the same as _____?",   answer: 0, keyboardId: 2, blankX: 0.518, blankY:0.160},
 			{question: "Ten and two is the same as _____?",   answer: 1, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 2, blankX: 0.588, blankY:0.160},
 			{question: "Four and ten is the same as _____?",  answer: 3, keyboardId: 2, blankX: 0.518, blankY:0.160},
 			{question: "Ten and five is the same as _____?",  answer: 4, keyboardId: 2, blankX: 0.518, blankY:0.160},
 			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 2, blankX: 0.588, blankY:0.160},
+			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 2, blankX: 0.588, blankY:0.160},
 			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 2, blankX: 0.518, blankY:0.160},
 		],
 		[
@@ -121,8 +121,10 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.viewVars.questionSets = this.questionSets;
 	app.view.viewVars.currentQuestionSet = -1;
 	
-	//button enabled
+	// variables
+	this.mistakesCount = 0;
 	this.activitiesEnabled = true;
+	this.keyboardEnabled = true;
 	
 	//score
 	app.view.allowableErrorsCount = 6;
@@ -135,6 +137,7 @@ Practice1Controller.prototype.initialize = function () {
 	this.view.drawQuestion();
 	this.view.drawKeyboard();
 	this.view.drawPauseWidgets();
+	this.view.drawButtonNextBig();
 	//this.view.questionCallback();
 	
 	app.stage.draw();
@@ -144,7 +147,15 @@ Practice1Controller.prototype.initialize = function () {
 	/*
 	if (Env.debug) {
 		this.gameQuestions = [
-			{set:3, question:0}
+			{set:3, question:0},
+			{set:3, question:1},
+			{set:3, question:2},
+			{set:3, question:3},
+			{set:3, question:4},
+			{set:3, question:5},
+			{set:3, question:6},
+			{set:3, question:7},
+			{set:3, question:8}
 		];
 	}
 	*/
@@ -185,3 +196,8 @@ Practice1Controller.prototype.pickQuestions = function() {
 Practice1Controller.prototype.getCurrentQuestion = function() {
 	return this.questionSets[this.gameQuestions[this.currentQuestion].set][this.gameQuestions[this.currentQuestion].question];
 };
+
+Practice1Controller.prototype.mistakeMade = function() {
+	this.mistakesCount++;
+}
+

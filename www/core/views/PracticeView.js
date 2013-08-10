@@ -15,7 +15,7 @@ PracticeView.prototype.drawRabbit = function() {
 	WidgetUtil.glue(body, {
 		width: 0.36,
 		height: 0.664,
-		dx: 0.03,
+		dx: 0.05,
 		dy: 0.29
 	});
 	app.layer.add(body);
@@ -43,12 +43,47 @@ PracticeView.prototype.drawBlackBoard = function() {
 	
 };
 
+PracticeView.prototype.drawButtonNextBig = function() {
+	this.buttonNextBig = new Kinetic.Image({image: this.images.buttonNextBig});
+	WidgetUtil.glue(this.buttonNextBig, {
+		width: 0.4,
+		height: 0.43,
+		dx: 0.47,
+		dy: 0.45
+	});
+	
+	this.buttonNextBig.on('click tap', function () {
+		if (!app.controller.keyboardEnabled) {
+			return;
+		}
+		
+		
+		if (!app.view.presentNextQuestion()) {
+			var score;
+			if (app.controller.mistakesCount == 0) {
+				score = 3;
+			} else if (app.controller.mistakesCount <= 2) {
+				score = 2
+			} else if (app.controller.mistakesCount <= 4) {
+				score = 1
+			} else {
+				score = 0;
+			}
+			app.view.finish(score);
+		}
+	});
+	
+	app.layer.add(this.buttonNextBig);
+	this.buttonNextBig.setOpacity(0);
+	this.buttonNextBig.hide();
+};
+
 //draw questions and optional answers
 PracticeView.prototype.drawQuestion = function() {
 
 	this.questionNumberTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.83),
-		y: DimensionUtil.decimalToActualHeight(0.078),
+		x: DimensionUtil.decimalToActualWidth(0.815),
+		y: DimensionUtil.decimalToActualHeight(0.32),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 30,
@@ -87,20 +122,6 @@ PracticeView.prototype.drawQuestion = function() {
 			console.log("placeholder egg at x:" + DimensionUtil.actualToDecimalWidth(this.getX()) + " y:" + DimensionUtil.actualToDecimalHeight(this.getY()));
 		});
 	}
-	
-	/*
-	app.view.correctnessText = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.39),
-		y: DimensionUtil.decimalToActualHeight(0.247),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
-		fontSize: 36,
-		fontFamily: 'mainFont',
-		align: 'center',
-		lineHeight: 1.3
-	});
-	app.layer.add(app.view.correctnessText);
-	*/
 };
 
 
@@ -108,6 +129,10 @@ PracticeView.prototype.drawQuestion = function() {
 
 PracticeView.prototype.presentNextQuestion = function () {
 	app.controller.currentQuestion++;
+	
+	if (app.controller.currentQuestion >= app.controller.gameQuestions.length) {
+		return false;
+	}
 	
 	var questionObject = app.controller.getCurrentQuestion();
 	
@@ -126,7 +151,13 @@ PracticeView.prototype.presentNextQuestion = function () {
 	// prepareKeyboard
 	this.changeKeyboard(questionObject.keyboardId);
 	
+	// hide the next button if necessary
+	this.buttonNextBig.setOpacity(0);
+	this.buttonNextBig.hide();
+	
 	app.stage.draw();
+	
+	return true;
 };
 
 
@@ -136,11 +167,17 @@ PracticeView.prototype.drawKeyboard = function() {
 	this.keyboard.groups = [];
 	this.keyboard.buttons = [];
 	this.keyboard.texts = [];
+	this.keyboard.xPositions = [];
+	this.keyboard.yPositions = [];
 	
 	for (var groupNumber = 0; groupNumber < 9; groupNumber++) {
 		var x = 0.4 + (groupNumber % 3) * 0.18;
 		var y = 0.4 + Math.floor(groupNumber / 3) * 0.19;
-	
+		
+		// save their locations
+		this.keyboard.xPositions[groupNumber] = x;
+		this.keyboard.yPositions[groupNumber] = y;
+		
 		// group
 		this.keyboard.groups[groupNumber] = new Kinetic.Group({
 			x: DimensionUtil.decimalToActualWidth(x),
@@ -173,15 +210,28 @@ PracticeView.prototype.drawKeyboard = function() {
 		
 		this.keyboard.groups[groupNumber].id = groupNumber;
 		this.keyboard.groups[groupNumber].on('click tap', function () {
-			app.view.keyboardClick(this);
+			if (app.controller.keyboardEnabled) {
+				app.view.keyboardClick(this);
+			}
 		});
 	}
 };
 
 PracticeView.prototype.changeKeyboard = function(keyboardId) {
 	for(var i = 0; i < this.keyboard.texts.length; i++) {
+		// show every button incase they were made invisible or hidden previously
+		this.keyboard.groups[i].show();
+		this.keyboard.groups[i].setOpacity(1);
+		
+		// set their location in case they were moved
+		this.keyboard.groups[i].setX(DimensionUtil.decimalToActualWidth(this.keyboard.xPositions[i]));
+		this.keyboard.groups[i].setY(DimensionUtil.decimalToActualHeight(this.keyboard.yPositions[i]));
+		
+		// set the text of the keyboard
 		this.keyboard.texts[i].setText(this.viewVars.keyboardTexts[keyboardId][i]);
 	}
+	
+	app.stage.draw();
 };
 
 PracticeView.prototype.keyboardClick = function(keyboardGroup) {
@@ -190,112 +240,69 @@ PracticeView.prototype.keyboardClick = function(keyboardGroup) {
 	var questionObject = app.controller.getCurrentQuestion();
 
 	if (keyboardGroup.id == questionObject.answer) {
-		// right answer
-		
-		var tween = new Kinetic.Tween({
-			node: keyboardGroup,
-			duration: 0.8,
-			x: DimensionUtil.decimalToActualWidth(questionObject.blankX),
-			y: DimensionUtil.decimalToActualHeight(questionObject.blankY)
-		});
-		tween.play();
-		
+		this.answeredRight(keyboardGroup.id);
 	} else {
-		// wrong answer
-		
+		this.answeredWrong(keyboardGroup.id);
 	}
 };
+PracticeView.prototype.answeredRight = function(id) {
+	var questionObject = app.controller.getCurrentQuestion();
 
-
-/*
-//Qustions controller
-PracticeView.prototype.questionCallback = function() {
-	this.questionSets.current++;
-	//check if failed
-	if(app.view.allowableErrorsCount == app.view.errorsMade){
-		app.view.finish(Math.floor((app.view.allowableErrorsCount - app.view.errorsMade)/app.view.errorsRange));
-	}
-	if (this.questionSets.current < this.totalNumberOfSets*this.numberOfQuestionsPerSet){
-		//update current question number
-		this.updateCurrentQuestionNumber();
-		//current set of questions
-		var i = Math.floor(this.questionSets.current/this.numberOfQuestionsPerSet);
-		var questionSet = this.questionSets.sets[i];
-		//current keyboard
-		this.questionAnswers = this.questionSets.keyboards[i];
-		//randomly select a question
-		this.question = questionSet[MathUtil.random(0, questionSet.length)];
-		//remove this question from this question set
-		questionSet.splice(questionSet.indexOf(this.question), 1);
-		//call draw question to draw the text of this question
-		this.updateQuestion();
-	}else{
-		app.view.finish(Math.floor((app.view.allowableErrorsCount - app.view.errorsMade)/app.view.errorsRange));
-	}
-			
-}
-
-PracticeView.prototype.updateCurrentQuestionNumber = function() {
-	app.view.questionNumber.setText((this.questionSets.current+1) + "/" +  this.totalNumberOfSets*this.numberOfQuestionsPerSet);
-	app.stage.draw();
-}
-
-PracticeView.prototype.updateQuestion = function() {
-	app.view.title1.setText(this.question.q1);
-	app.view.title2.setText(this.question.q2);
-	var count = 0;
-	for (var i = 0; i < 3; i++){
-		for (var j = 0; j < 3; j++){
-			app.view.buttonText[count].setText(this.questionAnswers[count]);
-			count ++;
-		}
-	}
-	app.stage.draw();
-}
-
-
-PracticeView.prototype.checkCorrectness = function(count) {
-	app.controller.activitiesEnabled = false;
-	var updatedLine2 = this.question.q2.replace("__", this.questionAnswers[count]);
-	updatedLine2 = updatedLine2.replace("?", ".");
-	app.view.title2.setText(updatedLine2);
-	app.stage.draw();
-	if(this.question.a == this.questionAnswers[count]){
-		app.view.correctnessText.show();
-		app.view.correctnessText.setText("Correct!");
-		app.view.correctnessText.setFill('green');
-		app.view.correctnessText.setX(500);
-		app.stage.draw();
-		setTimeout(function() {
-			app.view.removeCorrectness();
-			app.view.questionCallback();
-			app.controller.activitiesEnabled = true;
-		}, 1000);
-	}else{
-		app.view.errorsMade++;
-		app.view.correctnessText.show();
-		app.view.correctnessText.setText("Whoops! Answer is " + this.question.a + ".");
-		app.view.correctnessText.setFill('red');
-		app.view.correctnessText.setX(350);
-		app.stage.draw();
-		setTimeout(function() {
-			app.view.removeCorrectness();
-			app.view.questionCallback();
-			app.controller.activitiesEnabled = true;
-		}, 2000);
+	app.controller.keyboardEnabled = false;
+	setTimeout(function() {
+		app.controller.keyboardEnabled = true;
+	}, 600);
+	
+	// move answer to the right place
+	var tween = new Kinetic.Tween({
+		node: this.keyboard.groups[id],
+		duration: 0.45,
+		x: DimensionUtil.decimalToActualWidth(questionObject.blankX),
+		y: DimensionUtil.decimalToActualHeight(questionObject.blankY)
+	});
+	tween.play();
+	
+	// make all the other keyboard buttons dissappear
+	for (var i = 0; i < this.keyboard.groups.length; i++) {
+		if (i == id) continue; // skip the correct button
+		var tween = new Kinetic.Tween({
+			node: this.keyboard.groups[i],
+			duration: 0.45,
+			opacity: 0
+		});
+		tween.play();
 	}
 	
-}
-
-PracticeView.prototype.disableButtons = function() {
+	// make the next button appear
+	this.buttonNextBig.show();
+	var tween = new Kinetic.Tween({
+		node: this.buttonNextBig,
+		duration: 0.8,
+		opacity: 1
+	});
+	tween.play();
+	this.buttonNextBig.moveToTop();
 	
-}
-PracticeView.prototype.removeCorrectness = function() {
-	app.view.correctnessText.hide();
-	app.stage.draw();
-}
-				
-*/
+};
+PracticeView.prototype.answeredWrong = function(id) {
+	var questionObject = app.controller.getCurrentQuestion();
+	
+	app.controller.keyboardEnabled = false;
+	setTimeout(function() {
+		app.controller.keyboardEnabled = true;
+	}, 300);
+	
+	var tween = new Kinetic.Tween({
+		node: this.keyboard.groups[id],
+		duration: 0.3,
+		opacity: 0,
+		onFinish: function() {this.node.hide()}
+	});
+	tween.play();
+	
+	app.controller.mistakeMade();
+};
+
 
 
 // Finsih the game. Score: 0 for fail, 1 to 3 for stars
