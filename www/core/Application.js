@@ -118,5 +118,5 @@ $(function () {
 	
 	app.currentUnit=1;
 	app.currentGame=0;
-	app.route("Practice1");
+	app.route("Home");
 });
