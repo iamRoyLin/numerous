@@ -24,7 +24,7 @@ function Practice1Controller() {
 	this.images.buttonDone = "images/widgets/button_done.png";
 	this.images.buttonRetry = "images/widgets/button_retry.png";
 	this.images.buttonNext = "images/widgets/button_next.png";
-	this.images.buttonNextBig = "images/grouping_game/practice/button_next.png";
+	this.images.buttonNextBig = "images/grouping_game/practice/button_next_big.png";
 	
 	this.images.eggs = [
 		"images/grouping_game/practice/egg1.png",
