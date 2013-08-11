@@ -39,7 +39,7 @@ function GroupingGameView(controller) {
 	this.errorsMade = 0;
 	
 	// Number of allowable errors
-	this.allowableErrorsCount = 2;
+	this.allowableErrorsCount = 3;
 	
 	// create the egg ones group
 	this.onesWidgetGroup = new Kinetic.Group({});
@@ -846,42 +846,42 @@ GroupingGameView.prototype.finish = function(score) {
 		// draw retry button only
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
 		WidgetUtil.glue(buttonRetry, {
-			width: 0.15,
+			width: 0.18,
 			height: 0.25,
-			dx: 0.36,
+			dx: 0.32,
 			dy: 0.45
 		});
 		
 		// draw retry button only
 		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
 		WidgetUtil.glue(buttonMenu, {
-			width: 0.15,
+			width: 0.18,
 			height: 0.25,
-			dx: 0.54,
+			dx: 0.52,
 			dy: 0.45
 		});
 	} else {
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
 		WidgetUtil.glue(buttonRetry, {
-			width: 0.1,
-			height: 0.17,
-			dx: 0.30,
+			width: 0.18,
+			height: 0.25,
+			dx: 0.24,
 			dy: 0.6
 		});
 		
 		// draw retry button only
 		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
 		WidgetUtil.glue(buttonMenu, {
-			width: 0.1,
-			height: 0.17,
-			dx: 0.45,
+			width: 0.18,
+			height: 0.25,
+			dx: 0.42,
 			dy: 0.6
 		});
 		
 		var buttonNext = new Kinetic.Image({image: this.images.buttonNext});
 		WidgetUtil.glue(buttonNext, {
-			width: 0.1,
-			height: 0.17,
+			width: 0.18,
+			height: 0.25,
 			dx: 0.60,
 			dy: 0.6
 		});
