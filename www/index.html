@@ -14,23 +14,25 @@
 	<!-- phonegap essentials. note this file does not exist. -->
 	<script src="phonegap.js"></script>
 	
-	<!-- required jQuery -->
-	<script src="lib/jquery-1.8.2.min.js"></script>
-	
-	<!--
-	<script src="lib/handlebars.js"></script>
-	<script src="js/storage/memory-store.js"></script>
-	-->
+
 	
 	<!-- ============================== libraries ============================== -->
-	<!--<script src="lib/iscroll.js"></script>-->
+	
+	<!-- jQuery -->
+	<script src="lib/jquery-1.8.2.min.js"></script>
+	
+	<!-- Kinetic JS -->
 	<script src="lib/kinetic-v4.5.4.min.js"></script>
+	
+	<!-- jStorage -->
+	<script type="text/javascript" src="lib/jstorage.js"></script> 
 	
 	<!-- PxLoader -->
 	<script type="text/javascript" src="lib/PxLoader/PxLoader.js"></script>
 	<script type="text/javascript" src="lib/PxLoader/PxLoaderImage.js"></script>
 	<script type="text/javascript" src="lib/PxLoader/PxLoaderSound.js"></script> 
 	<script type="text/javascript" src="lib/soundmanager/script/soundmanager2-nodebug-jsmin.js"></script>
+	<script type="text/javascript" src="lib/PxLoader/PxLoaderSound.js"></script> 
 	
 	<!-- ==================== initialise envrionment settings ==================== -->
 	<script src="core/Environment.js"></script>
@@ -43,11 +45,15 @@
 	<script src="utils/LoaderUtil.js"></script>
 	
 	<!-- ============================== modules ============================== -->
+	<script src="modules/Storage.js"></script>
 	<script src="modules/Music.js"></script>
 	
 	<!-- ============================== MVC base classes ============================== -->
 	<script src="core/Controller.js"></script>
 	<script src="core/View.js"></script>
+	
+	<!-- ============================== models ============================== -->
+	<script src="core/models/UnitRecordsModel.js"></script>
 	
 	<!-- ============================== views ============================== -->
 	<script src="core/views/HomeView.js"></script>

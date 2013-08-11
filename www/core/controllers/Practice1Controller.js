@@ -201,3 +201,9 @@ Practice1Controller.prototype.mistakeMade = function() {
 	this.mistakesCount++;
 }
 
+Practice1Controller.prototype.achievedStars = function (starsCount) {
+	var unitRecordsModel = new UnitRecordsModel(app.currentUnit);
+	if (unitRecordsModel.getStars(app.currentGame) < starsCount) {
+		unitRecordsModel.setStars(app.currentGame, starsCount);
+	}
+};

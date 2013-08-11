@@ -15,11 +15,7 @@ function MenuUnitController() {
 	this.sounds = {};
 
 	// variables
-	this.starsEarned = [
-		3,3,3,3,3,2,2,
-		1,1,1,1,1,1,1,
-		1,0,0,0,0
-	];
+	this.unitRecordsModel = new UnitRecordsModel(app.currentUnit);
 };
 
 MenuUnitController.prototype.initialize = function () {
@@ -31,7 +27,7 @@ MenuUnitController.prototype.initialize = function () {
 	
 	this.view.drawTitle();
 	this.view.drawButtonBack();
-	this.view.drawBoxes(this.starsEarned);
+	this.view.drawBoxes(this.unitRecordsModel);
 	app.stage.draw();
 };
 

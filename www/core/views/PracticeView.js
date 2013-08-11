@@ -309,27 +309,28 @@ PracticeView.prototype.answeredWrong = function(id) {
 PracticeView.prototype.finish = function(score) {
 	var finishTitleImage = null;
 	var starsImage = null;
+	var starsCount = 0;
 	
 	switch(score) {
 		case 0:
 			finishTitleImage = this.images.labelTryAgain;
 			starsImage = null;
-			
+			starsCount = 0;
 		break;
 		case 1:
 			finishTitleImage = this.images.labelGood;
 			starsImage = this.images.star1;
-		
+			starsCount = 1;
 		break;
 		case 2:
 			finishTitleImage = this.images.labelExcellent;
 			starsImage = this.images.star2;
-			
+			starsCount = 2;
 		break;			
 		case 3:
 			finishTitleImage = this.images.labelPerfect;
 			starsImage = this.images.star3;
-			
+			starsCount = 3;
 		break;
 	}
 
@@ -423,6 +424,10 @@ PracticeView.prototype.finish = function(score) {
 	app.layer.add(buttonRetry);	
 	
 	app.stage.draw();
+	
+	// set the stars
+	app.controller.achievedStars(starsCount);
+	
 };
 
 // draws all the pause widgets then hides them. Shows when the pause function is called

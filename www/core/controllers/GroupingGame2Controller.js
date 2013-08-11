@@ -181,3 +181,9 @@ GroupingGame2Controller.prototype.nextGame = function() {
 	}
 };
 
+GroupingGame2Controller.prototype.achievedStars = function (starsCount) {
+	var unitRecordsModel = new UnitRecordsModel(app.currentUnit);
+	if (unitRecordsModel.getStars(app.currentGame) < starsCount) {
+		unitRecordsModel.setStars(app.currentGame, starsCount);
+	}
+};

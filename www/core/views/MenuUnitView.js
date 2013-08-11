@@ -35,7 +35,7 @@ MenuUnitView.prototype.drawButtonBack = function() {
 	});
 };
 
-MenuUnitView.prototype.drawBoxes = function(starsEarned) {
+MenuUnitView.prototype.drawBoxes = function(unitRecordsModel) {
 	// belongs in groups
 	
 	for(var boxNumber = 0; boxNumber < app.UNIT_GAMES[app.currentUnit].length; boxNumber++) {
@@ -59,7 +59,7 @@ MenuUnitView.prototype.drawBoxes = function(starsEarned) {
 		group.add(box);
 		
 		// stars
-		var stars = new Kinetic.Image({image: this.images.stars[starsEarned[boxNumber]]});
+		var stars = new Kinetic.Image({image: this.images.stars[unitRecordsModel.getStars(boxNumber)]});
 		WidgetUtil.glue(stars, {
 			width: 0.1,
 			height: 0.05,
