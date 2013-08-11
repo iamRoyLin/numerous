@@ -455,7 +455,7 @@ GroupingGameView.prototype.drawEggs = function() {
 		this.drawNewEgg();
 	}
 	
-	if (Env.debug) {
+	/*if (Env.debug) {
 		// draw out the region ones
 		for (var i = 0; i < this.viewVars.beltOnesArea.RADIUS_ARRAY.length; i++) {
 			var ellipse = new Kinetic.Ellipse({
@@ -483,7 +483,7 @@ GroupingGameView.prototype.drawEggs = function() {
 			});
 			app.layer.add(ellipse);
 		}
-	}
+	}*/
 };
 
 // Draws one egg in a specified area

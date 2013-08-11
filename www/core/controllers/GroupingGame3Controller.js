@@ -81,7 +81,7 @@ GroupingGame3Controller.prototype.initialize = function() {
 
 	// widgets
 	app.view.viewVars.rabbitDimensions = {x:0.03, y:0.40, width:0.22, height:0.60};
-	app.view.viewVars.beltDimensions = {x:0.2, y:0.42, width:0.80, height:0.58};
+	app.view.viewVars.beltDimensions = {x:0.2, y:0.14, width:0.80, height:0.85};
 	app.view.viewVars.thinkCloudDimensions = {x:-0.03, y:0.133, width:0.41, height:0.45};
 	app.view.viewVars.thinkCloudTextLocation = {x:0.033, y:0.24};
 	app.view.viewVars.pauseButtonDimensions = {x:0.02, y:0.035, width:0.09, height:0.12};
