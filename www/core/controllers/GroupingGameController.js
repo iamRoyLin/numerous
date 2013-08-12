@@ -44,7 +44,8 @@ function GroupingGameController() {
 	// sounds
 	this.sounds = {};
 	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
-	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.wav";
+	// this.sounds.declineEgg = "sounds/grouping_game/reject_egg.wav";
+	this.sounds.declineEgg = "sounds/numbers/nineteen.mp3";
 	this.sounds.select = "sounds/menu/menu_select.wav";
 	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 	this.sounds.done = "sounds/grouping_game/done.wav";

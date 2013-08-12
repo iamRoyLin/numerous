@@ -3,8 +3,7 @@ var Music = new function () {
 	if (!Env.phoneGap) {
 		soundManager.setup({
 			url: 'lib/soundmanager/swf_files/',
-			onready: function() {},
-			useHTML5Audio: false
+			onready: function() {}
 		});
 	}
 		
