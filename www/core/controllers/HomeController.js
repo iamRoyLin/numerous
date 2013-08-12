@@ -24,3 +24,7 @@ HomeController.prototype.finalize = function() {
 HomeController.prototype.play = function () {
 	app.route("Menu");
 };
+
+HomeController.prototype.settings = function() {
+	app.route("Options");
+};

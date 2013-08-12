@@ -50,6 +50,9 @@ HomeView.prototype._drawButtons = function() {
 		dy: 0.45
 	});
 	app.layer.add(optionsButton);
+	optionsButton.on('click tap', function () {
+		app.controller.settings();
+	});
 }
 
 
