@@ -118,7 +118,7 @@ $(function () {
 	
 	app.currentUnit=1;
 	app.currentGame=0;
-	app.route("Home");
+	app.route("GroupingGame4");
 	
 	//alert(JSON.stringify([1,2]));
 	//alert(JSON.parse("asdf"));
