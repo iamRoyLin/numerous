@@ -216,6 +216,7 @@ AdditionGameController.prototype.initialize = function() {
 	}
 	
 	app.stage.draw();
+	SoundUtil.sayNumber(this.goalNumber);
 };
 
 // destructor

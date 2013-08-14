@@ -160,6 +160,7 @@ GroupingGameController.prototype.initialize = function() {
 	this.view.drawTitle(title);	
 	
 	app.stage.draw();
+	SoundUtil.sayNumber(this.goalNumber);
 };
 
 // destructor
