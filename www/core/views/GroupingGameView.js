@@ -905,6 +905,9 @@ GroupingGameView.prototype.finish = function(score) {
 	});
 	buttonMenu.on('click tap', function () {
 		Music.play(app.view.sounds.select);
+		if(Storage.get("settingMusic") == true){
+			Music.stopBackgroundMusic();
+		}
 		app.controller.menu();
 	});
 	
