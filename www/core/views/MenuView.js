@@ -69,11 +69,13 @@ MenuView.prototype.drawArrows = function() {
 	app.layer.add(this.arrowRight);
 	
 	this.arrowLeft.on('click tap', function () {
+		Music.play(app.view.sounds.select);
 		this.moveToTop();
 		app.stage.draw();
 		app.view.left();
 	});
 	this.arrowRight.on('click tap', function () {
+		Music.play(app.view.sounds.select);
 		this.moveToTop();
 		app.stage.draw();
 		app.view.right();

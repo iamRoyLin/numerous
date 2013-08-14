@@ -40,11 +40,11 @@ function GroupingGame3Controller() {
 	
 	// sounds
 	this.sounds = {};
-	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.wav";
-	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.wav";
-	this.sounds.select = "sounds/menu/menu_select.wav";
-	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
-	this.sounds.done = "sounds/grouping_game/done.wav";
+	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.mp3";
+	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.mp3";
+	this.sounds.select = "sounds/menu/menu_select.mp3";
+	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.mp3";
+	this.sounds.done = "sounds/grouping_game/done.mp3";
 	this.sounds.background = "sounds/background_music/game.mp3";
 	
 	
@@ -168,8 +168,10 @@ GroupingGame3Controller.prototype.initialize = function() {
 	
 	var title = MathUtil.convertNumberToWord(this.goalNumber);
 	
-	Music.stopBackgroundMusic();
-	Music.playBackgroundMusic(this.sounds.background);
+	if(Storage.get("settingMusic") == true){
+		Music.stopBackgroundMusic();
+		Music.playBackgroundMusic(this.sounds.background);
+	}
 
 	this.view.drawBelts();
 	this.view.drawRabbit();

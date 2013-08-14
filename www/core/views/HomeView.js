@@ -38,6 +38,7 @@ HomeView.prototype._drawButtons = function() {
 	});
 	app.layer.add(playButton);
 	playButton.on('click tap', function () {
+		Music.play(app.view.sounds.select);
 		app.controller.play();
 	});
 	
@@ -51,6 +52,7 @@ HomeView.prototype._drawButtons = function() {
 	});
 	app.layer.add(optionsButton);
 	optionsButton.on('click tap', function () {
+		Music.play(app.view.sounds.select);
 		app.controller.settings();
 	});
 }
