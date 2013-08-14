@@ -26,13 +26,11 @@ var Music = new function () {
 	this.playBackgroundMusic = function (src) {
 		if(Storage.get("settingMusic", true) == true){
 			if (Env.phoneGap) {
-				if (this.backgroundMusic != null){
-					alert(this.backgroundMusic.mediaStatus);
-				}
-				if(this.backgroundMusic == null || this.backgroundMusic.mediaStatus == null || this.backgroundMusic.mediaStatus == 4 || this.backgroundMusic.mediaStatus == 0 ){
+				if(this.backgroundMusic == null || this.status = false ){
 					this.backgroundMusic = new Media(src, function() {}, function() {});
 					this.backgroundMusic.setVolume(0.2);
 					this.backgroundMusic.play({ numberOfLoops: 999});
+					this.status = true;
 				}
 			} else {
 			
@@ -55,6 +53,7 @@ var Music = new function () {
 		if (Env.phoneGap) {
 			if (this.backgroundMusic) {
 				this.backgroundMusic.stop();
+				this.status = false;
             }
 		} else {
 			this.backgroundMusic.stop();
