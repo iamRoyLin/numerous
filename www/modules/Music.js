@@ -29,7 +29,7 @@ var Music = new function () {
 				if (this.backgroundMusic != null){
 					alert(this.backgroundMusic.mediaStatus);
 				}
-				if(this.backgroundMusic == null || this.backgroundMusic.mediaStatus == 0 || this.backgroundMusic.mediaStatus == 4 ){
+				if(this.backgroundMusic == null || this.backgroundMusic.mediaStatus == null || this.backgroundMusic.mediaStatus == 4 || this.backgroundMusic.mediaStatus == 0 ){
 					this.backgroundMusic = new Media(src, function() {}, function() {});
 					this.backgroundMusic.setVolume(0.2);
 					this.backgroundMusic.play({ numberOfLoops: 999});

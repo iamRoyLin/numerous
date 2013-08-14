@@ -13,9 +13,10 @@ function MenuUnitController() {
 	
 	// Sounds
 	this.sounds = {};
-
+	this.sounds.background = "sounds/background_music/menu.mp3";
 	// variables
 	this.unitRecordsModel = new UnitRecordsModel(app.currentUnit);
+	
 };
 
 MenuUnitController.prototype.initialize = function () {
@@ -25,6 +26,7 @@ MenuUnitController.prototype.initialize = function () {
 	this.view.setImages(this.images);
 	this.view.setSounds(this.sounds);
 	
+	Music.playBackgroundMusic(this.sounds.background);
 	this.view.drawTitle();
 	this.view.drawButtonBack();
 	this.view.drawBoxes(this.unitRecordsModel);
