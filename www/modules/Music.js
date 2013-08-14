@@ -58,9 +58,11 @@ var Music = new function () {
 					this.isPlaying = false;
 				}
 			}
-
 		} else {
-			this.backgroundMusic.stop();
+			// Not Phonegap
+			if (this.backgroundMusic != null) {
+				this.backgroundMusic.stop();
+			}
 		}
 	}
 }

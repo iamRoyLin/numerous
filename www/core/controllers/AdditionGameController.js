@@ -117,8 +117,8 @@ AdditionGameController.prototype.initialize = function() {
 	app.view.viewVars.initialPackSize = {width:0.2, height:0.07};
 	
 	// The destination locations where packs will be locked in to
-	app.view.viewVars.eggsTopGroupLocations = {x:0.722, y:0.165};
-	app.view.viewVars.eggsBotGroupLocations = {x:0.722, y:0.680};
+	app.view.viewVars.eggsGroupLocation = {x:0.722, y:0.165};
+	app.view.viewVars.eggsBeltOffset = {x:0.722, y:0.680};
 	app.view.viewVars.eggsRelativeLocations = [
 		{x: 0.000, y: 0.000},
 		{x: 0.062, y: 0.000},
@@ -131,7 +131,6 @@ AdditionGameController.prototype.initialize = function() {
 		{x: 0.000, y: 0.200},
 		{x: 0.062, y: 0.200}
 	];
-	
 	app.view.viewVars.eggsPackedRelativeLocations = [
 		{x: 0.060, y: 0.000}, // row:0 col:4
 		{x: 0.060, y: 0.020}, // row:1 col:4
@@ -145,24 +144,36 @@ AdditionGameController.prototype.initialize = function() {
 		{x: 0.000, y: 0.020}  // row:1 col:0
 	];
 	
-	app.view.viewVars.packsTopGroupLocations = {x:0.45, y:0.16};
-	app.view.viewVars.packsBotGroupLocations = {x:0.7, y:0.5};
+	
+	
+	app.view.viewVars.packsGroupLocation = {x:0.48, y:0.16};
+	app.view.viewVars.packsBeltOffset = {x:0.452, y:0.680};
 	app.view.viewVars.packsRelativeLocations = [
 		{x: 0.00, y: 0.00},
+		{x: 0.09, y: 0.00},
+		{x: 0.00, y: 0.06},
+		{x: 0.09, y: 0.06},
+		{x: 0.00, y: 0.12},
+		{x: 0.09, y: 0.12},
+		{x: 0.00, y: 0.18},
+		{x: 0.09, y: 0.18},
+		{x: 0.00, y: 0.24},
+		{x: 0.09, y: 0.24}
+	];
+	app.view.viewVars.packsPackedRelativeLocations = [
+		{x: 0.00, y: 0.00},
 		{x: 0.05, y: 0.00},
-		{x: 0.00, y: 0.05},
-		{x: 0.05, y: 0.05},
-		{x: 0.00, y: 0.10},
-		{x: 0.05, y: 0.10},
-		{x: 0.00, y: 0.15},
-		{x: 0.05, y: 0.15},
-		{x: 0.00, y: 0.20},
-		{x: 0.05, y: 0.20}
+		{x: 0.00, y: 0.03},
+		{x: 0.05, y: 0.03},
+		{x: 0.00, y: 0.06},
+		{x: 0.05, y: 0.06},
+		{x: 0.00, y: 0.09},
+		{x: 0.05, y: 0.09},
+		{x: 0.00, y: 0.12},
+		{x: 0.05, y: 0.12}
 	];
 	
-	app.view.viewVars.boxLocations = [
-		{x: 0.00, y: 0.00}
-	];
+	app.view.viewVars.boxLocation = {x: 0.28, y: 0.23};
 
 
 	
@@ -201,7 +212,9 @@ AdditionGameController.prototype.initialize = function() {
 	Music.stopBackgroundMusic();
 	Music.playBackgroundMusic(this.sounds.background);
 	
-	this.view.initialize();
+	this.view.drawEggsGroup();
+	this.view.drawPacksGroup();
+	
 	this.view.drawBelts();
 	this.view.drawTracks();
 	this.view.drawBoards();
@@ -209,14 +222,16 @@ AdditionGameController.prototype.initialize = function() {
 	this.view.drawRabbitHead();	
 	this.view.drawDoneButton();
 	this.view.drawPauseWidgets();	
+	
 	this.view.drawEggs();
+	this.view.drawPacks();
+	
 	
 	if (Env.debug) {
 		this.view.drawAreas();
 	}
 	
 	app.stage.draw();
-	SoundUtil.sayNumber(this.goalNumber);
 };
 
 // destructor

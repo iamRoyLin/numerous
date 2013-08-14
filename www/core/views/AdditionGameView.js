@@ -5,44 +5,44 @@ function AdditionGameView(controller) {
 	this.ERROR_TYPES = {
 		DRAG_EGG_TO_TENS: 0,
 		DRAG_EGG_TO_HUNDREDS: 1,
+		DRAG_PACK_TO_ONES: 2,
+		DRAG_PACK_TO_HUNDREDS: 3
 	}	
 
 	// Variable for controlling whether activities are enabled (should be turned off during animations)
 	this.activitiesEnabled = true;
 	
 	// number of mistakes made
-	this.errorsMade = 0;
+	this.errorsCount = 0;
 	
 	// Number of allowable errors
 	this.allowableErrorsCount = 3;
-	
-
-	
 };
 AdditionGameView.prototype = new View();
-
-AdditionGameView.prototype.initialize = function () {
-	this.eggsTop = [];
-	this.packsTop = [];
-	
-	this.groups = {};
-	this.groups.eggsTop = new Kinetic.Group({
-		x: DimensionUtil.decimalToActualWidth(this.viewVars.eggsTopGroupLocations.x),
-		y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsTopGroupLocations.y)
-	});
-	app.layer.add(this.groups.eggsTop);
-	
-	this.groups.packsTop = new Kinetic.Group({
-		x: DimensionUtil.decimalToActualWidth(this.viewVars.packsTopGroupLocations.x),
-		y: DimensionUtil.decimalToActualHeight(this.viewVars.packsTopGroupLocations.y)
-	});
-	app.layer.add(this.groups.packsTop);
-	
-};
 
 // destructor
 AdditionGameView.prototype.finalize = function () {
 	
+};
+
+// draw new eggs (ones) group
+AdditionGameView.prototype.drawEggsGroup = function() {
+	this.eggsInGroup = [];
+	this.eggsGroup = new Kinetic.Group({
+		x: DimensionUtil.decimalToActualWidth(this.viewVars.eggsGroupLocation.x),
+		y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsGroupLocation.y)
+	});
+	app.layer.add(this.eggsGroup);
+};
+
+// draw new packs (tens) group
+AdditionGameView.prototype.drawPacksGroup = function() {
+	this.packsInGroup = [];
+	this.packsGroup = new Kinetic.Group({
+		x: DimensionUtil.decimalToActualWidth(this.viewVars.packsGroupLocation.x),
+		y: DimensionUtil.decimalToActualHeight(this.viewVars.packsGroupLocation.y)
+	});
+	app.layer.add(this.packsGroup);
 };
 
 // Draws the belts
@@ -157,7 +157,7 @@ AdditionGameView.prototype.drawDoneButton = function() {
 		Music.play(app.view.sounds.done);
 		var total = app.view.calculateTotal();
 		if (total == app.controller.goalNumber) {
-			app.view.finish(app.view.allowableErrorsCount - app.view.errorsMade);
+			app.view.finish(app.view.allowableErrorsCount - app.view.errorsCount);
 		} else {
 			app.view.errorMade(app.view.ERROR_TYPES.INCORRECT_DONE);	
 		}
@@ -166,30 +166,30 @@ AdditionGameView.prototype.drawDoneButton = function() {
 	app.layer.add(buttonDone);
 };
 
-AdditionGameView.prototype.drawEggs = function () {
 
-	
+
+
+
+// draws all the eggs
+AdditionGameView.prototype.drawEggs = function () {
+	this.eggsGroup.moveToTop();
+	this.packsGroup.moveToTop();
 	// ==============================
 	// TOP EGGS
 	// ==============================
-	this.groups.eggsTop.moveToTop();
-	this.groups.eggsTop.moveToTop();
-	
+
 	for(var eggId = 0; eggId < MathUtil.getOnes(this.viewVars.goalNumber); eggId++) {
 		var egg = this.drawNewEgg(this.viewVars.eggsRelativeLocations[eggId].x, this.viewVars.eggsRelativeLocations[eggId].y);
-		this.groups.eggsTop.add(egg);
-		this.eggsTop[this.eggsTop.length] = egg;
+		this.eggsGroup.add(egg);
+		this.eggsInGroup.push(egg);
 	}
 
 	// ==============================
 	// BOTTOM EGGS
 	// ==============================
-	var dx = this.viewVars.eggsBotGroupLocations.x;
-	var dy = this.viewVars.eggsBotGroupLocations.y;
-	
 	for(var eggId = 0; eggId < MathUtil.getOnes(this.viewVars.goalNumber2); eggId++) {
-		var x = dx + this.viewVars.eggsRelativeLocations[eggId].x;
-		var y = dy + this.viewVars.eggsRelativeLocations[eggId].y;
+		var x = this.viewVars.eggsBeltOffset.x + this.viewVars.eggsRelativeLocations[eggId].x;
+		var y = this.viewVars.eggsBeltOffset.y + this.viewVars.eggsRelativeLocations[eggId].y;
 		
 		var egg = this.drawNewEgg(x, y);
 		egg.originalX = x;
@@ -202,7 +202,6 @@ AdditionGameView.prototype.drawEggs = function () {
 		egg.on('dragend', function() {
 
 			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
-				
 				// accept the egg
 				app.view.acceptEgg(this);
 			} else {
@@ -215,82 +214,12 @@ AdditionGameView.prototype.drawEggs = function () {
 				} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltHundredsArea.X_ARRAY, app.view.viewVars.beltHundredsArea.Y_ARRAY, app.view.viewVars.beltHundredsArea.RADIUS_ARRAY)) {
 					app.view.errorMade(app.view.ERROR_TYPES.DRAG_EGG_TO_HUNDREDS);
 				}
-				
-				
 			}
-			
 		});
 	}
-	
-	
-	
 };
 
-AdditionGameView.prototype.acceptEgg = function(egg) {
-
-	this.eggsTop[this.eggsTop.length] = egg;
-	this.groups.eggsTop.add(egg);
-	egg.setX(DimensionUtil.decimalToActualWidth(this.viewVars.eggsRelativeLocations[this.viewVars.eggsRelativeLocations.length - 1].x));
-	egg.setY(DimensionUtil.decimalToActualHeight(this.viewVars.eggsRelativeLocations[this.viewVars.eggsRelativeLocations.length - 1].y));
-	egg.setDraggable(false);
-	egg.moveToTop();
-	app.stage.draw();
-	
-	if (this.eggsTop.length == 10) {
-		this.packageEggs();
-	}
-	
-};
-AdditionGameView.prototype.declineEgg = function(egg) {
-	// play the decline egg sound
-	WidgetUtil.animateMove(egg, 0.4, egg.originalX, egg.originalY);
-};
-
-AdditionGameView.prototype.packageEggs = function () {
-	// animating the eggs
-	for(var eggId = 0; eggId < this.eggsTop.length; eggId++) {
-		var egg = this.eggsTop[eggId];
-		
-		var tween = new Kinetic.Tween({
-			node: egg,
-			duration: 0.5,
-			x: DimensionUtil.decimalToActualWidth(this.viewVars.eggsPackedRelativeLocations[eggId].x),
-			y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsPackedRelativeLocations[eggId].y)
-		});
-		tween.play();
-		
-	}
-	
-	// animating the entire pack group
-	
-	
-	var tween = new Kinetic.Tween({
-		node: this.groups.eggsTop,
-		duration: 0.5,
-		y: DimensionUtil.decimalToActualHeight(0.28),
-		onFinish: function () {
-			app.view.groups.packsTop.add(this.node);
-			this.node.setX(this.node.getX() - app.view.groups.packsTop.getX());
-			this.node.setY(this.node.getY() - app.view.groups.packsTop.getY());
-			app.stage.draw();
-			
-			var tween2 = new Kinetic.Tween({
-				node: app.view.groups.eggsTop,
-				duration: 0.5,
-				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.packsRelativeLocations[app.view.packsTop.length].x),
-				y: DimensionUtil.decimalToActualHeight(app.view.viewVars.packsRelativeLocations[app.view.packsTop.length].y),
-				scaleX: 0.75,
-				scaleY: 0.75,
-			});
-			tween2.play();
-		}
-	});
-	tween.play();
-	
-	
-};
-
-
+// draws one new egg
 AdditionGameView.prototype.drawNewEgg = function (x, y) {
 	var egg = new Kinetic.Image({
 		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length)],
@@ -304,6 +233,209 @@ AdditionGameView.prototype.drawNewEgg = function (x, y) {
 	return egg;
 }
 
+// accepts the egg onto the truck
+AdditionGameView.prototype.acceptEgg = function(egg) {
+
+	this.eggsInGroup.push(egg);
+	this.eggsGroup.add(egg);
+	
+	egg.setX(DimensionUtil.decimalToActualWidth(this.viewVars.eggsRelativeLocations[this.eggsInGroup.length - 1].x));
+	egg.setY(DimensionUtil.decimalToActualHeight(this.viewVars.eggsRelativeLocations[this.eggsInGroup.length - 1].y));
+	egg.setDraggable(false);
+	egg.moveToTop();
+	app.stage.draw();
+	
+	if (this.eggsInGroup.length == 10) {
+		this.packageEggs();
+	}
+};
+
+// declines the egg and puts it back
+AdditionGameView.prototype.declineEgg = function(egg) {
+	// play the decline egg sound
+	WidgetUtil.animateMove(egg, 0.4, egg.originalX, egg.originalY);
+};
+
+// package up the eggs and put it in the TENS on the truck
+AdditionGameView.prototype.packageEggs = function () {
+	// animating the eggs
+	for(var eggId = 0; eggId < this.eggsInGroup.length; eggId++) {
+		var egg = this.eggsInGroup[eggId];
+		
+		var tween = new Kinetic.Tween({
+			node: egg,
+			duration: 0.5,
+			x: DimensionUtil.decimalToActualWidth(this.viewVars.eggsPackedRelativeLocations[eggId].x),
+			y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsPackedRelativeLocations[eggId].y)
+		});
+		tween.play();
+	}
+	
+	// animating the entire pack group
+	var tween = new Kinetic.Tween({
+		node: this.eggsGroup,
+		duration: 0.5,
+		y: DimensionUtil.decimalToActualHeight(0.28),
+		onFinish: function () {
+			this.node.setX(this.node.getX() - app.view.packsGroup.getX());
+			this.node.setY(this.node.getY() - app.view.packsGroup.getY());
+			app.stage.draw();
+			
+			var tween2 = new Kinetic.Tween({
+				node: this.node,
+				duration: 0.5,
+				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.packsRelativeLocations[app.view.packsInGroup.length].x),
+				y: DimensionUtil.decimalToActualHeight(app.view.viewVars.packsRelativeLocations[app.view.packsInGroup.length].y),
+				scaleX: 0.60,
+				scaleY: 0.60,
+				onFinish: function() {
+					app.view.drawEggsGroup();
+				
+					if (app.view.packsInGroup.length == 10) {
+						app.view.packagePacks();
+					}
+				}
+			});
+			tween2.play();
+			
+			app.view.packsGroup.add(this.node);
+			app.view.packsInGroup.push(this.node);			
+		}
+	});
+	tween.play();
+};
+
+// draws all the packs
+AdditionGameView.prototype.drawPacks = function() {
+	this.eggsGroup.moveToTop();
+	this.packsGroup.moveToTop();
+	
+	// ==============================
+	// TOP PACKS
+	// ==============================
+	for(var packId = 0; packId < MathUtil.getTens(this.viewVars.goalNumber); packId++) {
+		var pack = this.drawNewPack(this.viewVars.packsRelativeLocations[packId].x, this.viewVars.packsRelativeLocations[packId].y);
+		this.packsGroup.add(pack);
+		this.packsInGroup.push(pack);
+	}
+	
+	app.stage.draw();
+	
+	// ==============================
+	// BOTTOM PACKS
+	// ==============================
+	for(var packId = 0; packId < MathUtil.getTens(this.viewVars.goalNumber2); packId++) {
+		var x = this.viewVars.packsBeltOffset.x + this.viewVars.packsRelativeLocations[packId].x;
+		var y = this.viewVars.packsBeltOffset.y + this.viewVars.packsRelativeLocations[packId].y;
+		
+		var pack = this.drawNewPack(x, y);
+		pack.originalX = x;
+		pack.originalY = y;
+		
+		pack.setDraggable(true);
+		app.layer.add(pack);
+		
+		pack.on('dragstart', function() { this.moveToTop() });
+		pack.on('dragend', function() {
+
+			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
+				// accept the pack
+				app.view.acceptPack(this);
+			} else {
+				// decline the pack
+				app.view.declinePack(this);
+				
+				// record any errors
+				if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
+					app.view.errorMade(app.view.ERROR_TYPES.DRAG_PACK_TO_ONES);
+				} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltHundredsArea.X_ARRAY, app.view.viewVars.beltHundredsArea.Y_ARRAY, app.view.viewVars.beltHundredsArea.RADIUS_ARRAY)) {
+					app.view.errorMade(app.view.ERROR_TYPES.DRAG_PACK_TO_HUNDREDS);
+				}
+			}
+		});
+	}
+	
+};
+
+// draws a new pack
+AdditionGameView.prototype.drawNewPack = function(x, y) {
+	var pack = new Kinetic.Group({
+		x: DimensionUtil.decimalToActualWidth(x),
+		y: DimensionUtil.decimalToActualHeight(y),
+		scaleX: 0.60,
+		scaleY: 0.60
+	});
+	
+	for(var i = 0; i < 10; i++) {
+		var egg = this.drawNewEgg(this.viewVars.eggsPackedRelativeLocations[i].x, this.viewVars.eggsPackedRelativeLocations[i].y);
+		pack.add(egg);
+	}
+	
+	return pack;
+};
+
+// accept pack
+AdditionGameView.prototype.acceptPack = function(pack) {
+	this.packsInGroup.push(pack);
+	this.packsGroup.add(pack);
+	
+	pack.setX(DimensionUtil.decimalToActualWidth(this.viewVars.packsRelativeLocations[this.packsInGroup.length - 1].x));
+	pack.setY(DimensionUtil.decimalToActualHeight(this.viewVars.packsRelativeLocations[this.packsInGroup.length - 1].y));
+	pack.setDraggable(false);
+	pack.moveToTop();
+	app.stage.draw();
+	
+	if (this.packsInGroup.length == 10) {
+		this.packagePacks();
+	}
+};
+
+// decline pack
+AdditionGameView.prototype.declinePack = function(pack) {
+	WidgetUtil.animateMove(pack, 0.4, pack.originalX, pack.originalY);
+};
+
+// package up the packs into a box/crate
+AdditionGameView.prototype.packagePacks = function() {
+	// animating the packs
+	for(var packId = 0; packId < this.packsInGroup.length; packId++) {
+		var pack = this.packsInGroup[packId];
+		
+		var tween = new Kinetic.Tween({
+			node: pack,
+			duration: 0.5,
+			x: DimensionUtil.decimalToActualWidth(this.viewVars.packsPackedRelativeLocations[packId].x),
+			y: DimensionUtil.decimalToActualHeight(this.viewVars.packsPackedRelativeLocations[packId].y)
+		});
+		tween.play();
+	}
+	
+	// animating the entire box group
+	var tween = new Kinetic.Tween({
+		node: this.packsGroup,
+		duration: 0.5,
+		//y: DimensionUtil.decimalToActualHeight(0.28),
+		onFinish: function () {
+			//this.node.setX(this.node.getX() - app.view.packsGroup.getX());
+			//this.node.setY(this.node.getY() - app.view.packsGroup.getY());
+			//app.stage.draw();
+			
+			var tween2 = new Kinetic.Tween({
+				node: this.node,
+				duration: 0.5,
+				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.boxLocation.x),
+				y: DimensionUtil.decimalToActualHeight(app.view.viewVars.boxLocation.y),
+				//scaleX: 0.60,
+				//scaleY: 0.60,
+				onFinish: function() {
+					app.view.drawPacksGroup();
+				}
+			});
+			tween2.play();		
+		}
+	});
+	tween.play();
+};
 
 
 // draws all the pause widgets then hides them. Shows when the pause function is called
@@ -413,7 +545,7 @@ AdditionGameView.prototype.unpause = function() {
 
 // Is called when a mistake is made by the student
 AdditionGameView.prototype.errorMade = function (errorType) {
-	this.errorsMade++;
+	this.errorsCount++;
 
 	switch (errorType) {
 		case this.ERROR_TYPES.DRAG_TO_TENS:
@@ -439,7 +571,7 @@ AdditionGameView.prototype.errorMade = function (errorType) {
 		break;
 	}
 	
-	if (this.errorsMade == this.allowableErrorsCount) {
+	if (this.errorsCount == this.allowableErrorsCount) {
 		this.finish(0);
 	}
 }
