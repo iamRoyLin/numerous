@@ -25,8 +25,9 @@ var Music = new function () {
 	
 	this.playBackgroundMusic = function (src) {
 		if(Storage.get("settingMusic", true) == true){
-			
+			alert("1");
 			if (Env.phoneGap) {
+				alert("2");
 				if(this.backgroundMusic == null || this.backgroundMusic.mediaStatus == 0 || this.backgroundMusic.mediaStatus == 4 ){
 					this.backgroundMusic = new Media(src, function() {}, function() {});
 					this.backgroundMusic.setVolume(0.2);
