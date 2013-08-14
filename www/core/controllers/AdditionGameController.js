@@ -47,6 +47,7 @@ function AdditionGameController() {
 	this.sounds.select = "sounds/menu/menu_select.wav";
 	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 	this.sounds.done = "sounds/grouping_game/done.wav";
+	this.sounds.background = "sounds/background_music/game.mp3";
 	
 	
 };
@@ -182,6 +183,26 @@ AdditionGameController.prototype.initialize = function() {
 		"Superb!"
 	];	
 	
+<<<<<<< HEAD:www/core/controllers/AdditionGameController.js
+=======
+	// determines whether packs are being used.
+	app.view.viewVars.usePacks = true;
+	
+	if (app.GroupingGame4RestartNumber != null) {
+		this.goalNumber = app.GroupingGame4RestartNumber;
+		app.GroupingGame4RestartNumber = null;
+	} else {
+		this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
+		this.goalNumber += MathUtil.random(0,9);
+	}
+	
+
+	
+	var title = MathUtil.convertNumberToWord(this.goalNumber);
+	
+	Music.stopBackgroundMusic();
+	Music.playBackgroundMusic(this.sounds.background);
+>>>>>>> d90400999042b9c3040c9e0475d5d93084b8191a:www/core/controllers/GroupingGame4Controller.js
 	
 	this.view.initialize();
 	this.view.drawBelts();

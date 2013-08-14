@@ -114,9 +114,16 @@ App.prototype.getCurrentPageParams = function () {
 };
 
 $(function () {
-	app = new App();
+	setTimeout(function() {
+		app = new App();
 	
-	app.currentUnit=1;
-	app.currentGame=0;
-	app.route("AdditionGame");
+
+		app.currentUnit=1;
+		app.currentGame=0;
+		app.route("AdditionGame");
+
+	
+	}, 1000); 
+	
+
 });

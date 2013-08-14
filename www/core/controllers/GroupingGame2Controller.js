@@ -48,7 +48,7 @@ function GroupingGame2Controller() {
 	this.sounds.select = "sounds/menu/menu_select.wav";
 	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 	this.sounds.done = "sounds/grouping_game/done.wav";
-
+	this.sounds.background = "sounds/background_music/game.mp3";
 };
 
 GroupingGame2Controller.prototype.initialize = function() {
@@ -142,6 +142,9 @@ GroupingGame2Controller.prototype.initialize = function() {
 	
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = true;
+	
+	Music.stopBackgroundMusic();
+	Music.playBackgroundMusic(this.sounds.background);
 	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
 	var title = MathUtil.convertNumberToWord(this.goalNumber);

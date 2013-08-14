@@ -48,7 +48,7 @@ function GroupingGameController() {
 	this.sounds.select = "sounds/menu/menu_select.wav";
 	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.wav";
 	this.sounds.done = "sounds/grouping_game/done.wav";
-	
+	this.sounds.background = "sounds/background_music/game.mp3";
 };
 
 GroupingGameController.prototype.initialize = function() {
@@ -145,6 +145,9 @@ GroupingGameController.prototype.initialize = function() {
 	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
 	var title = MathUtil.convertNumberToWord(this.goalNumber);
+	
+	Music.stopBackgroundMusic();
+	Music.playBackgroundMusic(this.sounds.background);
 	
 	this.view.drawRabbit();
 	this.view.drawThinkCloud();
