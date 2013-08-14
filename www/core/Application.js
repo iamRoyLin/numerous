@@ -114,11 +114,14 @@ App.prototype.getCurrentPageParams = function () {
 };
 
 $(function () {
-	app = new App();
+	setTimeout(function() {
+		app = new App();
 	
-	app.currentUnit=1;
-	app.currentGame=0;
-	app.route("Home");
+		app.currentUnit=1;
+		app.currentGame=0;
+		app.route("Home");
+	
+	}, 1000); 
 	
 	//alert(JSON.stringify([1,2]));
 	//alert(JSON.parse("asdf"));

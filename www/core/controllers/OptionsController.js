@@ -20,6 +20,7 @@ function OptionsController() {
 	// sounds
 	this.sounds = {};
 	this.sounds.select = "sounds/menu/menu_select.wav";
+	this.sounds.background = "sounds/background_music/menu.mp3";
 };
 
 // Happens when images are loaded
@@ -30,9 +31,9 @@ OptionsController.prototype.initialize = function () {
 	//______________________________________________________________
 	//FOLLOWING THREE VARIABLES SHOULD BE RECORDED IN DATABASE
 	//______________________________________________________________
-	app.view.soundOn = true;
-	app.view.musicOn = true;
-	app.view.levelLocked = false;
+	//app.view.soundOn = Storage.get("settingSound", true);
+	//app.view.musicOn = Storage.get("settingMusic", true);
+	//app.view.levelLocked = Storage.get("lockLevel", false);;
 	
 	//dimensions
 	app.view.viewVars = {};
