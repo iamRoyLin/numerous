@@ -120,7 +120,7 @@ $(function () {
 
 		app.currentUnit=1;
 		app.currentGame=0;
-		app.route("AdditionGame");
+		app.route("Home");
 
 	
 	}, 1000); 

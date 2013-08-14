@@ -182,9 +182,7 @@ AdditionGameController.prototype.initialize = function() {
 		"Super!",
 		"Superb!"
 	];	
-	
-<<<<<<< HEAD:www/core/controllers/AdditionGameController.js
-=======
+
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = true;
 	
@@ -202,7 +200,6 @@ AdditionGameController.prototype.initialize = function() {
 	
 	Music.stopBackgroundMusic();
 	Music.playBackgroundMusic(this.sounds.background);
->>>>>>> d90400999042b9c3040c9e0475d5d93084b8191a:www/core/controllers/GroupingGame4Controller.js
 	
 	this.view.initialize();
 	this.view.drawBelts();
