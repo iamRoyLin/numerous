@@ -118,8 +118,5 @@ $(function () {
 	
 	app.currentUnit=1;
 	app.currentGame=0;
-	app.route("Home");
-	
-	//alert(JSON.stringify([1,2]));
-	//alert(JSON.parse("asdf"));
+	app.route("AdditionGame");
 });

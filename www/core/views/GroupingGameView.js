@@ -916,36 +916,3 @@ GroupingGameView.prototype.finish = function(score) {
 	
 	
 };
-
-//draw track (only applied for unit3)
-GroupingGameView.prototype.drawTrack = function () {
-	var track = new Kinetic.Image({image: this.images.track});
-	WidgetUtil.glue(track, {
-		width: this.viewVars.trackDimensions.width,
-		height: this.viewVars.trackDimensions.height,
-		dx: this.viewVars.trackDimensions.x,
-		dy: this.viewVars.trackDimensions.y
-	});
-	app.layer.add(track);
-};
-
-//draw boards (only applied for unit3)
-GroupingGameView.prototype.drawBoards = function () {
-	var board1 = new Kinetic.Image({image: this.images.board1});
-	WidgetUtil.glue(board1, {
-		width: this.viewVars.board1Dimensions.width,
-		height: this.viewVars.board1Dimensions.height,
-		dx: this.viewVars.board1Dimensions.x,
-		dy: this.viewVars.board1Dimensions.y
-	});
-	app.layer.add(board1);
-	
-	var board2 = new Kinetic.Image({image: this.images.board2});
-	WidgetUtil.glue(board2, {
-		width: this.viewVars.board2Dimensions.width,
-		height: this.viewVars.board2Dimensions.height,
-		dx: this.viewVars.board2Dimensions.x,
-		dy: this.viewVars.board2Dimensions.y
-	});
-	app.layer.add(board2);
-};
