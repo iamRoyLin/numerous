@@ -22,15 +22,18 @@ var Music = new function () {
 			}
 		}
 	}
-	
+	this.isPlaying = false;
 	this.playBackgroundMusic = function (src) {
 		if(Storage.get("settingMusic", true) == true){
 			if (Env.phoneGap) {
-				if(this.backgroundMusic == null || this.status == null || this.status == false ){
-					this.backgroundMusic = new Media(src, function() {}, function() {});
-					this.backgroundMusic.setVolume(0.2);
+				if(this.isPlaying == false){
+					if (this.backgroundMusic == null) {
+						this.backgroundMusic = new Media(src, function() {}, function() {});
+						this.backgroundMusic.setVolume(0.2);
+					}
+					
+					this.isPlaying = true;
 					this.backgroundMusic.play({ numberOfLoops: 999});
-					this.status = true;
 				}
 			} else {
 			
@@ -51,10 +54,13 @@ var Music = new function () {
 	
 	this.stopBackgroundMusic = function () {
 		if (Env.phoneGap) {
-			if (this.backgroundMusic) {
-				this.backgroundMusic.stop();
-				this.status = false;
-            }
+			if (this.isPlaying == true) {
+				if (this.backgroundMusic != null) {
+					this.backgroundMusic.stop();
+					this.isPlaying = false;
+				}
+			}
+
 		} else {
 			this.backgroundMusic.stop();
 		}
