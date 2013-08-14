@@ -6,6 +6,10 @@ function HomeController() {
 	this.images.playButton = "images/widgets/button_play.png";
 	this.images.optionsButton = "images/widgets/button_options.png";
 	
+	this.sounds = {};
+	this.sounds.background = "sounds/background_music/menu.mp3";
+	this.sounds.select = "sounds/menu/menu_select.wav";
+	
 };
 
 HomeController.prototype.initialize = function () {
@@ -13,6 +17,10 @@ HomeController.prototype.initialize = function () {
 	app.view = this.view;
 	
 	this.view.setImages(this.images);
+	this.view.setSounds(this.sounds);
+	
+	Music.playBackgroundMusic(this.sounds.background);
+	
 	this.view.draw();
 };
 
