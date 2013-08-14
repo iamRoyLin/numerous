@@ -27,11 +27,9 @@ var Music = new function () {
 		if(Storage.get("settingMusic", true) == true){
 			if (Env.phoneGap) {
 				if(this.isPlaying == false){
-					if (this.backgroundMusic == null) {
-						this.backgroundMusic = new Media(src, function() {}, function() {});
-						this.backgroundMusic.setVolume(0.2);
-					}
 					
+					this.backgroundMusic = new Media(src, function() {}, function() {});
+					this.backgroundMusic.setVolume(0.2);
 					this.isPlaying = true;
 					this.backgroundMusic.play({ numberOfLoops: 999});
 				}
