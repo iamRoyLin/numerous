@@ -44,9 +44,8 @@ function Practice1Controller() {
 	this.sounds.acceptEgg = "sounds/grouping_game/accept_egg.mp3";
 	this.sounds.declineEgg = "sounds/grouping_game/reject_egg.mp3";
 	this.sounds.select = "sounds/menu/menu_select.mp3";
-	this.sounds.wrapUp = "sounds/grouping_game/wrap_up.mp3";
-	this.sounds.done = "sounds/grouping_game/done.mp3";
-	
+	this.sounds.next = "sounds/grouping_game/done.mp3";
+	this.sounds.background = "sounds/background_music/game.mp3";
 	//view.draw();
 };
 
@@ -132,6 +131,13 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.errorsRange = 2;
 	
 	this.view.setImages(this.images);
+	this.view.setSounds(this.sounds);
+	
+	if(Storage.get("settingMusic") == true){
+		Music.stopBackgroundMusic();
+		Music.playBackgroundMusic(this.sounds.background);
+	}
+	
 	this.view.drawBlackBoard();
 	this.view.drawRabbit();
 	this.view.drawQuestion();
