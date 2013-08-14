@@ -53,7 +53,7 @@ var Music = new function () {
 	this.stopBackgroundMusic = function () {
 		if (Env.phoneGap) {
 			if (this.isPlaying == true) {
-				if (this.backgroundMusic != null) {
+				if (this.backgroundMusic) {
 					this.backgroundMusic.stop();
 					this.isPlaying = false;
 				}

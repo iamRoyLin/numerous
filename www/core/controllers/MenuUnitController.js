@@ -14,6 +14,7 @@ function MenuUnitController() {
 	// Sounds
 	this.sounds = {};
 	this.sounds.background = "sounds/background_music/menu.mp3";
+	this.sounds.select = "sounds/menu/menu_select.mp3";
 	// variables
 	this.unitRecordsModel = new UnitRecordsModel(app.currentUnit);
 	

@@ -31,6 +31,7 @@ MenuUnitView.prototype.drawButtonBack = function() {
 	app.layer.add(buttonBack);
 	
 	buttonBack.on('click tap', function () {
+		Music.play(app.view.sounds.select);
 		app.controller.back();
 	});
 };
@@ -87,6 +88,7 @@ MenuUnitView.prototype.drawBoxes = function(unitRecordsModel) {
 		
 		group.gameId = boxNumber;
 		group.on('click tap', function () {
+			Music.play(app.view.sounds.select);
 			app.controller.game(this.gameId);
 		});
 	}
