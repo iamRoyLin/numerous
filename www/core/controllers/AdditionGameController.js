@@ -197,6 +197,7 @@ AdditionGameController.prototype.initialize = function() {
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = true;
 	
+	/*
 	if (app.GroupingGame4RestartNumber != null) {
 		this.goalNumber = app.GroupingGame4RestartNumber;
 		app.GroupingGame4RestartNumber = null;
@@ -204,7 +205,7 @@ AdditionGameController.prototype.initialize = function() {
 		this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
 		this.goalNumber += MathUtil.random(0,9);
 	}
-	
+	*/
 
 	
 	var title = MathUtil.convertNumberToWord(this.goalNumber);
