@@ -117,7 +117,6 @@ $(function () {
 	setTimeout(function() {
 		app = new App();
 	
-
 		app.currentUnit=1;
 		app.currentGame=0;
 		app.route("AdditionGame");

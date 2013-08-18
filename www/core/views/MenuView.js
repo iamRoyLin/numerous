@@ -69,11 +69,13 @@ MenuView.prototype.drawArrows = function() {
 	app.layer.add(this.arrowRight);
 	
 	this.arrowLeft.on('click tap', function () {
+		Music.play(app.view.sounds.select);
 		this.moveToTop();
 		app.stage.draw();
 		app.view.left();
 	});
 	this.arrowRight.on('click tap', function () {
+		Music.play(app.view.sounds.select);
 		this.moveToTop();
 		app.stage.draw();
 		app.view.right();
@@ -84,6 +86,8 @@ MenuView.prototype.drawArrows = function() {
 
 MenuView.prototype.drawGroups = function() {
 	this.unitsGroupArray = [];
+	this.animations = [];
+	var period = 1000;
 	for(var i = 0; i < app.UNIT_GAMES.length; i++) {
 		this.unitsGroupArray[i] = new Kinetic.Group({});
 		
@@ -103,15 +107,26 @@ MenuView.prototype.drawGroups = function() {
 			dx: 0.33,
 			dy: 0.37
 		});
+		
 		// Need to edit when the unit name is changed
 		myButton.on('click tap', function () {
 			Music.play(app.view.sounds.select);
 			app.controller.unitSelect(app.view.currentUnit);
 		});
+		
+		this.animations[i] = new Kinetic.Animation(function(frame) {
+       		var scale = Math.sin(frame.time * 2 * Math.PI / period) + 40;
+        		// scale x and y
+        		myButton.setScale(scale);
+      		}, app.layer);
+      		
 		this.unitsGroupArray[i].add(myButton);
 		
 		app.layer.add(this.unitsGroupArray[i]);
 		this.unitsGroupArray[i].hide();
+	}
+	for(var j = 0; j < app.UNIT_GAMES.length; j++) {
+		this.animations[j].start();
 	}
 	this.unitsGroupArray[0].show();
 }

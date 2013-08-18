@@ -16,7 +16,7 @@ function MenuController() {
 	
 	// Sounds
 	this.sounds = {};
-	this.sounds.select = "sounds/menu/menu_select.wav";
+	this.sounds.select = "sounds/menu/menu_select.mp3";
 	
 };
 

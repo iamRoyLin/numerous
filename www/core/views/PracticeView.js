@@ -53,6 +53,7 @@ PracticeView.prototype.drawButtonNextBig = function() {
 	});
 	
 	this.buttonNextBig.on('click tap', function () {
+		Music.play(app.view.sounds.next);
 		if (!app.controller.keyboardEnabled) {
 			return;
 		}
@@ -240,8 +241,10 @@ PracticeView.prototype.keyboardClick = function(keyboardGroup) {
 	var questionObject = app.controller.getCurrentQuestion();
 
 	if (keyboardGroup.id == questionObject.answer) {
+		Music.play(app.view.sounds.acceptEgg);
 		this.answeredRight(keyboardGroup.id);
 	} else {
+		Music.play(app.view.sounds.declineEgg);
 		this.answeredWrong(keyboardGroup.id);
 	}
 };
@@ -412,11 +415,14 @@ PracticeView.prototype.finish = function(score) {
 	}
 	
 	buttonRetry.on('click tap', function () {
-		//Music.play(app.view.sounds.select);
+		Music.play(app.view.sounds.select);
 		app.controller.restart();
 	});
 	buttonMenu.on('click tap', function () {
-		//Music.play(app.view.sounds.select);
+		Music.play(app.view.sounds.select);
+		if(Storage.get("settingMusic") == true){
+			Music.stopBackgroundMusic();
+		}
 		app.controller.menu();
 	});
 	
@@ -443,7 +449,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	});
 	app.layer.add(buttonPause);
 	buttonPause.on('click tap', function() {
-		//Music.play(this.sounds.select);
+		Music.play(app.view.sounds.select);
 		app.view.pause();
 	});
 	
@@ -484,7 +490,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonResume);
 	
 	buttonResume.on('click tap', function () {
-		//Music.play(this.sounds.select);
+		Music.play(app.view.sounds.select);
 		app.view.unpause();
 	});
 	
@@ -499,7 +505,10 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonMenu);
 	
 	buttonMenu.on('click tap', function () {
-		//Music.play(this.sounds.select);
+		Music.play(app.view.sounds.select);
+		if(Storage.get("settingMusic") == true){
+			Music.stopBackgroundMusic();
+		}
 		app.controller.menu();
 	});
 	
@@ -514,7 +523,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonRestart);
 	
 	buttonRestart.on('click tap', function () {
-		//Music.play(this.sounds.select);
+		Music.play(app.view.sounds.select);
 		app.controller.restart();
 	});
 	

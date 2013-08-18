@@ -8,7 +8,7 @@ function HomeController() {
 	
 	this.sounds = {};
 	this.sounds.background = "sounds/background_music/menu.mp3";
-	this.sounds.select = "sounds/menu/menu_select.wav";
+	this.sounds.select = "sounds/menu/menu_select.mp3";
 	
 };
 
