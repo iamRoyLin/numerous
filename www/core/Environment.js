@@ -6,7 +6,7 @@ var Env = new function () {
 	this.width = window.innerWidth;
 	this.height = window.innerHeight;
 
-	this.debug = true;
+	this.debug = false;
 	
 	if (document.URL.indexOf('file:') === 0) {
 		this.phoneGap = true;
