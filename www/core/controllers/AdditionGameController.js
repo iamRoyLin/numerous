@@ -98,8 +98,8 @@ AdditionGameController.prototype.initialize = function() {
 	app.view.viewVars.numberWidgetDimensions = {onesX: 0.62, onesY: 0.25, tensX: 0.36, tensY: 0.25};
 	app.view.viewVars.doneButtonDimensions = {x:0.86, y:0.45, width:0.15, height:0.2};
 	app.view.viewVars.trackDimensions = {x:0.01, y:0.14, width:0.89, height:0.43}
-	app.view.viewVars.board1Dimensions = {x:0.88, y:0.22, width:0.12, height:0.18}
-	app.view.viewVars.board2Dimensions = {x:0.88, y:0.75, width:0.12, height:0.18}
+	app.view.viewVars.board1Dimensions = {x:0.85, y:0.22, width:0.15, height:0.18}
+	app.view.viewVars.board2Dimensions = {x:0.85, y:0.75, width:0.15, height:0.18}
 	
 	// Tray and cover sizes and positions
 	app.view.viewVars.traySize = {width:0.395, height:0.42};
@@ -197,24 +197,15 @@ AdditionGameController.prototype.initialize = function() {
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = true;
 	
-	/*
-	if (app.GroupingGame4RestartNumber != null) {
-		this.goalNumber = app.GroupingGame4RestartNumber;
-		app.GroupingGame4RestartNumber = null;
-	} else {
-		this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-		this.goalNumber += MathUtil.random(0,9);
-	}
-	*/
-
-	
-	var title = MathUtil.convertNumberToWord(this.goalNumber);
+	//var title = MathUtil.convertNumberToWord(this.goalNumber);
+	var title = this.goalNumber + " + " + this.goalNumber2 + " = ?";
 	
 	if(Storage.get("settingMusic") == true){
 		Music.stopBackgroundMusic();
 		Music.playBackgroundMusic(this.sounds.background);
 	}
 	
+	this.view.initialize();
 	this.view.drawEggsGroup();
 	this.view.drawPacksGroup();
 	
@@ -225,10 +216,13 @@ AdditionGameController.prototype.initialize = function() {
 	this.view.drawRabbitHead();	
 	this.view.drawDoneButton();
 	this.view.drawPauseWidgets();	
+	this.view.drawTitle(title);
+
 	
 	this.view.drawEggs();
 	this.view.drawPacks();
 	
+	this.view.drawNumbers();	
 	
 	if (Env.debug) {
 		this.view.drawAreas();

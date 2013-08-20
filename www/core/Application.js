@@ -63,10 +63,6 @@ function App() {
 	
 	];
 	
-	this.UNIT_GAMES[3] = [
-	
-	];
-	
 	
 	
 };
@@ -119,9 +115,9 @@ $(function () {
 	setTimeout(function() {
 		app = new App();
 	
-		app.currentUnit=1;
+		app.currentUnit=2;
 		app.currentGame=0;
-		app.route("Home");
+		app.route("AdditionGame");
 
 	
 	}, 1000); 

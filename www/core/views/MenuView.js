@@ -114,20 +114,13 @@ MenuView.prototype.drawGroups = function() {
 			app.controller.unitSelect(app.view.currentUnit);
 		});
 		
-		this.animations[i] = new Kinetic.Animation(function(frame) {
-       		var scale = Math.sin(frame.time * 2 * Math.PI / period) + 40;
-        		// scale x and y
-        		myButton.setScale(scale);
-      		}, app.layer);
+
       		
 		this.unitsGroupArray[i].add(myButton);
-		
 		app.layer.add(this.unitsGroupArray[i]);
 		this.unitsGroupArray[i].hide();
 	}
-	for(var j = 0; j < app.UNIT_GAMES.length; j++) {
-		this.animations[j].start();
-	}
+
 	this.unitsGroupArray[0].show();
 }
 

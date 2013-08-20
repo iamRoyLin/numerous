@@ -10,8 +10,8 @@ function MenuController() {
 	this.images.unitLabels = [];
 	this.images.unitPlayButtons = [];
 	for(var i = 0; i < app.UNIT_GAMES.length; i++){
-		this.images.unitLabels[i] = "images/widgets/label_unit" + (i+1) + ".png";
-		this.images.unitPlayButtons[i] = "images/widgets/button_unit" + (i+1) + "_play.png";
+		this.images.unitLabels[i] = "images/widgets/label_unit" + i + ".png";
+		this.images.unitPlayButtons[i] = "images/widgets/button_unit" + i + "_play.png";
 	}
 	
 	// Sounds

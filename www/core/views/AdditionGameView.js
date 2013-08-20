@@ -20,6 +20,10 @@ function AdditionGameView(controller) {
 };
 AdditionGameView.prototype = new View();
 
+AdditionGameView.prototype.initialize = function() {
+	this.boxesInGroup = [];
+};
+
 // destructor
 AdditionGameView.prototype.finalize = function () {
 	
@@ -117,7 +121,7 @@ AdditionGameView.prototype.drawThinkCloud = function () {
 		lineHeight: 1.3
 	});
 	app.layer.add(this.thinkCloudTextWidget);
-	this.displayThinkCloud("Drag " + MathUtil.convertNumberToWord(app.controller.goalNumber) + " of my easter eggs onto the belt!");
+	this.displayThinkCloud("Lets do some addition! Drag eggs onto the truck!");
 };
 
 // Displays a message in the think cloud
@@ -166,8 +170,92 @@ AdditionGameView.prototype.drawDoneButton = function() {
 	app.layer.add(buttonDone);
 };
 
+// draws the number the student needs to perform
+AdditionGameView.prototype.drawTitle = function(title) {
+	 this.titleTextWidget = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.15),
+		y: DimensionUtil.decimalToActualHeight(0.02),
+		
+		scaleX: 0,
+		scaleY: 0,
+    	text: title,
+		fontFamily: 'mainFont',
+    	fontSize: 95,
+		fill: 'black', // #2B8F4E
+		lineJoin: 'round',
+		fontStyle: 'bold',
+        shadowColor: 'white',
+        shadowBlur: 10,
+        shadowOffset: 5,
+        shadowOpacity: 1,
+    });
+    app.layer.add(this.titleTextWidget);
+	
+	setTimeout(function() {
+		var flyIn = new Kinetic.Tween({
+			node: app.view.titleTextWidget,
+			duration: 0.7,
+			
+			scaleX: 1/1024*DimensionUtil.width,
+			scaleY: 1/768*DimensionUtil.height,
+			x: DimensionUtil.decimalToActualWidth(0.15),
+			y: DimensionUtil.decimalToActualHeight(0.02),
+			
+		});
+		flyIn.play();
+	}, 300);
 
+};
 
+AdditionGameView.prototype.drawNumbers = function() {
+	// top
+	this.topNumberTextWidget = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.862),
+		y: DimensionUtil.decimalToActualHeight(0.260),
+		
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+    	text: "",
+		align: "center",
+		width: DimensionUtil.decimalToActualWidth(0.125 / (1/1024*DimensionUtil.width)),
+		fontFamily: 'mainFont',
+    	fontSize: 60,
+		fill: 'black', // #2B8F4E
+		fontStyle: 'bold',
+    });
+    app.layer.add(this.topNumberTextWidget);
+	
+	// bottom
+	this.botNumberTextWidget = new Kinetic.Text({
+		x: DimensionUtil.decimalToActualWidth(0.862),
+		y: DimensionUtil.decimalToActualHeight(0.80),
+		
+		scaleX: 1/1024*DimensionUtil.width,
+		scaleY: 1/768*DimensionUtil.height,
+    	text: "",
+		align: "center",
+		width: DimensionUtil.decimalToActualWidth(0.125 / (1/1024*DimensionUtil.width)),
+		fontFamily: 'mainFont',
+    	fontSize: 60,
+		fill: 'black', // #2B8F4E
+		fontStyle: 'bold',
+    });
+    app.layer.add(this.botNumberTextWidget);
+	
+	this.refreshNumbers();
+};
+
+AdditionGameView.prototype.refreshNumbers = function() {
+	var goalNumber = this.viewVars.goalNumber + this.viewVars.goalNumber2;
+	var topNumber = (this.eggsInGroup.length) + (this.packsInGroup.length * 10) + (this.boxesInGroup.length * 100);
+	
+	
+	
+	this.topNumberTextWidget.setText(topNumber);
+	this.botNumberTextWidget.setText(goalNumber - topNumber);
+	
+	app.stage.draw();
+};
 
 
 // draws all the eggs
@@ -247,6 +335,8 @@ AdditionGameView.prototype.acceptEgg = function(egg) {
 	
 	if (this.eggsInGroup.length == 10) {
 		this.packageEggs();
+	} else {
+		this.refreshNumbers();
 	}
 };
 
@@ -290,9 +380,12 @@ AdditionGameView.prototype.packageEggs = function () {
 				scaleY: 0.60,
 				onFinish: function() {
 					app.view.drawEggsGroup();
-				
+					
+					
 					if (app.view.packsInGroup.length == 10) {
 						app.view.packagePacks();
+					} else {
+						app.view.refreshNumbers();
 					}
 				}
 			});
@@ -387,6 +480,8 @@ AdditionGameView.prototype.acceptPack = function(pack) {
 	
 	if (this.packsInGroup.length == 10) {
 		this.packagePacks();
+	} else {
+		app.view.refreshNumbers();
 	}
 };
 
@@ -398,6 +493,7 @@ AdditionGameView.prototype.declinePack = function(pack) {
 // package up the packs into a box/crate
 AdditionGameView.prototype.packagePacks = function() {
 	// animating the packs
+	this.boxesInGroup.push(this.packsGroup);
 	for(var packId = 0; packId < this.packsInGroup.length; packId++) {
 		var pack = this.packsInGroup[packId];
 		
@@ -429,6 +525,7 @@ AdditionGameView.prototype.packagePacks = function() {
 				//scaleY: 0.60,
 				onFinish: function() {
 					app.view.drawPacksGroup();
+					app.view.refreshNumbers();
 				}
 			});
 			tween2.play();		
