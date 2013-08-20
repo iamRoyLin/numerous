@@ -12,7 +12,7 @@ var Music = new function () {
 		if(Storage.get("settingSound", true) == true){
 			if (Env.phoneGap) {
 				var myMedia = new Media(src);
-				myMedia.play();
+				myMedia.play({ playAudioWhenScreenIsLocked : false });
 			} else {
 				soundManager.createSound({
 					url: src,
@@ -32,7 +32,7 @@ var Music = new function () {
 					this.backgroundMusic = new Media(src);
 					this.backgroundMusic.setVolume(0.2);
 					this.isPlaying = true;
-					this.backgroundMusic.play({ numberOfLoops: 999});
+					this.backgroundMusic.play({ numberOfLoops: 999, playAudioWhenScreenIsLocked : false});
 				}
 				
 			} else {
