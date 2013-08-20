@@ -67,6 +67,8 @@ function App() {
 	
 	];
 	
+	
+	
 };
 
 App.prototype.route = function(page, pageParams) {
