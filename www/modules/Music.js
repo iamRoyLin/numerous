@@ -81,7 +81,7 @@ var Music = new function () {
 	this.resumeBackgroundMusic = function () {
 		if (Env.phoneGap) {
 			if (!this.isPlaying) {
-				this.backgroundMusic.play();
+				this.backgroundMusic.play({ numberOfLoops: 999});
 				this.isPlaying = true;
 			}
 		}
