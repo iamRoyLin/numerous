@@ -133,18 +133,18 @@ $(function () {
 	
 		app.currentUnit=0;
 		app.currentGame=0;
-		app.route("Home");
 
-	
+		app.route("Home");
+		
 	}, 1000); 
 	
 
 });
 
-document.addEventListener("deviceready", function () {
-	alert("device ready");
+document.addEventListener("pause", function () {
+	navigator.splashscreen.show();
 }, false);
 
 document.addEventListener("resume", function () {
-	alert("resumed");
+	navigator.splashscreen.hide();
 }, false);

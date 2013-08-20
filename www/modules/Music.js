@@ -41,7 +41,7 @@ var Music = new function () {
 					this.backgroundMusic = new Media(
 						src,
 						function() {
-							alert("playAudio():Audio Success");
+							
 						},
 						function (error) {
 							alert('code: ' + error.code + ' ||  message: ' + error.message);
