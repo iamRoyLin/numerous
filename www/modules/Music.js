@@ -12,7 +12,7 @@ var Music = new function () {
 		if(Storage.get("settingSound", true) == true){
 			if (Env.phoneGap) {
 				var myMedia = new Media(src);
-				myMedia.play({ playAudioWhenScreenIsLocked : false });
+				myMedia.play({ playAudioWhenScreenIsLocked: false });
 			} else {
 				soundManager.createSound({
 					url: src,
@@ -22,13 +22,30 @@ var Music = new function () {
 			}
 		}
 	}
+	
+	    
+
+        // onError Callback 
+        //
+        function onError(error) {
+            alert('code: '    + error.code    + '\n' + 
+                  'message: ' + error.message + '\n');
+        }
+	
 	this.isPlaying = false;
-	this.playBackgroundMusic = function (src) {
+	this.playBackgroundMusic = function (
+		src,
+		function() {
+            alert("playAudio():Audio Success");
+        },
+        function (error) {
+            alert('code: ' + error.code + ' ||  message: ' + error.message);
+        }
+	) {
 		if(Storage.get("settingMusic", true) == true){
 			if (Env.phoneGap) {
 				
 				if(this.isPlaying == false){
-					alert("Play Background Music");
 					this.backgroundMusic = new Media(src);
 					this.backgroundMusic.setVolume(0.2);
 					this.isPlaying = true;
@@ -57,7 +74,6 @@ var Music = new function () {
 		if (Env.phoneGap) {
 			if (this.isPlaying == true) {
 				if (this.backgroundMusic) {
-					alert("Stop Background Music");
 					this.backgroundMusic.stop();
 					this.isPlaying = false;
 				}
