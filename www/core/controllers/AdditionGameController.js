@@ -5,10 +5,10 @@ function AdditionGameController() {
 
 	this.images.rabbitHead = "images/grouping_game/rabbit_head.png";
 	this.images.thinkCloud = "images/widgets/think_cloud.png";
-	this.images.belts = "images/grouping_game/unit3/belts.png";
-	this.images.board1 = "images/grouping_game/unit3/board1.png";
-	this.images.board2 = "images/grouping_game/unit3/board2.png";
-	this.images.track = "images/grouping_game/unit3/track.png";
+	this.images.belts = "images/addition_game/belts.png";
+	this.images.board1 = "images/addition_game/board1.png";
+	this.images.board2 = "images/addition_game/board2.png";
+	this.images.track = "images/addition_game/track.png";
 	
 	this.images.star1 = "images/widgets/star1.png";
 	this.images.star2 = "images/widgets/star2.png";
@@ -28,6 +28,9 @@ function AdditionGameController() {
 	this.images.buttonRetry = "images/widgets/button_retry.png";
 	this.images.buttonNext = "images/widgets/button_next.png";
 
+	this.images.pack = "images/addition_game/pack.png";
+	this.images.box = "images/addition_game/box.png";
+	
 	this.images.eggs = [
 		"images/grouping_game/eggs/egg1.png",
 		"images/grouping_game/eggs/egg2.png",
@@ -239,6 +242,7 @@ AdditionGameController.prototype.finalize = function() {
 AdditionGameController.prototype.restart = function(sameNumber) {
 	if (sameNumber) {
 		app.AdditionGameRestartNumber = this.goalNumber;
+		app.AdditionGameRestartNumber2 = this.goalNumber2;
 	}
 	app.route(app.getCurrentPage(), app.getCurrentPageParams());
 };

@@ -6,9 +6,26 @@ function AdditionGameView(controller) {
 		DRAG_EGG_TO_TENS: 0,
 		DRAG_EGG_TO_HUNDREDS: 1,
 		DRAG_PACK_TO_ONES: 2,
-		DRAG_PACK_TO_HUNDREDS: 3
+		DRAG_PACK_TO_HUNDREDS: 3,
+		INCORRECT_DONE: 4
 	}	
 
+	// complements
+	this.COMPLIMENTS = [
+		"Good work!",
+		"Well done!",
+		"Great job!",
+		"Nice going!",
+		"Great!",
+		"Perfect!",
+		"Awesome!",
+		"Looks good!",
+		"Brilliant",
+		"Good!",
+		"Super!",
+		"Superb!"
+	];
+	
 	// Variable for controlling whether activities are enabled (should be turned off during animations)
 	this.activitiesEnabled = true;
 	
@@ -323,8 +340,10 @@ AdditionGameView.prototype.drawNewEgg = function (x, y) {
 
 // accepts the egg onto the truck
 AdditionGameView.prototype.acceptEgg = function(egg) {
+	this.sayCompliment();
 
 	this.eggsInGroup.push(egg);
+	egg.remove();
 	this.eggsGroup.add(egg);
 	
 	egg.setX(DimensionUtil.decimalToActualWidth(this.viewVars.eggsRelativeLocations[this.eggsInGroup.length - 1].x));
@@ -340,6 +359,12 @@ AdditionGameView.prototype.acceptEgg = function(egg) {
 	}
 };
 
+AdditionGameView.prototype.sayCompliment = function() {
+	// say a compliment
+	var compliment = this.COMPLIMENTS[MathUtil.random(0, this.COMPLIMENTS.length-1)];
+	this.displayThinkCloud(compliment, 50);
+};
+
 // declines the egg and puts it back
 AdditionGameView.prototype.declineEgg = function(egg) {
 	// play the decline egg sound
@@ -348,30 +373,56 @@ AdditionGameView.prototype.declineEgg = function(egg) {
 
 // package up the eggs and put it in the TENS on the truck
 AdditionGameView.prototype.packageEggs = function () {
-	// animating the eggs
+
+	// draw the wrapper
+	var wrapper = new Kinetic.Image({image: this.images.pack});
+	WidgetUtil.glue(wrapper, {
+		width: 0.13,
+		height: 0.11,
+		dx: 0,
+		dy: -0.2
+	});
+	this.eggsGroup.add(wrapper);
+	
+	
+	// animation: animate the packaging
+	var wrappingTween = new Kinetic.Tween({
+		node: wrapper,
+		duration: 1.0,
+		y: 0
+	});
+	wrappingTween.play();
+	
+	// animation: orienting eggs
 	for(var eggId = 0; eggId < this.eggsInGroup.length; eggId++) {
 		var egg = this.eggsInGroup[eggId];
 		
 		var tween = new Kinetic.Tween({
 			node: egg,
-			duration: 0.5,
+			duration: 1.0,
 			x: DimensionUtil.decimalToActualWidth(this.viewVars.eggsPackedRelativeLocations[eggId].x),
-			y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsPackedRelativeLocations[eggId].y)
+			y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsPackedRelativeLocations[eggId].y),
+			onFinish: function () {
+				this.node.remove();
+			}
 		});
 		tween.play();
 	}
 	
-	// animating the entire pack group
-	var tween = new Kinetic.Tween({
+	// animation: adjust pack position
+	var adjustPackPositionTween = new Kinetic.Tween({
 		node: this.eggsGroup,
-		duration: 0.5,
+		duration: 1.0,
 		y: DimensionUtil.decimalToActualHeight(0.28),
 		onFinish: function () {
 			this.node.setX(this.node.getX() - app.view.packsGroup.getX());
 			this.node.setY(this.node.getY() - app.view.packsGroup.getY());
 			app.stage.draw();
 			
-			var tween2 = new Kinetic.Tween({
+			
+			
+			
+			var moveEggsToTensTween = new Kinetic.Tween({
 				node: this.node,
 				duration: 0.5,
 				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.packsRelativeLocations[app.view.packsInGroup.length].x),
@@ -389,13 +440,13 @@ AdditionGameView.prototype.packageEggs = function () {
 					}
 				}
 			});
-			tween2.play();
+			moveEggsToTensTween.play();
 			
 			app.view.packsGroup.add(this.node);
 			app.view.packsInGroup.push(this.node);			
 		}
 	});
-	tween.play();
+	adjustPackPositionTween.play();
 };
 
 // draws all the packs
@@ -459,17 +510,30 @@ AdditionGameView.prototype.drawNewPack = function(x, y) {
 		scaleY: 0.60
 	});
 	
-	for(var i = 0; i < 10; i++) {
-		var egg = this.drawNewEgg(this.viewVars.eggsPackedRelativeLocations[i].x, this.viewVars.eggsPackedRelativeLocations[i].y);
-		pack.add(egg);
-	}
+//	for(var i = 0; i < 10; i++) {
+//		var egg = this.drawNewEgg(this.viewVars.eggsPackedRelativeLocations[i].x, this.viewVars.eggsPackedRelativeLocations[i].y);
+//		pack.add(egg);
+//	}
+
+	var wrapper = new Kinetic.Image({image: this.images.pack});
+	WidgetUtil.glue(wrapper, {
+		width: 0.13,
+		height: 0.11,
+		dx: 0,
+		dy: 0
+	});
+	pack.add(wrapper);
+	
 	
 	return pack;
 };
 
 // accept pack
 AdditionGameView.prototype.acceptPack = function(pack) {
+	this.sayCompliment();
+	
 	this.packsInGroup.push(pack);
+	pack.remove();
 	this.packsGroup.add(pack);
 	
 	pack.setX(DimensionUtil.decimalToActualWidth(this.viewVars.packsRelativeLocations[this.packsInGroup.length - 1].x));
@@ -492,16 +556,38 @@ AdditionGameView.prototype.declinePack = function(pack) {
 
 // package up the packs into a box/crate
 AdditionGameView.prototype.packagePacks = function() {
-	// animating the packs
 	this.boxesInGroup.push(this.packsGroup);
+
+	// draw the wrapper
+	var box = new Kinetic.Image({image: this.images.box});
+	WidgetUtil.glue(box, {
+		width: 0.17,
+		height: 0.24,
+		dx: 0,
+		dy: -0.2
+	});
+	this.packsGroup.add(box);
+	
+	// animation: animate the packaging
+	var wrappingTween = new Kinetic.Tween({
+		node: box,
+		duration: 1.0,
+		y: DimensionUtil.decimalToActualHeight(-0.05)
+	});
+	wrappingTween.play();
+	
+	// animaiton: orienting the packs
 	for(var packId = 0; packId < this.packsInGroup.length; packId++) {
 		var pack = this.packsInGroup[packId];
 		
 		var tween = new Kinetic.Tween({
 			node: pack,
-			duration: 0.5,
+			duration: 1.0,
 			x: DimensionUtil.decimalToActualWidth(this.viewVars.packsPackedRelativeLocations[packId].x),
-			y: DimensionUtil.decimalToActualHeight(this.viewVars.packsPackedRelativeLocations[packId].y)
+			y: DimensionUtil.decimalToActualHeight(this.viewVars.packsPackedRelativeLocations[packId].y),
+			onFinish: function () {
+				this.node.hide();
+			}
 		});
 		tween.play();
 	}
@@ -509,21 +595,15 @@ AdditionGameView.prototype.packagePacks = function() {
 	// animating the entire box group
 	var tween = new Kinetic.Tween({
 		node: this.packsGroup,
-		duration: 0.5,
-		//y: DimensionUtil.decimalToActualHeight(0.28),
+		duration: 0.8,
 		onFinish: function () {
-			//this.node.setX(this.node.getX() - app.view.packsGroup.getX());
-			//this.node.setY(this.node.getY() - app.view.packsGroup.getY());
-			//app.stage.draw();
-			
 			var tween2 = new Kinetic.Tween({
 				node: this.node,
 				duration: 0.5,
 				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.boxLocation.x),
 				y: DimensionUtil.decimalToActualHeight(app.view.viewVars.boxLocation.y),
-				//scaleX: 0.60,
-				//scaleY: 0.60,
 				onFinish: function() {
+
 					app.view.drawPacksGroup();
 					app.view.refreshNumbers();
 				}
@@ -645,26 +725,23 @@ AdditionGameView.prototype.errorMade = function (errorType) {
 	this.errorsCount++;
 
 	switch (errorType) {
-		case this.ERROR_TYPES.DRAG_TO_TENS:
+		case this.ERROR_TYPESDRAG_EGG_TO_TENS:
 			this.displayThinkCloud("WHOOPS! This is only ONE easter egg! You need to drag this to ONES!");
 		break;
+		case this.ERROR_TYPES.DRAG_EGG_TO_HUNDREDS:
+			this.displayThinkCloud("WHOOPS! This is only ONE easter egg! You need to drag this to ONES!");
+		break;
+		
+		case this.ERROR_TYPES.DRAG_PACK_TO_ONES:
+			this.displayThinkCloud("WHOOPS! The packs of tens eggs do not go there!");
+		break;		
+		
+		case this.ERROR_TYPES.DRAG_PACK_TO_HUNDREDS:
+			this.displayThinkCloud("WHOOPS! The packs of tens eggs do not go there!");
+		break;	
+		
 		case this.ERROR_TYPES.INCORRECT_DONE:
-			this.displayThinkCloud("UH OH! The number you have made is not " + 
-				MathUtil.convertNumberToWord(app.controller.goalNumber) +
-				"! You need more!");
-		break;
-		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS:
-			this.displayThinkCloud("You're trying to make " + 
-				MathUtil.convertNumberToWord(app.controller.goalNumber) +
-				". Count your eggs! Have you already got the correct number?");
-		break;
-		case this.ERROR_TYPES.PACK_DRAG_TO_ONES:
-			this.displayThinkCloud("WHOOPS! The packs of tens do not go there!");
-		break;
-		case this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS:
-			this.displayThinkCloud("You're trying to make " + 
-				MathUtil.convertNumberToWord(app.controller.goalNumber) +
-				". Count your packs! Have you got enough?");
+			this.displayThinkCloud("UH OH! There are more eggs that can go onto the truck!");
 		break;
 	}
 	
