@@ -33,20 +33,20 @@ var Music = new function () {
         }
 	
 	this.isPlaying = false;
-	this.playBackgroundMusic = function (
-		src,
-		function() {
-            alert("playAudio():Audio Success");
-        },
-        function (error) {
-            alert('code: ' + error.code + ' ||  message: ' + error.message);
-        }
-	) {
+	this.playBackgroundMusic = function (src) {
 		if(Storage.get("settingMusic", true) == true){
 			if (Env.phoneGap) {
 				
 				if(this.isPlaying == false){
-					this.backgroundMusic = new Media(src);
+					this.backgroundMusic = new Media(
+						src,
+						function() {
+							alert("playAudio():Audio Success");
+						},
+						function (error) {
+							alert('code: ' + error.code + ' ||  message: ' + error.message);
+						}
+					);
 					this.backgroundMusic.setVolume(0.2);
 					this.isPlaying = true;
 					this.backgroundMusic.play({ numberOfLoops: 999, playAudioWhenScreenIsLocked : false});
