@@ -176,8 +176,11 @@ AdditionGameView.prototype.drawDoneButton = function() {
 	
 	buttonDone.on('click tap', function () {
 		Music.play(app.view.sounds.done);
-		var total = app.view.calculateTotal();
-		if (total == app.controller.goalNumber) {
+		
+		var topNumber = (app.view.eggsInGroup.length) + (app.view.packsInGroup.length * 10) + (app.view.boxesInGroup.length * 100);
+		var goalSum = app.controller.goalNumber + app.controller.goalNumber2;
+		
+		if (topNumber == goalSum) {
 			app.view.finish(app.view.allowableErrorsCount - app.view.errorsCount);
 		} else {
 			app.view.errorMade(app.view.ERROR_TYPES.INCORRECT_DONE);	
@@ -265,8 +268,6 @@ AdditionGameView.prototype.drawNumbers = function() {
 AdditionGameView.prototype.refreshNumbers = function() {
 	var goalNumber = this.viewVars.goalNumber + this.viewVars.goalNumber2;
 	var topNumber = (this.eggsInGroup.length) + (this.packsInGroup.length * 10) + (this.boxesInGroup.length * 100);
-	
-	
 	
 	this.topNumberTextWidget.setText(topNumber);
 	this.botNumberTextWidget.setText(goalNumber - topNumber);
@@ -725,7 +726,7 @@ AdditionGameView.prototype.errorMade = function (errorType) {
 	this.errorsCount++;
 
 	switch (errorType) {
-		case this.ERROR_TYPESDRAG_EGG_TO_TENS:
+		case this.ERROR_TYPES.DRAG_EGG_TO_TENS:
 			this.displayThinkCloud("WHOOPS! This is only ONE easter egg! You need to drag this to ONES!");
 		break;
 		case this.ERROR_TYPES.DRAG_EGG_TO_HUNDREDS:

@@ -64,10 +64,10 @@ HomeView.prototype._drawButtons = function() {
         		// scale x and y
         		playButton.setScale(scaleX, scaleY);
 				playButton.setX(DimensionUtil.decimalToActualWidth(0.23 + dx));
-				playButton.setY(DimensionUtil.decimalToActualWidth(0.35 + dy));
+				playButton.setY(DimensionUtil.decimalToActualHeight(0.5 + dy));
         		optionsButton.setScale(scaleX, scaleY);
 				optionsButton.setX(DimensionUtil.decimalToActualWidth(0.55 + dx));
-				optionsButton.setY(DimensionUtil.decimalToActualWidth(0.35 + dy));
+				optionsButton.setY(DimensionUtil.decimalToActualHeight(0.5 + dy));
       	}, app.layer);
 
       	anim.start();
