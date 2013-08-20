@@ -1,4 +1,4 @@
-function App() {
+﻿function App() {
 	
 	this.view = null;
 	this.controller = null;
@@ -60,7 +60,23 @@ function App() {
 	];
 	
 	this.UNIT_GAMES[2] = [
-	
+		{name:"☐ + ☐ \n = ☐",  page:"AdditionGame"},
+		{name:"☐ + ☐ \n = 1☐",  page:"AdditionGame"},
+		{name:"1☐ + ☐ \n = 1☐",  page:"AdditionGame"},
+		{name:"1☐ + ☐ \n = 2☐",  page:"AdditionGame"},
+		{name:"1☐ + 1☐ \n = 2☐",  page:"AdditionGame"},
+		{name:"1☐ + 1☐ \n = 3☐",  page:"AdditionGame"},
+		{name:"2☐ + 2☐ \n = 2☐",  page:"AdditionGame"},
+		{name:"2☐ + 2☐ \n = 3☐",  page:"AdditionGame"},
+		{name:"2☐ + 3☐ \n = 5☐",  page:"AdditionGame"},
+		{name:"2☐ + 3☐ \n = 6☐",  page:"AdditionGame"},
+		{name:"☐0 + ☐0 \n = ☐0",  page:"AdditionGame"},
+		{name:"9☐ + ☐ \n = 9☐",  page:"AdditionGame"},
+		{name:"9☐ + ☐ \n = 10☐",  page:"AdditionGame"},
+		{name:"☐0 + ☐0 \n = ☐☐0",  page:"AdditionGame"},
+		{name:"9☐ + 3☐ \n = 12☐",  page:"AdditionGame"},
+		{name:"9☐ + 3☐ \n = 13☐",  page:"AdditionGame"},
+		{name:"☐☐+☐☐ \n = 1☐☐",  page:"AdditionGame"},
 	];
 	
 	
@@ -117,7 +133,7 @@ $(function () {
 	
 		app.currentUnit=2;
 		app.currentGame=0;
-		app.route("AdditionGame");
+		app.route("MenuUnit");
 
 	
 	}, 1000); 
