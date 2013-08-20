@@ -265,11 +265,27 @@ GroupingGameView.prototype.drawNewPack = function () {
 		dy: yInit
 	});
 	
-	pack.on('dragstart', function() { this.moveToTop() });
+	var anim = new Kinetic.Animation(function(frame) {
+			var dx = -Math.sin(frame.time / 200) * 0.003;
+			var dy = Math.sin(frame.time / 200) * 0.003;
+			var scaleX = Math.sin(frame.time / 200) * 0.06 + 0.9;
+			var scaleY = -1 * Math.sin(frame.time / 200) * 0.06 + 0.9;
+			// scale x and y
+			pack.setScale(scaleX, scaleY);
+			pack.setX(DimensionUtil.decimalToActualWidth(xInit + dx));
+			pack.setY(DimensionUtil.decimalToActualWidth(yInit - 0.27 + dy));
+    }, app.layer);
+	
+	anim.start();
+	pack.on('dragstart', function() { 
+		this.moveToTop();
+		pack.setScale(1, 1);
+		anim.stop();		});
 	pack.on('dragend', function() {
 		
 		if (app.view.activitiesEnabled == false) {
 			app.view.declinePack(this);
+			anim.start();
 			return;
 		}
 		
@@ -283,16 +299,19 @@ GroupingGameView.prototype.drawNewPack = function () {
 			} else {
 				app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS);
 				app.view.declinePack(this);
+				anim.start();
 			}
 
 		
 		} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 			// dropped pack to ones (error)	
 			app.view.declinePack(this);
+			anim.start();
 			app.view.errorMade(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
 		} else {
 			// dropped somewhere else (doesn't matter)
-			app.view.declinePack(this);
+			app.view.declinePack(this)
+			anim.start();;
 		}
 		
 	});
@@ -509,12 +528,33 @@ GroupingGameView.prototype.drawNewEgg = function() {
 		dx: xInit,
 		dy: yInit
 	});
+
+	var anim = new Kinetic.Animation(function(frame) {
+			var dx = -Math.sin(frame.time / 200) * 0.003;
+			var dy = Math.sin(frame.time / 200) * 0.003;
+			var scaleX = Math.sin(frame.time / 200) * 0.06 + 0.9;
+			var scaleY = -1 * Math.sin(frame.time / 200) * 0.06 + 0.9;
+			// scale x and y
+			egg.setScale(scaleX, scaleY);
+			egg.setX(DimensionUtil.decimalToActualWidth(xInit + dx));
+			egg.setY(DimensionUtil.decimalToActualWidth(yInit - 0.23 + dy));
+    }, app.layer);
 	
-	egg.on('dragstart', function() { this.moveToTop() });
+	anim.start();
+   
+	egg.on('dragstart', function() { 
+		this.moveToTop();
+		egg.setScale(1, 1);
+		anim.stop();
+		
+		});
 	egg.on('dragend', function() {
+		
+		
 		
 		if (app.view.activitiesEnabled == false) {
 			app.view.declineEgg(this);
+			anim.start();
 			return;
 		}
 		
@@ -529,6 +569,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 				} else {
 					app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 					app.view.declineEgg(this);
+					anim.start();
 				}
 			} else {
 				// not using packs, so we can accept egg if it is under total number
@@ -537,16 +578,19 @@ GroupingGameView.prototype.drawNewEgg = function() {
 				} else {
 					app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 					app.view.declineEgg(this);
+					anim.start();
 				}
 			}
 		
 		} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 			// dropped egg in tens (error)	
 			app.view.declineEgg(this);
+			anim.start();
 			app.view.errorMade(app.view.ERROR_TYPES.DRAG_TO_TENS);
 		} else {
 			// dropped somewhere else (doesn't matter)
 			app.view.declineEgg(this);
+			anim.start();
 		}
 		
 		if ((!app.view.viewVars.usePacks) && (app.view.eggsAtDestination.length == 10)) {
