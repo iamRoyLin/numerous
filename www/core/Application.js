@@ -143,8 +143,10 @@ $(function () {
 
 document.addEventListener("pause", function () {
 	navigator.splashscreen.show();
+	Music.pauseBackgroundMusic();
 }, false);
 
 document.addEventListener("resume", function () {
 	navigator.splashscreen.hide();
+	Music.resumeBackgroundMusic();
 }, false);

@@ -70,6 +70,24 @@ var Music = new function () {
 		}
 	}
 	
+	this.pauseBackgroundMusic = function () {
+		if (Env.phoneGap) {
+			if (this.isPlaying) {
+				this.backgroundMusic.pause();
+				this.isPlaying = false;
+			}
+		}
+	}
+	this.resumeBackgroundMusic = function () {
+		if (Env.phoneGap) {
+			if (!this.isPlaying) {
+				this.backgroundMusic.play();
+				this.isPlaying = true;
+			}
+		}
+	}
+	
+	
 	this.stopBackgroundMusic = function () {
 		if (Env.phoneGap) {
 			if (this.isPlaying == true) {
