@@ -191,7 +191,9 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	buttonReset.on('click tap', function () {
 		Music.play(app.view.sounds.select);
 		//do something
-			
+		for(var i =0; i < app.UNIT_GAMES.length; i++) {
+			Storage.deleteKey("unit" + i + "Stars");
+		}
 	});
 	
 	var buttonAbout = new Kinetic.Image({image: this.images.buttonAbout});

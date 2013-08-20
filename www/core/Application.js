@@ -131,12 +131,20 @@ $(function () {
 	setTimeout(function() {
 		app = new App();
 	
-		app.currentUnit=2;
+		app.currentUnit=0;
 		app.currentGame=0;
-		app.route("MenuUnit");
+		app.route("Home");
 
 	
 	}, 1000); 
 	
 
 });
+
+document.addEventListener("deviceready", function () {
+	alert("device ready");
+}, false);
+
+document.addEventListener("resume", function () {
+	alert("resumed");
+}, false);

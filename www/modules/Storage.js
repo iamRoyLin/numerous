@@ -11,5 +11,9 @@ var Storage = new function () {
 		return $.jStorage.get(key);
 	};
 	
+	this.deleteKey = function(key) {
+		$.jStorage.deleteKey(key);
+	};
+	
 }
 

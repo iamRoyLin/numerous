@@ -43,12 +43,6 @@ MenuController.prototype.home = function () {
 };
 
 MenuController.prototype.unitSelect = function(unit) {
-	app.currentUnit = unit;
-	
-	if (app.currentUnit == 2) {
-		app.route("AdditionGame");
-		return;
-	}
-	
+	app.currentUnit = unit;	
 	app.route("MenuUnit");
 }
