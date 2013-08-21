@@ -57,16 +57,59 @@ GroupingGameView.prototype.finalize = function () {
 
 // draws the rabbit
 GroupingGameView.prototype.drawRabbit = function () {
-	var rabbit = new Kinetic.Image({image: this.images.rabbit});
-	WidgetUtil.glue(rabbit, {
-		width: this.viewVars.rabbitDimensions.width,
-		height: this.viewVars.rabbitDimensions.height,
-		dx: this.viewVars.rabbitDimensions.x,
-		dy: this.viewVars.rabbitDimensions.y
+	var rabbitBody = new Kinetic.Image({image: this.images.rabbitBody});
+	WidgetUtil.glue(rabbitBody, {
+		width: this.viewVars.rabbitBodyDimensions.width,
+		height: this.viewVars.rabbitBodyDimensions.height,
+		dx: this.viewVars.rabbitBodyDimensions.x,
+		dy: this.viewVars.rabbitBodyDimensions.y
 	});
-	app.layer.add(rabbit);
+	app.layer.add(rabbitBody);
+	
+	var rabbitHead = new Kinetic.Image({
+		image: this.images.rabbitHead,
+		
+		offset: [
+			DimensionUtil.decimalToActualWidth(this.viewVars.rabbitHeadDimensions.width/2),
+			DimensionUtil.decimalToActualHeight(this.viewVars.rabbitHeadDimensions.height)
+		]
+	});
+	WidgetUtil.glue(rabbitHead, {
+		width: this.viewVars.rabbitHeadDimensions.width,
+		height: this.viewVars.rabbitHeadDimensions.height,
+		dx: this.viewVars.rabbitHeadDimensions.x,
+		dy: this.viewVars.rabbitHeadDimensions.y
+	});
+	app.layer.add(rabbitHead);
+	
+    app.view.anim1 = new Kinetic.Animation(function(frame) {
+          var angleDiff = frame.timeDiff * (Math.PI / 2) / 2000;
+          rabbitHead.rotate(angleDiff);
+    }, app.layer);
+	
+	app.view.anim2 = new Kinetic.Animation(function(frame) {
+          var angleDiff = -frame.timeDiff * (Math.PI / 2) / 2000;
+          rabbitHead.rotate(angleDiff);
+    }, app.layer);
+
 };
 
+//Rabbit animation
+GroupingGameView.prototype.shakeHead = function () {
+	app.view. anim1.start();
+	setTimeout(function(){
+		app.view.anim1.stop();
+		app.view.anim2.start();
+	}, 300);
+	setTimeout(function(){
+		app.view.anim2.stop();
+		app.view.anim1.start();
+	}, 900);
+	
+	setTimeout(function(){
+		app.view.anim1.stop();
+	}, 1200);
+};
 // Draws the think cloud 
 GroupingGameView.prototype.drawThinkCloud = function () {
 	
@@ -202,6 +245,7 @@ GroupingGameView.prototype.drawDoneButton = function() {
 		if (total == app.controller.goalNumber) {
 			app.view.finish(app.view.allowableErrorsCount - app.view.errorsMade);
 		} else {
+			app.view.shakeHead();
 			app.view.errorMade(app.view.ERROR_TYPES.INCORRECT_DONE);	
 		}
 	});
@@ -297,6 +341,7 @@ GroupingGameView.prototype.drawNewPack = function () {
 			if (parseInt(app.view.tensTextWidget.getText()) < MathUtil.getTens(app.controller.goalNumber)) {
 				app.view.acceptPack(this);
 			} else {
+				app.view.shakeHead();
 				app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS);
 				app.view.declinePack(this);
 				anim.start();
@@ -307,6 +352,7 @@ GroupingGameView.prototype.drawNewPack = function () {
 			// dropped pack to ones (error)	
 			app.view.declinePack(this);
 			anim.start();
+			app.view.shakeHead();
 			app.view.errorMade(app.view.ERROR_TYPES.PACK_DRAG_TO_ONES);
 		} else {
 			// dropped somewhere else (doesn't matter)
@@ -567,6 +613,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 				if (parseInt(app.view.onesTextWidget.getText()) < MathUtil.getOnes(app.controller.goalNumber)) {
 					app.view.acceptEgg(this);
 				} else {
+					app.view.shakeHead();
 					app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 					app.view.declineEgg(this);
 					anim.start();
@@ -576,6 +623,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 				if (app.view.eggsAtDestination.length < app.controller.goalNumber) {
 					app.view.acceptEgg(this);
 				} else {
+					app.view.shakeHead();
 					app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 					app.view.declineEgg(this);
 					anim.start();
@@ -586,6 +634,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 			// dropped egg in tens (error)	
 			app.view.declineEgg(this);
 			anim.start();
+			app.view.shakeHead();
 			app.view.errorMade(app.view.ERROR_TYPES.DRAG_TO_TENS);
 		} else {
 			// dropped somewhere else (doesn't matter)
@@ -607,6 +656,7 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 	
 	// check to see if total is greater than goal Number
 	if (this.calculateTotal() >= app.controller.goalNumber) {
+		app.view.shakeHead();
 		this.errorMade(this.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_EGGS);
 		this.declineEgg(egg);
 		return;

@@ -4,6 +4,8 @@ function GroupingGame3Controller() {
 	this.images = {};
 
 	this.images.rabbit = "images/grouping_game/rabbit.png";
+	this.images.rabbitHead = "images/grouping_game/rabbit_head.png";
+	this.images.rabbitBody = "images/grouping_game/rabbit_body.png";
 	this.images.thinkCloud = "images/widgets/think_cloud.png";
 	this.images.belts = "images/grouping_game/unit2/belts.png";
 	this.images.pack = "images/grouping_game/unit2/pack.png";
@@ -81,6 +83,8 @@ GroupingGame3Controller.prototype.initialize = function() {
 	app.view.viewVars.beltTensArea.RADIUS_ARRAY = [0.13, 0.13, 0.13, 0.13, 0.13, 0.13];
 
 	// widgets
+	app.view.viewVars.rabbitHeadDimensions = {x:0.18, y:0.74, width:0.24, height:0.37};
+	app.view.viewVars.rabbitBodyDimensions = {x:0.04, y:0.70, width:0.265, height:0.35};
 	app.view.viewVars.rabbitDimensions = {x:0.03, y:0.40, width:0.22, height:0.60};
 	app.view.viewVars.beltDimensions = {x:0.2, y:0.14, width:0.80, height:0.85};
 	app.view.viewVars.thinkCloudDimensions = {x:-0.03, y:0.133, width:0.41, height:0.45};
