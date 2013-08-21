@@ -317,7 +317,7 @@ GroupingGameView.prototype.drawNewPack = function () {
 			// scale x and y
 			pack.setScale(scaleX, scaleY);
 			pack.setX(DimensionUtil.decimalToActualWidth(xInit + dx));
-			pack.setY(DimensionUtil.decimalToActualWidth(yInit - 0.27 + dy));
+			pack.setY(DimensionUtil.decimalToActualHeight(yInit + dy));
     }, app.layer);
 	
 	anim.start();
