@@ -1,4 +1,4 @@
-﻿function AdditionGameController() {
+function AdditionGameController() {
 	
 	// Image that are automatically loaded
 	this.images = {};
@@ -66,111 +66,111 @@ AdditionGameController.prototype.initialize = function() {
 	// working out what the goal number is:
 	switch (app.currentGame) {
 		case 0:
-			// ☐ + ☐ = ☐
+			// ? + ? = ?
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 		break;
 		case 1:
-			// ☐ + ☐ = 1☐
+			// ? + ? = 1?
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 		break;
 		case 2:
-			// 1☐ + ☐ = 1☐
+			// 1? + ? = 1?
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 			this.goalNumber += 10;
 		break;
 		case 3:
-			// 1☐ + ☐ = 2☐
+			// 1? + ? = 2?
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 			this.goalNumber += 10;
 		break;
 		case 4:
-			// 1☐ + 1☐ = 2☐
+			// 1? + 1? = 2?
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 			this.goalNumber += 10;
 			this.goalNumber2 += 10;
 		break;
 		case 5:
-			// 1☐ + 1☐ = 3☐
+			// 1? + 1? = 3?
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 			this.goalNumber += 10;
 			this.goalNumber2 += 10;
 		break;
 		case 6:
-			// 2☐ + 2☐ = 2☐
+			// 2? + 2? = 2?
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 			this.goalNumber += 20;
 			this.goalNumber2 += 20;
 		break;
 		case 7:
-			// 2☐ + 2☐ = 3☐
+			// 2? + 2? = 3?
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 			this.goalNumber += 20;
 			this.goalNumber2 += 20;
 		break;
 		case 8:
-			// 2☐ + 3☐ = 5☐
+			// 2? + 3? = 5?
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 			this.goalNumber += 20;
 			this.goalNumber2 += 30;
 		break;
 		case 9:
-			// 2☐ + 3☐ = 6☐
+			// 2? + 3? = 6?
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 			this.goalNumber += 20;
 			this.goalNumber2 += 30;
 		break;
 		case 10:
-			// ☐0 + ☐0 = ☐0
+			// ?0 + ?0 = ?0
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 			this.goalNumber *= 10;
 			this.goalNumber2 *= 10;
 		break;
 		case 11:
-			// 9☐ + ☐ = 9☐
+			// 9? + ? = 9?
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 			this.goalNumber += 90;
 		break;
 		case 12:
-			// 9☐ + ☐ = 10☐
+			// 9? + ? = 10?
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 			this.goalNumber += 90;
 		break;
 		case 13:
-			// ☐0 + ☐0 = ☐☐0
+			// ?0 + ?0 = ??0
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 			this.goalNumber *= 10;
 			this.goalNumber2 *= 10;
 		break;
 		case 14:
-			// 9☐ + 3☐ = 12☐
+			// 9? + 3? = 12?
 			this.goalNumber = MathUtil.random(1,8);
 			this.goalNumber2 = MathUtil.random(1, 9-this.goalNumber);
 			this.goalNumber += 90;
 			this.goalNumber2 += 30;
 		break;
 		case 15:
-			// 8☐ + 4☐ = 13☐
+			// 8? + 4? = 13?
 			this.goalNumber = MathUtil.random(1,9);
 			this.goalNumber2 = MathUtil.random(10-this.goalNumber ,9);
 			this.goalNumber += 80;
 			this.goalNumber2 += 40;
 		break;
 		case 16:
-			// ☐☐ + ☐☐ = 1☐☐
+			// ?? + ?? = 1??
 			var subNumber = MathUtil.random(1,9);
 			var subNumber2 = MathUtil.random(10-subNumber ,9);
 			
