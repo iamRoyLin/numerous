@@ -537,7 +537,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 			// scale x and y
 			egg.setScale(scaleX, scaleY);
 			egg.setX(DimensionUtil.decimalToActualWidth(xInit + dx));
-			egg.setY(DimensionUtil.decimalToActualWidth(yInit - 0.23 + dy));
+			egg.setY(DimensionUtil.decimalToActualHeight(yInit - 0.23 + dy));
     }, app.layer);
 	
 	anim.start();
