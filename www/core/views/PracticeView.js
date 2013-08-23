@@ -9,7 +9,7 @@ PracticeView.prototype.finalize = function() {
 
 };
 
-//draw rabbit
+// draw rabbit
 PracticeView.prototype.drawRabbit = function() {
 	var body = new Kinetic.Image({image: this.images.rabbitBody});
 	WidgetUtil.glue(body, {
@@ -30,7 +30,7 @@ PracticeView.prototype.drawRabbit = function() {
 	app.layer.add(head);
 };
 
-//draw black board
+// draw black board
 PracticeView.prototype.drawBlackBoard = function() {
 	var board = new Kinetic.Image({image: this.images.blackBoard});
 	WidgetUtil.glue(board, {
@@ -59,7 +59,7 @@ PracticeView.prototype.drawButtonNextBig = function() {
 		}
 		
 		
-		if (!app.view.presentNextQuestion()) {
+		if (!app.controller.nextQuestion()) {
 			var score;
 			if (app.controller.mistakesCount == 0) {
 				score = 3;
@@ -79,7 +79,7 @@ PracticeView.prototype.drawButtonNextBig = function() {
 	this.buttonNextBig.hide();
 };
 
-//draw questions and optional answers
+// draw questions and optional answers
 PracticeView.prototype.drawQuestion = function() {
 
 	this.questionNumberTextWidget = new Kinetic.Text({
@@ -128,37 +128,28 @@ PracticeView.prototype.drawQuestion = function() {
 
 
 
-PracticeView.prototype.presentNextQuestion = function () {
-	app.controller.currentQuestion++;
-	
-	if (app.controller.currentQuestion >= app.controller.gameQuestions.length) {
-		return false;
-	}
-	
-	var questionObject = app.controller.getCurrentQuestion();
+PracticeView.prototype.presentNextQuestion = function (questionText, progressText, keyboardTexts, blankLocation) {
 	
 	// display question number
-	this.questionNumberTextWidget.setText( (app.controller.currentQuestion+1) + " / " + app.controller.gameQuestions.length);
+	this.questionNumberTextWidget.setText(progressText);
 	
 	// display the question
-	this.questionTextWidget.setText(questionObject.question);
+	this.questionTextWidget.setText(questionText);
 	
 	// set place holder egg
-	this.placeHolderEgg.setX(DimensionUtil.decimalToActualWidth(questionObject.blankX));
-	this.placeHolderEgg.setY(DimensionUtil.decimalToActualHeight(questionObject.blankY));
+	this.placeHolderEgg.setX(DimensionUtil.decimalToActualWidth(blankLocation.x));
+	this.placeHolderEgg.setY(DimensionUtil.decimalToActualHeight(blankLocation.y));
 	this.placeHolderEgg.moveToTop();
 	this.placeHolderEgg.show();
 	
 	// prepareKeyboard
-	this.changeKeyboard(questionObject.keyboardId);
+	this.changeKeyboard(keyboardTexts);
 	
 	// hide the next button if necessary
 	this.buttonNextBig.setOpacity(0);
 	this.buttonNextBig.hide();
 	
 	app.stage.draw();
-	
-	return true;
 };
 
 
@@ -218,7 +209,7 @@ PracticeView.prototype.drawKeyboard = function() {
 	}
 };
 
-PracticeView.prototype.changeKeyboard = function(keyboardId) {
+PracticeView.prototype.changeKeyboard = function(keyboardTexts) {
 	for(var i = 0; i < this.keyboard.texts.length; i++) {
 		// show every button incase they were made invisible or hidden previously
 		this.keyboard.groups[i].show();
@@ -229,7 +220,7 @@ PracticeView.prototype.changeKeyboard = function(keyboardId) {
 		this.keyboard.groups[i].setY(DimensionUtil.decimalToActualHeight(this.keyboard.yPositions[i]));
 		
 		// set the text of the keyboard
-		this.keyboard.texts[i].setText(this.viewVars.keyboardTexts[keyboardId][i]);
+		this.keyboard.texts[i].setText(keyboardTexts[i]);
 	}
 	
 	app.stage.draw();

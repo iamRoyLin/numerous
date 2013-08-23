@@ -100,23 +100,22 @@ Practice1Controller.prototype.initialize = function () {
 			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 2, blankX: 0.518, blankY:0.160},
 			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 2, blankX: 0.588, blankY:0.160},
 			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 2, blankX: 0.588, blankY:0.160},
-			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 2, blankX: 0.518, blankY:0.160}
 		],
 		[
 			{question: "11 is the same as _____ and ten?", answer: 0, keyboardId: 1, blankX: 0.719, blankY:0.059},
-			{question: "12 is the same as _____ and ten?", answer: 1, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "13 is the same as _____ and ten?", answer: 2, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "14 is the same as _____ and ten?", answer: 3, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "15 is the same as _____ and ten?", answer: 4, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "16 is the same as _____ and ten?", answer: 5, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "17 is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "18 is the same as _____ and ten?", answer: 7, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "19 is the same as _____ and ten?", answer: 8, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "12 is the same as _____ and ten?", answer: 1, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "13 is the same as _____ and ten?", answer: 2, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "14 is the same as _____ and ten?", answer: 3, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "15 is the same as _____ and ten?", answer: 4, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "16 is the same as _____ and ten?", answer: 5, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "17 is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "18 is the same as _____ and ten?", answer: 7, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "19 is the same as _____ and ten?", answer: 8, keyboardId: 1, blankX: 0.719, blankY:0.059}
 		]
 		
 	]
 	
-	app.view.viewVars.keyboardTexts = this.keyboardTexts;
 	app.view.viewVars.questionSets = this.questionSets;
 	app.view.viewVars.currentQuestionSet = -1;
 	
@@ -167,13 +166,33 @@ Practice1Controller.prototype.initialize = function () {
 	*/
 	
 	this.currentQuestion = -1;
-	app.view.presentNextQuestion();
+	this.nextQuestion();
 };
 
 // destructor (is automatically called when you leave the page)
 Practice1Controller.prototype.finalize = function() {
 	
-}
+};
+
+Practice1Controller.prototype.nextQuestion = function() {
+	this.currentQuestion++;
+	if (this.currentQuestion >= this.gameQuestions.length) {
+		return false;
+	}
+	
+	var questionObject = this.getCurrentQuestion();
+	
+	var progressText = "" + (this.currentQuestion+1) + " / " + this.gameQuestions.length;
+	var questionText = questionObject.question;
+	var blankLocation = {x:questionObject.blankX, y:questionObject.blankY};
+	var keyboardTexts = this.keyboardTexts[questionObject.keyboardId];
+	
+	this.view.presentNextQuestion(questionText, progressText, keyboardTexts, blankLocation);
+	
+	return true;
+};
+
+
 
 Practice1Controller.prototype.restart = function(sameNumber) {
 	app.route("Practice1");
