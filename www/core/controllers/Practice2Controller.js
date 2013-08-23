@@ -1,4 +1,4 @@
-function rrPractice2Controller() {
+function Practice2Controller() {
 
 	// Images. These will automatically be loaded
 	this.images = {};
@@ -63,14 +63,14 @@ Practice2Controller.prototype.initialize = function () {
 	app.view.questionSets = {};
 	
 	this.keyboardTexts = [
-		["Ten", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"],
+		["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"],
 		["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
-		["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+		["11", "12", "13", "14", "15", "16", "17", "18", "19"]
 	];
 	
 	this.questionSets = [
 		[
-			{question: "Twenty-One is the same as _____ and ten?",    answer: 0, keyboardId: 1, blankX: 0.378, blankY:0.160},
+			{question: "Eleven is the same as _____ and ten?",    answer: 0, keyboardId: 1, blankX: 0.378, blankY:0.160},
 			{question: "Twelve is the same as _____ and ten?",    answer: 1, keyboardId: 1, blankX: 0.378, blankY:0.160},
 			{question: "Thirteen is the same as _____ and ten?",  answer: 2, keyboardId: 1, blankX: 0.378, blankY:0.160},
 			{question: "Fourteen is the same as _____ and ten?",  answer: 3, keyboardId: 1, blankX: 0.378, blankY:0.160},
@@ -100,25 +100,23 @@ Practice2Controller.prototype.initialize = function () {
 			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 2, blankX: 0.518, blankY:0.160},
 			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 2, blankX: 0.588, blankY:0.160},
 			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 2, blankX: 0.588, blankY:0.160},
-			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 2, blankX: 0.518, blankY:0.160},
+			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 2, blankX: 0.518, blankY:0.160}
 		],
 		[
 			{question: "11 is the same as _____ and ten?", answer: 0, keyboardId: 1, blankX: 0.719, blankY:0.059},
-			{question: "12 is the same as _____ and ten?", answer: 1, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "13 is the same as _____ and ten?", answer: 2, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "14 is the same as _____ and ten?", answer: 3, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "15 is the same as _____ and ten?", answer: 4, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "16 is the same as _____ and ten?", answer: 5, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "17 is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "18 is the same as _____ and ten?", answer: 7, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "19 is the same as _____ and ten?", answer: 8, keyboardId: 1, blankX: 0.719, blankY:0.059},,
+			{question: "12 is the same as _____ and ten?", answer: 1, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "13 is the same as _____ and ten?", answer: 2, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "14 is the same as _____ and ten?", answer: 3, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "15 is the same as _____ and ten?", answer: 4, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "16 is the same as _____ and ten?", answer: 5, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "17 is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "18 is the same as _____ and ten?", answer: 7, keyboardId: 1, blankX: 0.719, blankY:0.059},
+			{question: "19 is the same as _____ and ten?", answer: 8, keyboardId: 1, blankX: 0.719, blankY:0.059}
 		]
 		
 	]
 	
-	app.view.viewVars.keyboardTexts = this.keyboardTexts;
 	app.view.viewVars.questionSets = this.questionSets;
-	app.view.viewVars.currentQuestionSet = -1;
 	
 	// variables
 	this.mistakesCount = 0;
@@ -150,33 +148,37 @@ Practice2Controller.prototype.initialize = function () {
 	
 	this.pickQuestions();
 	
-	/*
-	if (Env.debug) {
-		this.gameQuestions = [
-			{set:3, question:0},
-			{set:3, question:1},
-			{set:3, question:2},
-			{set:3, question:3},
-			{set:3, question:4},
-			{set:3, question:5},
-			{set:3, question:6},
-			{set:3, question:7},
-			{set:3, question:8}
-		];
-	}
-	*/
-	
 	this.currentQuestion = -1;
-	app.view.presentNextQuestion();
+	this.nextQuestion();
 };
 
 // destructor (is automatically called when you leave the page)
 Practice2Controller.prototype.finalize = function() {
 	
-}
+};
+
+Practice2Controller.prototype.nextQuestion = function() {
+	this.currentQuestion++;
+	if (this.currentQuestion >= this.gameQuestions.length) {
+		return false;
+	}
+	
+	var questionObject = this.getCurrentQuestion();
+	
+	var progressText = "" + (this.currentQuestion+1) + " / " + this.gameQuestions.length;
+	var questionText = questionObject.question;
+	var blankLocation = {x:questionObject.blankX, y:questionObject.blankY};
+	var keyboardTexts = this.keyboardTexts[questionObject.keyboardId];
+	
+	this.view.presentNextQuestion(questionText, progressText, keyboardTexts, blankLocation);
+	
+	return true;
+};
+
+
 
 Practice2Controller.prototype.restart = function(sameNumber) {
-	app.route("Practice2");
+	app.route("Practice1");
 };
 
 Practice2Controller.prototype.menu = function() {

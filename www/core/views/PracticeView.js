@@ -1,5 +1,8 @@
 function PracticeView(controller) {
 	this.controller = controller;
+	
+	this.board = {};
+	this.mistakeMadeThisRound = false;
 };
 // Simulate inheritance
 PracticeView.prototype = new View();
@@ -37,7 +40,7 @@ PracticeView.prototype.drawBlackBoard = function() {
 		width: 0.82,
 		height: 0.42,
 		dx: 0.17,
-		dy: 0.02
+		dy: 0.1
 	});
 	app.layer.add(board);
 	
@@ -52,7 +55,17 @@ PracticeView.prototype.drawButtonNextBig = function() {
 		dy: 0.45
 	});
 	
+
+	
+	
 	this.buttonNextBig.on('click tap', function () {
+	
+		if (app.view.mistakeMadeThisRound) {
+			app.controller.mistakeMade();
+			app.view.mistakeMadeThisRound = false;
+		}	
+	
+	
 		Music.play(app.view.sounds.next);
 		if (!app.controller.keyboardEnabled) {
 			return;
@@ -125,22 +138,82 @@ PracticeView.prototype.drawQuestion = function() {
 	}
 };
 
+PracticeView.prototype.resetBoard = function() {
+	
+	if (this.board.widgets != null) {
+		for(var i = 0; i < this.board.widgets.length; i++) {
+			this.board.widgets[i].remove();
+		}
+	}
+	this.board.widgets = [];
+}
 
+PracticeView.prototype.appendTextToBoard = function(newText) {
+	var textWidget = new Kinetic.Text({
+		text: newText,
+		fontSize: 40,
+		fontFamily: 'mainFont',
+		fill: 'white'
+	});
+	this.board.widgets.push(textWidget);
+	
+	// need to calc width/height AFTER creation
+	// set width and check for newline
+	var width = DimensionUtil.actualToDecimalWidth(textWidget.getWidth());
+	if (this.board.accumLineWidth + width > this.board.maxLineWidth) {
+		this.board.verticalAlign += this.board.lineHeight;
+		this.board.accumLineWidth = this.board.leftMargin;
+	}
+	// set X
+	textWidget.setX(DimensionUtil.decimalToActualWidth(this.board.accumLineWidth));
+	this.board.accumLineWidth += width;
+	
+	// set Y
+	textWidget.setY(DimensionUtil.decimalToActualHeight(this.board.verticalAlign) - textWidget.getHeight() / 2);
+	app.layer.add(textWidget);
+	app.stage.draw();
+}
 
+PracticeView.prototype.appendPlaceHolderEggToBoard = function () {
+	// need to calc width/height AFTER creation
+	// set width and check for newline
+	var width = DimensionUtil.actualToDecimalWidth(this.placeHolderEgg.getWidth());
+	if (this.board.accumLineWidth + width > this.board.maxLineWidth) {
+	this.board.verticalAlign += this.board.lineHeight;
+	this.board.accumLineWidth = this.board.leftMargin;
+	}
+	// set X
+	this.placeHolderEgg.setX(DimensionUtil.decimalToActualWidth(this.board.accumLineWidth));
+	this.board.accumLineWidth += width;
+	// set Y
+	this.placeHolderEgg.setY(DimensionUtil.decimalToActualHeight(this.board.verticalAlign) - this.placeHolderEgg.getHeight() / 2);
+	this.placeHolderEgg.moveToTop();
+	this.placeHolderEgg.show();
+};
 
 PracticeView.prototype.presentNextQuestion = function (questionText, progressText, keyboardTexts, blankLocation) {
+	this.board.leftMargin = 0.25;
+	this.board.maxLineWidth = 0.9;
+	this.board.lineHeight = 0.12;
+	this.board.accumLineWidth = this.board.leftMargin;
+	this.board.verticalAlign = 0.23;
+	this.resetBoard();
 	
 	// display question number
 	this.questionNumberTextWidget.setText(progressText);
 	
-	// display the question
-	this.questionTextWidget.setText(questionText);
+	questionText = questionText.replace("___", " ___ ");
+	questionText = questionText.replace("  ", " ");
 	
-	// set place holder egg
-	this.placeHolderEgg.setX(DimensionUtil.decimalToActualWidth(blankLocation.x));
-	this.placeHolderEgg.setY(DimensionUtil.decimalToActualHeight(blankLocation.y));
-	this.placeHolderEgg.moveToTop();
-	this.placeHolderEgg.show();
+	// display the question
+	var questionTextParts = questionText.split(" ");
+	for(var i = 0; i < questionTextParts.length; i++) {
+		if (questionTextParts[i] == "___") {
+			this.appendPlaceHolderEggToBoard();
+		} else {
+			this.appendTextToBoard(" " + questionTextParts[i] + " ");
+		}
+	}
 	
 	// prepareKeyboard
 	this.changeKeyboard(keyboardTexts);
@@ -251,8 +324,8 @@ PracticeView.prototype.answeredRight = function(id) {
 	var tween = new Kinetic.Tween({
 		node: this.keyboard.groups[id],
 		duration: 0.45,
-		x: DimensionUtil.decimalToActualWidth(questionObject.blankX),
-		y: DimensionUtil.decimalToActualHeight(questionObject.blankY)
+		x: this.placeHolderEgg.getX(),
+		y: this.placeHolderEgg.getY()
 	});
 	tween.play();
 	
@@ -294,7 +367,7 @@ PracticeView.prototype.answeredWrong = function(id) {
 	});
 	tween.play();
 	
-	app.controller.mistakeMade();
+	this.mistakeMadeThisRound = true;
 };
 
 
