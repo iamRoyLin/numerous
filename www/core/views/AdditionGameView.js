@@ -312,7 +312,7 @@ AdditionGameView.prototype.drawEggs = function () {
 		
 		egg.on('dragstart', function() { this.moveToTop() });
 		egg.on('dragend', function() {
-
+		
 			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 				// accept the egg
 				app.view.acceptEgg(this);

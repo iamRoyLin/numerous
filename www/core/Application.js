@@ -126,6 +126,7 @@ App.prototype.nextGame = function () {
 		return false;
 	} else {
 		app.currentGame++;
+		Storage.set("currentGame", app.currentGame);
 		return true;
 	}
 };
@@ -135,6 +136,15 @@ App.prototype.getCurrentPage = function () {
 App.prototype.getCurrentPageParams = function () {
 	return app.UNIT_GAMES[app.currentUnit][app.currentGame].params;
 };
+
+App.prototype.setCurrentGame = function (gameName) {
+	this.currentGame = gameName;
+	Storage.set("currentGame", gameName);
+}
+App.prototype.setCurrentUnit = function (unitNumber) {
+	this.currentUnit = unitNumber;
+	Storage.set("currentUnit", unitNumber);
+}
 
 function startApplication() {
 	app = new App();
@@ -150,12 +160,14 @@ function startApplication() {
 
 
 
+
+
+
+
+// life cycle events
+
 soundManager.onready(startApplication);
 document.addEventListener("deviceready", startApplication, false);
-
-
-
-
 
 document.addEventListener("pause", function () {
 	navigator.splashscreen.show();

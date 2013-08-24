@@ -125,20 +125,20 @@ GroupingGame3Controller.prototype.initialize = function() {
 	// The destination locations where eggs will be locked in to
 	app.view.viewVars.eggDestinationLocations = [
 		//{x:0.470, y: 0.465},
-		{x:0.665, y: 0.405},
-		{x:0.727, y: 0.405},
+		{x:0.657, y: 0.376},
+		{x:0.720, y: 0.378},
 		
-		{x:0.715, y: 0.458},
-		{x:0.777, y: 0.458},
+		{x:0.707, y: 0.430},
+		{x:0.770, y: 0.431},
 		
-		{x:0.765, y: 0.511},
-		{x:0.827, y: 0.511},
+		{x:0.756, y: 0.487},
+		{x:0.817, y: 0.486},
 		
-		{x:0.815, y: 0.564},
-		{x:0.877, y: 0.564},
+		{x:0.804, y: 0.546},
+		{x:0.867, y: 0.546},
 		
-		{x:0.865, y: 0.617},
-		{x:0.927, y: 0.617},
+		{x:0.853, y: 0.598},
+		{x:0.916, y: 0.598},
 	];
 	
 	// complements

@@ -43,6 +43,6 @@ MenuController.prototype.home = function () {
 };
 
 MenuController.prototype.unitSelect = function(unit) {
-	app.currentUnit = unit;	
+	app.setCurrentUnit(unit);
 	app.route("MenuUnit");
 }

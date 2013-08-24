@@ -23,6 +23,9 @@ function GroupingGameView(controller) {
 	// Array of the eggs currently on the tray at ones
 	this.eggsAtDestination = [];
 	
+	// Array of eggs not in basket yet
+	this.eggsInBasket = [];
+	
 	// Array holding eggs initial locations of when it was randomly generated
 	this.eggInitialLocations = [];
 	
@@ -569,7 +572,9 @@ GroupingGameView.prototype.drawNewEgg = function() {
 	var egg = new Kinetic.Image({
 		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length)],
 		draggable: true
-	});	
+	});
+	
+	this.eggsInBasket.push(egg);
 	
 	egg.id = this.eggCount;	
 	this.eggCount++;
@@ -599,6 +604,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 	anim.start();
    
 	egg.on('dragstart', function() { 
+	
 		this.moveToTop();
 		egg.setScale(1, 1);
 		anim.stop();
@@ -611,7 +617,6 @@ GroupingGameView.prototype.drawNewEgg = function() {
 			anim.start();
 			return;
 		}
-		
 		
 		if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 			// dropped it in correct location (so far so good)
@@ -687,8 +692,19 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 	this.onesWidgetGroup.add(egg);
 	egg.moveToTop();
 	
-	egg.setX(DimensionUtil.decimalToActualWidth(this.viewVars.eggDestinationLocations[index].x));
-	egg.setY(DimensionUtil.decimalToActualHeight(this.viewVars.eggDestinationLocations[index].y));
+	egg.fixedX = DimensionUtil.decimalToActualWidth(this.viewVars.eggDestinationLocations[index].x);
+	egg.fixedY = DimensionUtil.decimalToActualHeight(this.viewVars.eggDestinationLocations[index].y);
+	egg.setX(egg.fixedX);
+	egg.setY(egg.fixedY);
+	
+	// result of stress testing
+	
+	setTimeout(function() {
+		//console.log("egg " + egg.id + "delayed set to x:" + DimensionUtil.actualToDecimalWidth(egg.fixedX) + ", is at: " + DimensionUtil.actualToDecimalWidth(egg.getX()) + ", "  + DimensionUtil.actualToDecimalHeight(egg.getY()));
+		egg.setX(egg.fixedX);
+		egg.setY(egg.fixedY);
+		egg.show();
+	}, 1000);
 	
 	app.stage.draw();
 	// add it to the destination array
@@ -710,6 +726,7 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 
 // declines the egg and move it back to its original spot
 GroupingGameView.prototype.declineEgg = function(egg) {
+
 	// play the decline egg sound
 	Music.play(this.sounds.declineEgg);
 	WidgetUtil.animateMove(egg, 0.4, this.eggInitialLocations[egg.id].x, this.eggInitialLocations[egg.id].y);

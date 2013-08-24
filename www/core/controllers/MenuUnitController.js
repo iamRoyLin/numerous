@@ -45,7 +45,7 @@ MenuUnitController.prototype.back = function() {
 };
 
 MenuUnitController.prototype.game = function(gameID) {
-	app.currentGame = gameID;
+	app.setCurrentGame(gameID);
 
 	var page = app.UNIT_GAMES[app.currentUnit][app.currentGame].page;
 	var params = app.UNIT_GAMES[app.currentUnit][app.currentGame].params;
