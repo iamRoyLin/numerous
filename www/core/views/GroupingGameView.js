@@ -193,24 +193,24 @@ GroupingGameView.prototype.drawTrays = function() {
 
 // draws the number the student needs to perform
 GroupingGameView.prototype.drawTitle = function(title) {
-	 this.titleTextWidget = new Kinetic.Text({
+	this.titleTextWidget = new Kinetic.Text({
 		x: DimensionUtil.decimalToActualWidth(0.15),
 		y: DimensionUtil.decimalToActualHeight(0.02),
 		
 		scaleX: 0,
 		scaleY: 0,
-    	text: title,
+    		text: title,
 		fontFamily: 'mainFont',
-    	fontSize: 95,
+	    	fontSize: 95,
 		fill: 'black', // #2B8F4E
 		lineJoin: 'round',
 		fontStyle: 'bold',
-        shadowColor: 'white',
-        shadowBlur: 10,
-        shadowOffset: 5,
-        shadowOpacity: 1,
-    });
-    app.layer.add(this.titleTextWidget);
+	        	shadowColor: 'gold',
+	        	shadowBlur: 30,
+	        	shadowOffset: 0,
+	        	shadowOpacity: 1
+    	});
+   	 app.layer.add(this.titleTextWidget);
 	
 	setTimeout(function() {
 		var flyIn = new Kinetic.Tween({
@@ -225,6 +225,16 @@ GroupingGameView.prototype.drawTitle = function(title) {
 		});
 		flyIn.play();
 	}, 300);
+ 
+ 
+ 	this.titleAnim = new Kinetic.Animation(function(frame) {
+        		app.view.titleTextWidget.setShadowOpacity(Math.sin(frame.time * 2 * Math.PI / 2000));
+        		app.view.titleTextWidget.setX(DimensionUtil.decimalToActualWidth(0.03) * Math.sin(frame.time * 2 * Math.PI / 2000) + DimensionUtil.decimalToActualWidth(0.17));
+      	}, app.layer);
+ 	 
+ 	 this.titleAnim.start();
+ 		
+        		
 	
 
 };

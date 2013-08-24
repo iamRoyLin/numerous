@@ -357,6 +357,7 @@ AdditionGameController.prototype.finalize = function() {
 };
 
 AdditionGameController.prototype.restart = function(sameNumber) {
+	app.view.titleAnim.stop();
 	if (sameNumber) {
 		app.AdditionGameRestartNumber = this.goalNumber;
 		app.AdditionGameRestartNumber2 = this.goalNumber2;
@@ -365,10 +366,12 @@ AdditionGameController.prototype.restart = function(sameNumber) {
 };
 
 AdditionGameController.prototype.menu = function() {
+	app.view.titleAnim.stop();
 	app.route("MenuUnit", null, true);
 };
 
 AdditionGameController.prototype.nextGame = function() {
+	app.view.titleAnim.stop();
 	if (app.nextGame()) {
 		app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 	} else {

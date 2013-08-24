@@ -204,9 +204,8 @@ AdditionGameView.prototype.drawTitle = function(title) {
 		fill: 'black', // #2B8F4E
 		lineJoin: 'round',
 		fontStyle: 'bold',
-        shadowColor: 'white',
-        shadowBlur: 10,
-        shadowOffset: 5,
+        shadowColor: 'gold',
+        shadowBlur: 30,
         shadowOpacity: 1,
     });
     app.layer.add(this.titleTextWidget);
@@ -224,6 +223,13 @@ AdditionGameView.prototype.drawTitle = function(title) {
 		});
 		flyIn.play();
 	}, 300);
+	
+	this.titleAnim = new Kinetic.Animation(function(frame) {
+        		app.view.titleTextWidget.setShadowOpacity(Math.sin(frame.time * 2 * Math.PI / 2000));
+        		app.view.titleTextWidget.setX(DimensionUtil.decimalToActualWidth(0.03) * Math.sin(frame.time * 2 * Math.PI / 2000) + DimensionUtil.decimalToActualWidth(0.17));
+      	}, app.layer);
+ 	 
+ 	 this.titleAnim.start();
 
 };
 
