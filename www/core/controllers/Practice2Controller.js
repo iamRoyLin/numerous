@@ -121,7 +121,7 @@ Practice2Controller.prototype.nextQuestion = function() {
 
 
 Practice2Controller.prototype.restart = function(sameNumber) {
-	app.route("Practice1");
+	app.route("Practice2");
 };
 
 Practice2Controller.prototype.menu = function() {

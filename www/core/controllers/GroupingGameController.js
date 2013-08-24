@@ -69,7 +69,7 @@ GroupingGameController.prototype.initialize = function() {
 	app.view.viewVars.initialPackCount = 3;
 	
 	// Number of eggs at the origin at the beginning
-	app.view.viewVars.initialEggCount = 50;
+	app.view.viewVars.initialEggCount = 18;
 	
 	// The areas of the 'ones' belts that accepts the egg
 	app.view.viewVars.beltOnesArea = {};
@@ -101,8 +101,8 @@ GroupingGameController.prototype.initialize = function() {
 	app.view.viewVars.initialCoverPosition = {x:0.25, y:-0.415};
 
 	// Initial egg positions
-	app.view.viewVars.initialEggRectangle = {x:0.70, y:0.72, width:0.2, height:0.01};
-	app.view.viewVars.initialEggSize = {width:0.06, height:0.093};
+	app.view.viewVars.initialEggRectangle = {x:0.69, y:0.72, width:0.2, height:0.01};
+	app.view.viewVars.initialEggSize = {width:0.075, height:0.116};
 	
 	// Initial pack positions
 	app.view.viewVars.initialPackRectangle = {x:0.59, y:0.80, width:0.2, height:0.05};
@@ -111,20 +111,20 @@ GroupingGameController.prototype.initialize = function() {
 
 	// The destination locations where eggs will be locked in to
 	app.view.viewVars.eggDestinationLocations = [
-		{x:0.470, y: 0.465},
-		{x:0.532, y: 0.465},
+		{x:0.462, y: 0.450},
+		{x:0.526, y: 0.452},
 		
-		{x:0.431, y: 0.526},
-		{x:0.495, y: 0.526},
+		{x:0.425, y: 0.502},
+		{x:0.487, y: 0.506},
 		
-		{x:0.395, y: 0.585},
-		{x:0.458, y: 0.585},
+		{x:0.386, y: 0.562},
+		{x:0.447, y: 0.566},
 		
-		{x:0.356, y: 0.648},
-		{x:0.420, y: 0.648},
+		{x:0.346, y: 0.617},
+		{x:0.411, y: 0.623},
 		
-		{x:0.315, y: 0.710},
-		{x:0.378, y: 0.710},
+		{x:0.307, y: 0.678},
+		{x:0.368, y: 0.677},
 	];
 	
 	// complements

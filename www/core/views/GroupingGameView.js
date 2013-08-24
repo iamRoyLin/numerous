@@ -596,8 +596,6 @@ GroupingGameView.prototype.drawNewEgg = function() {
 		});
 	egg.on('dragend', function() {
 		
-		
-		
 		if (app.view.activitiesEnabled == false) {
 			app.view.declineEgg(this);
 			anim.start();

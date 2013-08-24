@@ -20,6 +20,20 @@ var LoaderUtil = new function () {
 		loader.start();	
 	};
 
+	// unloads images
+	this.unload = function(images) {
+		for(var key in images) {
+		
+			if (images[key] instanceof Array) {
+				for(var i = 0; i < images[key].length; i++) {
+					delete images[key][i];
+				}
+			} else {
+				delete images[key];
+			}
+		}
+	};
+	
 }
 
 

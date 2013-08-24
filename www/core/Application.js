@@ -88,6 +88,7 @@ App.prototype.route = function(page, pageParams) {
 		this.controller.finalize();
 	}
 	if (this.view != null) {
+		LoaderUtil.unload(this.controller.images);
 		this.view.finalize();
 	}
 	if (this.layer != null) {
@@ -134,7 +135,7 @@ $(function () {
 		app.currentUnit=0;
 		app.currentGame=0;
 
-		app.route("Practice2");
+		app.route("Home");
 		
 	}, 1000); 
 	
