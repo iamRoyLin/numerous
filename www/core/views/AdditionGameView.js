@@ -204,9 +204,8 @@ AdditionGameView.prototype.drawTitle = function(title) {
 		fill: 'black', // #2B8F4E
 		lineJoin: 'round',
 		fontStyle: 'bold',
-        shadowColor: 'white',
-        shadowBlur: 10,
-        shadowOffset: 5,
+        shadowColor: 'gold',
+        shadowBlur: 30,
         shadowOpacity: 1,
     });
     app.layer.add(this.titleTextWidget);
