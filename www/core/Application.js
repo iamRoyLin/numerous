@@ -128,19 +128,24 @@ App.prototype.getCurrentPageParams = function () {
 	return app.UNIT_GAMES[app.currentUnit][app.currentGame].params;
 };
 
-$(function () {
-	setTimeout(function() {
-		app = new App();
+
+function startApplication() {
 	
+		app = new App();
+		
 		app.currentUnit=0;
 		app.currentGame=0;
 
 		app.route("Home");
-		
-	}, 1000); 
-	
 
-});
+}
+
+soundManager.onready(startApplication);
+document.addEventListener("deviceready", startApplication, false);
+
+
+
+
 
 document.addEventListener("pause", function () {
 	navigator.splashscreen.show();
