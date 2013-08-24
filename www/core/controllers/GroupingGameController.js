@@ -171,18 +171,20 @@ GroupingGameController.prototype.initialize = function() {
 
 // destructor
 GroupingGameController.prototype.finalize = function() {
-	
 };
 
 GroupingGameController.prototype.restart = function(sameNumber) {
+	app.view.titleAnim.stop();
 	app.route(app.getCurrentPage(), app.getCurrentPageParams());
 };
 
 GroupingGameController.prototype.menu = function() {
+	app.view.titleAnim.stop();
 	app.route("MenuUnit");
 };
 
 GroupingGameController.prototype.nextGame = function() {
+	app.view.titleAnim.stop();
 	if (app.nextGame()) {
 		app.route(app.getCurrentPage(), app.getCurrentPageParams());
 	} else {

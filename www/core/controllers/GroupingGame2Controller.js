@@ -176,14 +176,17 @@ GroupingGame2Controller.prototype.finalize = function() {
 };
 
 GroupingGame2Controller.prototype.restart = function(sameNumber) {
+	app.view.titleAnim.stop();
 	app.route(app.getCurrentPage(), app.getCurrentPageParams());
 };
 
 GroupingGame2Controller.prototype.menu = function() {
+	app.view.titleAnim.stop();
 	app.route("MenuUnit");
 };
 
 GroupingGame2Controller.prototype.nextGame = function() {
+	app.view.titleAnim.stop();
 	if (app.nextGame()) {
 		app.route(app.getCurrentPage(), app.getCurrentPageParams());
 	} else {

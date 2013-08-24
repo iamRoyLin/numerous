@@ -197,6 +197,7 @@ GroupingGame3Controller.prototype.finalize = function() {
 };
 
 GroupingGame3Controller.prototype.restart = function(sameNumber) {
+	app.view.titleAnim.stop();
 	if (sameNumber) {
 		app.groupingGame3RestartNumber = this.goalNumber;
 	}
@@ -204,10 +205,12 @@ GroupingGame3Controller.prototype.restart = function(sameNumber) {
 };
 
 GroupingGame3Controller.prototype.menu = function() {
+	app.view.titleAnim.stop();
 	app.route("MenuUnit");
 };
 
 GroupingGame3Controller.prototype.nextGame = function() {
+	app.view.titleAnim.stop();
 	if (app.nextGame()) {
 		app.route(app.getCurrentPage(), app.getCurrentPageParams());
 	} else {
