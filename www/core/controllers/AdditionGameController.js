@@ -361,18 +361,18 @@ AdditionGameController.prototype.restart = function(sameNumber) {
 		app.AdditionGameRestartNumber = this.goalNumber;
 		app.AdditionGameRestartNumber2 = this.goalNumber2;
 	}
-	app.route(app.getCurrentPage(), app.getCurrentPageParams());
+	app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 };
 
 AdditionGameController.prototype.menu = function() {
-	app.route("MenuUnit");
+	app.route("MenuUnit", null, true);
 };
 
 AdditionGameController.prototype.nextGame = function() {
 	if (app.nextGame()) {
-		app.route(app.getCurrentPage(), app.getCurrentPageParams());
+		app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 	} else {
-		app.route("MenuUnit");
+		app.route("MenuUnit", null, true);
 	}
 };
 

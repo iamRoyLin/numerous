@@ -121,11 +121,11 @@ Practice2Controller.prototype.nextQuestion = function() {
 
 
 Practice2Controller.prototype.restart = function(sameNumber) {
-	app.route("Practice2");
+	app.route("Practice2", null, true);
 };
 
 Practice2Controller.prototype.menu = function() {
-	app.route("MenuUnit");
+	app.route("MenuUnit", null, true);
 };
 
 Practice2Controller.prototype.pickQuestions = function() {

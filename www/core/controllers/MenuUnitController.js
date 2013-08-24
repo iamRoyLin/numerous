@@ -50,5 +50,5 @@ MenuUnitController.prototype.game = function(gameID) {
 	var page = app.UNIT_GAMES[app.currentUnit][app.currentGame].page;
 	var params = app.UNIT_GAMES[app.currentUnit][app.currentGame].params;
 	
-	app.route(page, params);
+	app.route(page, params, true);
 };

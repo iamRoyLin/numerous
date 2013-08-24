@@ -173,11 +173,11 @@ Practice1Controller.prototype.nextQuestion = function() {
 
 
 Practice1Controller.prototype.restart = function(sameNumber) {
-	app.route("Practice1");
+	app.route("Practice1", null, true);
 };
 
 Practice1Controller.prototype.menu = function() {
-	app.route("MenuUnit");
+	app.route("MenuUnit", null, true);
 };
 
 Practice1Controller.prototype.pickQuestions = function() {

@@ -176,11 +176,11 @@ Practice3Controller.prototype.finalize = function() {
 }
 
 Practice3Controller.prototype.restart = function(sameNumber) {
-	app.route("Practice3");
+	app.route("Practice3", null, true);
 };
 
 Practice3Controller.prototype.menu = function() {
-	app.route("MenuUnit");
+	app.route("MenuUnit", null, true);
 };
 
 Practice3Controller.prototype.pickQuestions = function() {

@@ -145,7 +145,6 @@ GroupingGameController.prototype.initialize = function() {
 	
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = false;
-	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
 	var title = MathUtil.convertNumberToWord(this.goalNumber);
 	
@@ -175,18 +174,18 @@ GroupingGameController.prototype.finalize = function() {
 };
 
 GroupingGameController.prototype.restart = function(sameNumber) {
-	app.route(app.getCurrentPage(), app.getCurrentPageParams());
+	app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 };
 
 GroupingGameController.prototype.menu = function() {
-	app.route("MenuUnit");
+	app.route("MenuUnit", null, true);
 };
 
 GroupingGameController.prototype.nextGame = function() {
 	if (app.nextGame()) {
-		app.route(app.getCurrentPage(), app.getCurrentPageParams());
+		app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 	} else {
-		app.route("MenuUnit");
+		app.route("MenuUnit", null, true);
 	}
 };
 

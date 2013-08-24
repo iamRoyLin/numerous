@@ -83,16 +83,24 @@ function App() {
 	
 };
 
-App.prototype.route = function(page, pageParams) {
+App.prototype.route = function(page, pageParams, shouldReload) {
+	Storage.set("page", page);
+	Storage.set("pageParams", pageParams);
+	
 	if (this.controller != null) {
 		this.controller.finalize();
-	}
-	if (this.view != null) {
-		LoaderUtil.unload(this.controller.images);
-		this.view.finalize();
-	}
-	if (this.layer != null) {
-		this.layer.remove();
+		
+		if (this.view != null) {
+			this.view.finalize();
+		}
+			
+		if (this.layer != null) {
+			this.layer.remove();
+		}
+		
+		if (shouldReload) {
+			window.location = "";
+		}
 	}
 	
 	this.page = page;
@@ -128,17 +136,19 @@ App.prototype.getCurrentPageParams = function () {
 	return app.UNIT_GAMES[app.currentUnit][app.currentGame].params;
 };
 
-
 function startApplication() {
+	app = new App();
 	
-		app = new App();
-		
-		app.currentUnit=0;
-		app.currentGame=0;
-
-		app.route("Home");
-
+	app.page = Storage.get("page", "Home");
+	app.pageParams = Storage.get("pageParams", null);
+	
+	app.currentUnit = Storage.get("currentUnit", 0);
+	app.currentGame = Storage.get("currentGame", 0);
+	
+	app.route(app.page, app.pageParams);
 }
+
+
 
 soundManager.onready(startApplication);
 document.addEventListener("deviceready", startApplication, false);

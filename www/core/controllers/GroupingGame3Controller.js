@@ -200,18 +200,18 @@ GroupingGame3Controller.prototype.restart = function(sameNumber) {
 	if (sameNumber) {
 		app.groupingGame3RestartNumber = this.goalNumber;
 	}
-	app.route(app.getCurrentPage(), app.getCurrentPageParams());
+	app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 };
 
 GroupingGame3Controller.prototype.menu = function() {
-	app.route("MenuUnit");
+	app.route("MenuUnit", null, true);
 };
 
 GroupingGame3Controller.prototype.nextGame = function() {
 	if (app.nextGame()) {
-		app.route(app.getCurrentPage(), app.getCurrentPageParams());
+		app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 	} else {
-		app.route("MenuUnit");
+		app.route("MenuUnit", null, true);
 	}
 };
 

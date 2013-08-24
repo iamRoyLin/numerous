@@ -176,18 +176,18 @@ GroupingGame2Controller.prototype.finalize = function() {
 };
 
 GroupingGame2Controller.prototype.restart = function(sameNumber) {
-	app.route(app.getCurrentPage(), app.getCurrentPageParams());
+	app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 };
 
 GroupingGame2Controller.prototype.menu = function() {
-	app.route("MenuUnit");
+	app.route("MenuUnit", null, true);
 };
 
 GroupingGame2Controller.prototype.nextGame = function() {
 	if (app.nextGame()) {
-		app.route(app.getCurrentPage(), app.getCurrentPageParams());
+		app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 	} else {
-		app.route("MenuUnit");
+		app.route("MenuUnit", null, true);
 	}
 };
 
