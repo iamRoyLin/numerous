@@ -58,10 +58,6 @@ Practice1Controller.prototype.initialize = function () {
 	app.view.viewVars = {};
 	app.view.viewVars.pauseButtonDimensions = {x:0.02, y:0.035, width:0.09, height:0.12};
 	
-	app.view.totalNumberOfSets = 4;
-	app.view.numberOfQuestionsPerSet = 3;
-	app.view.questionSets = {};
-	
 	this.keyboardTexts = [
 		["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"],
 		["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
@@ -116,8 +112,6 @@ Practice1Controller.prototype.initialize = function () {
 		
 	]
 	
-	app.view.viewVars.questionSets = this.questionSets;
-	
 	// variables
 	this.mistakesCount = 0;
 	this.activitiesEnabled = true;
@@ -167,10 +161,11 @@ Practice1Controller.prototype.nextQuestion = function() {
 	
 	var progressText = "" + (this.currentQuestion+1) + " / " + this.gameQuestions.length;
 	var questionText = questionObject.question;
-	var blankLocation = {x:questionObject.blankX, y:questionObject.blankY};
 	var keyboardTexts = this.keyboardTexts[questionObject.keyboardId];
+	var correctAnswerId = questionObject.answer;
 	
-	this.view.presentNextQuestion(questionText, progressText, keyboardTexts, blankLocation);
+	this.view.presentNextQuestion(questionText, progressText, keyboardTexts, correctAnswerId);
+	
 	
 	return true;
 };

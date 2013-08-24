@@ -191,7 +191,9 @@ PracticeView.prototype.appendPlaceHolderEggToBoard = function () {
 	this.placeHolderEgg.show();
 };
 
-PracticeView.prototype.presentNextQuestion = function (questionText, progressText, keyboardTexts, blankLocation) {
+PracticeView.prototype.presentNextQuestion = function (questionText, progressText, keyboardTexts, correctAnswerId) {
+	this.correctAnswerId = correctAnswerId;
+	
 	this.board.leftMargin = 0.25;
 	this.board.maxLineWidth = 0.9;
 	this.board.lineHeight = 0.12;
@@ -302,9 +304,7 @@ PracticeView.prototype.changeKeyboard = function(keyboardTexts) {
 PracticeView.prototype.keyboardClick = function(keyboardGroup) {
 	keyboardGroup.moveToTop();
 
-	var questionObject = app.controller.getCurrentQuestion();
-
-	if (keyboardGroup.id == questionObject.answer) {
+	if (keyboardGroup.id == this.correctAnswerId) {
 		Music.play(app.view.sounds.acceptEgg);
 		this.answeredRight(keyboardGroup.id);
 	} else {
@@ -313,7 +313,6 @@ PracticeView.prototype.keyboardClick = function(keyboardGroup) {
 	}
 };
 PracticeView.prototype.answeredRight = function(id) {
-	var questionObject = app.controller.getCurrentQuestion();
 
 	app.controller.keyboardEnabled = false;
 	setTimeout(function() {
@@ -352,7 +351,6 @@ PracticeView.prototype.answeredRight = function(id) {
 	
 };
 PracticeView.prototype.answeredWrong = function(id) {
-	var questionObject = app.controller.getCurrentQuestion();
 	
 	app.controller.keyboardEnabled = false;
 	setTimeout(function() {
