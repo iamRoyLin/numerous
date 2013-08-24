@@ -22,7 +22,6 @@ var AlertUtil = new function () {
 			alert(title ? (title + ": " + message) : message);
 		}
 	};
-	
 }
 
 

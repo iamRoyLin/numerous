@@ -54,10 +54,7 @@ PracticeView.prototype.drawButtonNextBig = function() {
 		dx: 0.47,
 		dy: 0.45
 	});
-	
 
-	
-	
 	this.buttonNextBig.on('click tap', function () {
 	
 		if (app.view.mistakeMadeThisRound) {
@@ -96,8 +93,8 @@ PracticeView.prototype.drawButtonNextBig = function() {
 PracticeView.prototype.drawQuestion = function() {
 
 	this.questionNumberTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.815),
-		y: DimensionUtil.decimalToActualHeight(0.32),
+		x: DimensionUtil.decimalToActualWidth(0.83),
+		y: DimensionUtil.decimalToActualHeight(0.08),
 		scaleX: 1/1024*DimensionUtil.width,
 		scaleY: 1/768*DimensionUtil.height,
 		fontSize: 30,
@@ -151,7 +148,7 @@ PracticeView.prototype.resetBoard = function() {
 PracticeView.prototype.appendTextToBoard = function(newText) {
 	var textWidget = new Kinetic.Text({
 		text: newText,
-		fontSize: 40,
+		fontSize: 37,
 		fontFamily: 'mainFont',
 		fill: 'white'
 	});
@@ -194,11 +191,11 @@ PracticeView.prototype.appendPlaceHolderEggToBoard = function () {
 PracticeView.prototype.presentNextQuestion = function (questionText, progressText, keyboardTexts, correctAnswerId) {
 	this.correctAnswerId = correctAnswerId;
 	
-	this.board.leftMargin = 0.25;
-	this.board.maxLineWidth = 0.9;
-	this.board.lineHeight = 0.12;
+	this.board.leftMargin = 0.29;
+	this.board.maxLineWidth = 0.95;
+	this.board.lineHeight = 0.105;
 	this.board.accumLineWidth = this.board.leftMargin;
-	this.board.verticalAlign = 0.23;
+	this.board.verticalAlign = 0.22;
 	this.resetBoard();
 	
 	// display question number
@@ -213,7 +210,7 @@ PracticeView.prototype.presentNextQuestion = function (questionText, progressTex
 		if (questionTextParts[i] == "___") {
 			this.appendPlaceHolderEggToBoard();
 		} else {
-			this.appendTextToBoard(" " + questionTextParts[i] + " ");
+			this.appendTextToBoard(questionTextParts[i] + " ");
 		}
 	}
 	

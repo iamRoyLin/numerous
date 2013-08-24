@@ -139,31 +139,62 @@ Practice2Controller.prototype.pickQuestions = function() {
 	list = ArrayUtil.shuffleArray(list);
 	
 	// first set
-	for(var i = 0; i < 2; i++) {
+	for(var questionNumber = 0; questionNumber < 12; questionNumber++) {
 		var num = list.pop();
 		var ones = MathUtil.getOnes(num);
 		var tens = MathUtil.getTens(num);
 		var onesWord = MathUtil.convertNumberToWord(ones);
 		var tensWord = MathUtil.convertNumberToWord(tens);
 		var word = MathUtil.convertNumberToWord(num);
-
-		// questionText, keyboardTexts, correctAnswerId
 		var gameQuestion = {};
-		gameQuestion.questionText = word + " is the same as ___ tens and " + onesWord + " ones.";
-		//gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0];
-		gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], tensWord, 9);
 		
-		for(var j = 0; j < 9; j++) {
-			if (gameQuestion.keyboardTexts[j] == tensWord) {
-				gameQuestion.correctAnswerId = j;
-				break;
-			}
-		}
+		switch (questionNumber) {
+			case 0:
+			case 1:
+				// set 1
+				gameQuestion.questionText = word + " is the same as ___ tens and " + onesWord + " ones.";
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], tensWord, 9);
+				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(tensWord);
+			break;
+			case 2:
+			case 3:
+				// set 2
+				gameQuestion.questionText = word + " is the same as " + tensWord + " tens and ___ ones.";
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], onesWord, 9);
+				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(onesWord);
+			break;
+			case 4:
+			case 5:
+				// set 3
+				gameQuestion.questionText = tensWord + " tens and " + onesWord + " ones is the same as ___";
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[1], word, 9);
+				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(word);
+			break;
+			case 6:
+			case 7:
+				// set 4
+				gameQuestion.questionText = tensWord + " tens and " + onesWord + " ones is the same as ___";
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[2], num.toString(), 9);
+				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(num.toString());
+			break;
+			case 8:
+			case 9:
+				// set 5
+				gameQuestion.questionText = num.toString() + " is the same as ___ tens and " + onesWord + " ones";
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], tensWord, 9);
+				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(tensWord);
+			break;
+			case 10:
+			case 11:
+				gameQuestion.questionText = num.toString() + " is the same as " + tensWord + " tens and ___ ones";
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], onesWord, 9);
+				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(onesWord);
+			break;
+		};
 		
+
 		this.gameQuestions.push(gameQuestion);
 	}
-	
-	// second set
 	
 	
 };
@@ -191,8 +222,8 @@ Practice2Controller.prototype.createKeyboardTexts = function() {
 		wordList.push(MathUtil.convertNumberToWord(i));
 	}
 	
-	output.push(numberList);
 	output.push(wordList);
+	output.push(numberList);
 	
 	return output;
 };

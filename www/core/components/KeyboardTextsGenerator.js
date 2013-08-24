@@ -20,6 +20,7 @@ var KeyboardTextsGenerator = new function () {
 			}
 		}
 		
+		output = ArrayUtil.shuffleArray(output);
 		return output;
 	}
 }
