@@ -23,9 +23,6 @@ function GroupingGameView(controller) {
 	// Array of the eggs currently on the tray at ones
 	this.eggsAtDestination = [];
 	
-	// Array of eggs not in basket yet
-	this.eggsInBasket = [];
-	
 	// Array holding eggs initial locations of when it was randomly generated
 	this.eggInitialLocations = [];
 	
@@ -570,11 +567,9 @@ GroupingGameView.prototype.drawEggs = function() {
 // Draws one egg in a specified area
 GroupingGameView.prototype.drawNewEgg = function() {
 	var egg = new Kinetic.Image({
-		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length)],
+		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length-1)],
 		draggable: true
 	});
-	
-	this.eggsInBasket.push(egg);
 	
 	egg.id = this.eggCount;	
 	this.eggCount++;
@@ -698,9 +693,7 @@ GroupingGameView.prototype.acceptEgg = function(egg) {
 	egg.setY(egg.fixedY);
 	
 	// result of stress testing
-	
 	setTimeout(function() {
-		//console.log("egg " + egg.id + "delayed set to x:" + DimensionUtil.actualToDecimalWidth(egg.fixedX) + ", is at: " + DimensionUtil.actualToDecimalWidth(egg.getX()) + ", "  + DimensionUtil.actualToDecimalHeight(egg.getY()));
 		egg.setX(egg.fixedX);
 		egg.setY(egg.fixedY);
 		egg.show();

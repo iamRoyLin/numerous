@@ -334,7 +334,7 @@ AdditionGameView.prototype.drawEggs = function () {
 // draws one new egg
 AdditionGameView.prototype.drawNewEgg = function (x, y) {
 	var egg = new Kinetic.Image({
-		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length)],
+		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length-1)],
 	});
 	WidgetUtil.glue(egg, {
 		width: this.viewVars.initialEggSize.width,
