@@ -274,7 +274,7 @@ GroupingGameView.prototype.drawNumbers = function() {
 		scaleY: 1/768*DimensionUtil.height,
     	text: 0,
     	fontSize: 110,
-    	fontFamily: 'COMIC SANS MS',
+    	fontFamily: 'mainFont',
     	fill: 'black'
     });
 	app.layer.add(this.onesTextWidget);
@@ -287,7 +287,7 @@ GroupingGameView.prototype.drawNumbers = function() {
 		scaleY: 1/768*DimensionUtil.height,
     	text: 0,
     	fontSize: 110,
-    	fontFamily: 'COMIC SANS MS',
+    	fontFamily: 'mainFont',
     	fill: 'black'
     });
     app.layer.add(this.tensTextWidget);
@@ -601,13 +601,14 @@ GroupingGameView.prototype.drawNewEgg = function() {
 	egg.on('dragstart', function() { 
 	
 		this.moveToTop();
-		egg.setScale(1, 1);
+		egg.setScale(1.5, 1.5);
 		anim.stop();
 		
 		});
 	egg.on('dragend', function() {
 		
 		if (app.view.activitiesEnabled == false) {
+			egg.setScale(1, 1);
 			app.view.declineEgg(this);
 			anim.start();
 			return;
@@ -619,6 +620,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 			if (app.view.viewVars.usePacks) {
 				// using packs (so eggs should not exceed the goalnumber's ones
 				if (parseInt(app.view.onesTextWidget.getText()) < MathUtil.getOnes(app.controller.goalNumber)) {
+					egg.setScale(1, 1);
 					app.view.acceptEgg(this);
 				} else {
 					app.view.shakeHead();
@@ -629,6 +631,7 @@ GroupingGameView.prototype.drawNewEgg = function() {
 			} else {
 				// not using packs, so we can accept egg if it is under total number
 				if (app.view.eggsAtDestination.length < app.controller.goalNumber) {
+					egg.setScale(1, 1);
 					app.view.acceptEgg(this);
 				} else {
 					app.view.shakeHead();

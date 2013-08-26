@@ -78,7 +78,7 @@ MenuUnitView.prototype.drawBoxes = function(unitRecordsModel) {
 			scaleY: 1/768*DimensionUtil.height,
 			text: app.UNIT_GAMES[app.currentUnit][boxNumber].name,
 			fontSize: 25,
-			fontFamily: 'COMIC SANS MS',
+			fontFamily: 'mainFont',
 			fill: 'black',
 			align: 'center'
 		});
