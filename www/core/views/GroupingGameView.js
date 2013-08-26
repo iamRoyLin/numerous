@@ -333,12 +333,13 @@ GroupingGameView.prototype.drawNewPack = function () {
 	anim.start();
 	pack.on('dragstart', function() { 
 		this.moveToTop();
-		pack.setScale(1, 1);
+		pack.setScale(1.2, 1.2);
 		anim.stop();		});
 	pack.on('dragend', function() {
 		
 		if (app.view.activitiesEnabled == false) {
 			app.view.declinePack(this);
+			pack.setScale(1, 1);
 			anim.start();
 			return;
 		}
@@ -350,6 +351,7 @@ GroupingGameView.prototype.drawNewPack = function () {
 			
 			if (parseInt(app.view.tensTextWidget.getText()) < MathUtil.getTens(app.controller.goalNumber)) {
 				app.view.acceptPack(this);
+				pack.setScale(1, 1);
 			} else {
 				app.view.shakeHead();
 				app.view.errorMade(app.view.ERROR_TYPES.EXCEEDED_GOAL_NUMBER_WITH_PACKS);

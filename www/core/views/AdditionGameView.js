@@ -292,6 +292,7 @@ AdditionGameView.prototype.drawEggs = function () {
 
 	for(var eggId = 0; eggId < MathUtil.getOnes(this.viewVars.goalNumber); eggId++) {
 		var egg = this.drawNewEgg(this.viewVars.eggsRelativeLocations[eggId].x, this.viewVars.eggsRelativeLocations[eggId].y);
+		egg.animation.stop();
 		this.eggsGroup.add(egg);
 		this.eggsInGroup.push(egg);
 	}
@@ -306,20 +307,30 @@ AdditionGameView.prototype.drawEggs = function () {
 		var egg = this.drawNewEgg(x, y);
 		egg.originalX = x;
 		egg.originalY = y;
-		
+
 		egg.setDraggable(true);
 		app.layer.add(egg);
+		egg.on('dragstart', function() { 
+			this.animation.stop();
+			this.moveToTop();
+			this.setScale(1.5, 1.5);
+			
 		
-		egg.on('dragstart', function() { this.moveToTop() });
-		egg.on('dragend', function() {
+		});
+		egg.on('dragend', function() {	
+			
 		
 			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 				// accept the egg
 				app.view.acceptEgg(this);
+				this.setScale(1, 1);
+				//this.animation.start();
 			} else {
 				// decline the egg
 				app.view.declineEgg(this);
-				
+				//this.animation.start();
+				this.setScale(1, 1);
+				this.animation.start();
 				// record any errors
 				if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 					app.view.errorMade(app.view.ERROR_TYPES.DRAG_EGG_TO_TENS);
@@ -342,13 +353,27 @@ AdditionGameView.prototype.drawNewEgg = function (x, y) {
 		dx: x,
 		dy: y
 	});
+	
+	egg.animation = new Kinetic.Animation(function(frame) {
+		var dx = -Math.sin(frame.time / 200) * 0.003;
+		var dy = Math.sin(frame.time / 200) * 0.003;
+		var scaleX = Math.sin(frame.time / 200) * 0.06 + 0.9;
+		var scaleY = -1 * Math.sin(frame.time / 200) * 0.06 + 0.9;
+		// scale x and y
+		egg.setScale(scaleX, scaleY);
+		egg.setX(DimensionUtil.decimalToActualWidth(x + dx));
+		egg.setY(DimensionUtil.decimalToActualHeight(y + dy));
+	}, app.layer);
+		
+	egg.animation.start();
+	
 	return egg;
 }
 
 // accepts the egg onto the truck
 AdditionGameView.prototype.acceptEgg = function(egg) {
 	this.sayCompliment();
-
+	Music.play(this.sounds.acceptEgg);
 	this.eggsInGroup.push(egg);
 	egg.remove();
 	this.eggsGroup.add(egg);
@@ -375,6 +400,7 @@ AdditionGameView.prototype.sayCompliment = function() {
 // declines the egg and puts it back
 AdditionGameView.prototype.declineEgg = function(egg) {
 	// play the decline egg sound
+	Music.play(this.sounds.declineEgg);
 	WidgetUtil.animateMove(egg, 0.4, egg.originalX, egg.originalY);
 };
 
@@ -466,6 +492,7 @@ AdditionGameView.prototype.drawPacks = function() {
 	// ==============================
 	for(var packId = 0; packId < MathUtil.getTens(this.viewVars.goalNumber); packId++) {
 		var pack = this.drawNewPack(this.viewVars.packsRelativeLocations[packId].x, this.viewVars.packsRelativeLocations[packId].y);
+		pack.animation.stop();
 		this.packsGroup.add(pack);
 		this.packsInGroup.push(pack);
 	}
@@ -486,15 +513,22 @@ AdditionGameView.prototype.drawPacks = function() {
 		pack.setDraggable(true);
 		app.layer.add(pack);
 		
-		pack.on('dragstart', function() { this.moveToTop() });
+		pack.on('dragstart', function() { 
+			this.animation.stop();
+			this.moveToTop();
+			this.setScale(1.2, 1.2);
+		});
 		pack.on('dragend', function() {
 
 			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 				// accept the pack
+				this.setScale(0.6, 0.6);
 				app.view.acceptPack(this);
 			} else {
 				// decline the pack
+				this.setScale(0.6, 0.6);
 				app.view.declinePack(this);
+				this.animation.start();
 				
 				// record any errors
 				if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
@@ -531,12 +565,26 @@ AdditionGameView.prototype.drawNewPack = function(x, y) {
 	});
 	pack.add(wrapper);
 	
+	pack.animation = new Kinetic.Animation(function(frame) {
+		var dx = -Math.sin(frame.time / 200) * 0.003;
+		var dy = Math.sin(frame.time / 200) * 0.003;
+		var scaleX = Math.sin(frame.time / 200) * 0.04 + 0.6;
+		var scaleY = -1 * Math.sin(frame.time / 200) * 0.06 + 0.6;
+		// scale x and y
+		pack.setScale(scaleX, scaleY);
+		pack.setX(DimensionUtil.decimalToActualWidth(x + dx));
+		pack.setY(DimensionUtil.decimalToActualHeight(y + dy));
+	}, app.layer);
+		
+	pack.animation.start();
+	
 	
 	return pack;
 };
 
 // accept pack
 AdditionGameView.prototype.acceptPack = function(pack) {
+	Music.play(this.sounds.acceptEgg);
 	this.sayCompliment();
 	
 	this.packsInGroup.push(pack);
@@ -558,6 +606,7 @@ AdditionGameView.prototype.acceptPack = function(pack) {
 
 // decline pack
 AdditionGameView.prototype.declinePack = function(pack) {
+	Music.play(this.sounds.declineEgg);
 	WidgetUtil.animateMove(pack, 0.4, pack.originalX, pack.originalY);
 };
 
@@ -869,6 +918,7 @@ AdditionGameView.prototype.finish = function(score) {
 		});
 		app.layer.add(buttonNext);	
 		buttonNext.on('click tap', function () {
+			Music.play(app.view.sounds.select);
 			app.controller.nextGame();
 		});
 	}
