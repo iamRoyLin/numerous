@@ -88,19 +88,23 @@ App.prototype.route = function(page, pageParams, shouldReload) {
 	Storage.set("pageParams", pageParams);
 	
 	if (this.controller != null) {
-		this.controller.finalize();
-		
-		if (this.view != null) {
-			this.view.finalize();
-		}
-			
-		if (this.layer != null) {
-			this.layer.remove();
-		}
-		
 		if (shouldReload) {
 			window.location = "";
+			return;
+		} else {
+			this.controller.finalize();
+			
+			if (this.view != null) {
+				this.view.finalize();
+			}
+				
+			if (this.layer != null) {
+				this.layer.remove();
+			}	
 		}
+
+		
+
 	}
 	
 	this.page = page;
