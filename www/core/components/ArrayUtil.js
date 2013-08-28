@@ -6,5 +6,15 @@ var ArrayUtil = new function () {
 		return arr2;
 	};
 	
+	this.generateNumberArray = function(lower, upper, increment) {
+		var output = [];
+		for(var i = lower; i <= upper; i+= increment) {
+			output.push(i);
+		}
+		return output;
+	};
+	
+	
+	
 }
 

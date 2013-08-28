@@ -1,4 +1,8 @@
 function App() {
+
+};
+
+App.prototype.initialize = function () {
 	
 	this.view = null;
 	this.controller = null;
@@ -66,8 +70,8 @@ function App() {
 		{name:"1? + ? \n = 2?",  page:"AdditionGame"},
 		{name:"1? + 1? \n = 2?",  page:"AdditionGame"},
 		{name:"1? + 1? \n = 3?",  page:"AdditionGame"},
-		{name:"2? + 2? \n = 2?",  page:"AdditionGame"},
-		{name:"2? + 2? \n = 3?",  page:"AdditionGame"},
+		{name:"2? + 2? \n = 4?",  page:"AdditionGame"},
+		{name:"2? + 2? \n = 5?",  page:"AdditionGame"},
 		{name:"2? + 3? \n = 5?",  page:"AdditionGame"},
 		{name:"2? + 3? \n = 6?",  page:"AdditionGame"},
 		{name:"?0 + ?0 \n = ?0",  page:"AdditionGame"},
@@ -77,10 +81,17 @@ function App() {
 		{name:"9? + 3? \n = 12?",  page:"AdditionGame"},
 		{name:"9? + 3? \n = 13?",  page:"AdditionGame"},
 		{name:"??+?? \n = 1??",  page:"AdditionGame"},
+		
+		{name:"Practice", page:"Practice3"}
 	];
 	
+	app.page = Storage.get("page", "Home");
+	app.pageParams = Storage.get("pageParams", null);
 	
+	app.currentUnit = Storage.get("currentUnit", 0);
+	app.currentGame = Storage.get("currentGame", 0);
 	
+	app.route(app.page, app.pageParams);
 };
 
 App.prototype.route = function(page, pageParams, shouldReload) {
@@ -150,28 +161,43 @@ App.prototype.setCurrentUnit = function (unitNumber) {
 	Storage.set("currentUnit", unitNumber);
 }
 
-function startApplication() {
-	app = new App();
-	
-	app.page = Storage.get("page", "Home");
-	app.pageParams = Storage.get("pageParams", null);
-	
-	app.currentUnit = Storage.get("currentUnit", 0);
-	app.currentGame = Storage.get("currentGame", 0);
-	
-	app.route(app.page, app.pageParams);
+
+App.prototype.registerWait = function() {
+	if (app.objectsWaiting == null) {
+		app.objectsWaiting = 0;
+	}
+	app.objectsWaiting++;
+}
+App.prototype.notifyDone = function() {
+	app.objectsWaiting--;
+	if (app.objectsWaiting == 0) {
+		app.initialize();
+	}
 }
 
-
-
-
+// start new app
+app = new App();
 
 
 
 // life cycle events
 
-soundManager.onready(startApplication);
-document.addEventListener("deviceready", startApplication, false);
+
+if (Env.phoneGap) {
+	// register loading of device
+	app.registerWait()
+	document.addEventListener("deviceready", app.notifyDone, false);
+} else {
+	// register loading of sound manager
+	app.registerWait()
+	soundManager.onready(app.notifyDone);
+
+	// register loading of jQuery and document
+	app.registerWait()
+	$(app.notifyDone);
+}
+
+
 
 document.addEventListener("pause", function () {
 	navigator.splashscreen.show();

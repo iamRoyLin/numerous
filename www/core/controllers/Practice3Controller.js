@@ -58,67 +58,7 @@ Practice3Controller.prototype.initialize = function () {
 	app.view.viewVars = {};
 	app.view.viewVars.pauseButtonDimensions = {x:0.02, y:0.035, width:0.09, height:0.12};
 	
-	app.view.totalNumberOfSets = 4;
-	app.view.numberOfQuestionsPerSet = 3;
-	app.view.questionSets = {};
-	
-	this.keyboardTexts = [
-		["Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"],
-		["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"],
-		["11", "12", "13", "14", "15", "16", "17", "18", "19"]
-	];
-	
-	this.questionSets = [
-		[
-			{question: "Eleven is the same as _____ and ten?",    answer: 0, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Twelve is the same as _____ and ten?",    answer: 1, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Thirteen is the same as _____ and ten?",  answer: 2, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Fourteen is the same as _____ and ten?",  answer: 3, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Fifteen is the same as _____ and ten?",   answer: 4, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Sixteen is the same as _____ and ten?",   answer: 5, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Seventeen is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Eighteen is the same as _____ and ten?",  answer: 7, keyboardId: 1, blankX: 0.378, blankY:0.160},
-			{question: "Nineteen is the same as _____ and ten?",  answer: 8, keyboardId: 1, blankX: 0.378, blankY:0.160}
-		],
-		[ 
-			{question: "Ten and one is the same as _____?",   answer: 0, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Ten and two is the same as _____?",   answer: 1, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 0, blankX: 0.588, blankY:0.160},
-			{question: "Four and ten is the same as _____?",  answer: 3, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Ten and five is the same as _____?",  answer: 4, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 0, blankX: 0.518, blankY:0.160},
-			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 0, blankX: 0.588, blankY:0.160},
-			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 0, blankX: 0.588, blankY:0.160},
-			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 0, blankX: 0.518, blankY:0.160}
-		],
-		[
-			{question: "Ten and one is the same as _____?",   answer: 0, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Ten and two is the same as _____?",   answer: 1, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Three and ten is the same as _____?", answer: 2, keyboardId: 2, blankX: 0.588, blankY:0.160},
-			{question: "Four and ten is the same as _____?",  answer: 3, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Ten and five is the same as _____?",  answer: 4, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Ten and six is the same as _____?",   answer: 5, keyboardId: 2, blankX: 0.518, blankY:0.160},
-			{question: "Seven and ten is the same as _____?", answer: 6, keyboardId: 2, blankX: 0.588, blankY:0.160},
-			{question: "Eight and ten is the same as _____?", answer: 7, keyboardId: 2, blankX: 0.588, blankY:0.160},
-			{question: "Ten and nine is the same as _____?",  answer: 8, keyboardId: 2, blankX: 0.518, blankY:0.160},
-		],
-		[
-			{question: "11 is the same as _____ and ten?", answer: 0, keyboardId: 1, blankX: 0.719, blankY:0.059},
-			{question: "12 is the same as _____ and ten?", answer: 1, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "13 is the same as _____ and ten?", answer: 2, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "14 is the same as _____ and ten?", answer: 3, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "15 is the same as _____ and ten?", answer: 4, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "16 is the same as _____ and ten?", answer: 5, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "17 is the same as _____ and ten?", answer: 6, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "18 is the same as _____ and ten?", answer: 7, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-			{question: "19 is the same as _____ and ten?", answer: 8, keyboardId: 1, blankX: 0.719, blankY:0.059},,
-		]
-		
-	]
-	
-	app.view.viewVars.keyboardTexts = this.keyboardTexts;
-	app.view.viewVars.questionSets = this.questionSets;
-	app.view.viewVars.currentQuestionSet = -1;
+	this.keyboardTexts = this.createKeyboardTexts(); 
 	
 	// variables
 	this.mistakesCount = 0;
@@ -150,33 +90,38 @@ Practice3Controller.prototype.initialize = function () {
 	
 	this.pickQuestions();
 	
-	/*
-	if (Env.debug) {
-		this.gameQuestions = [
-			{set:3, question:0},
-			{set:3, question:1},
-			{set:3, question:2},
-			{set:3, question:3},
-			{set:3, question:4},
-			{set:3, question:5},
-			{set:3, question:6},
-			{set:3, question:7},
-			{set:3, question:8}
-		];
-	}
-	*/
-	
 	this.currentQuestion = -1;
-	app.view.presentNextQuestion();
+	this.nextQuestion();
 };
 
 // destructor (is automatically called when you leave the page)
 Practice3Controller.prototype.finalize = function() {
 	
-}
+};
+
+Practice3Controller.prototype.nextQuestion = function() {
+	this.currentQuestion++;
+	if (this.currentQuestion >= this.gameQuestions.length) {
+		return false;
+	}
+	
+	var questionObject = this.gameQuestions[this.currentQuestion];
+	
+	var progressText = "" + (this.currentQuestion+1) + " / " + this.gameQuestions.length;
+	var questionText = questionObject.questionText;
+	var keyboardTexts = questionObject.keyboardTexts;
+	var correctAnswerId = questionObject.correctAnswerId;
+	
+	this.view.presentNextQuestion(questionText, progressText, keyboardTexts, correctAnswerId);
+	
+	
+	return true;
+};
+
+
 
 Practice3Controller.prototype.restart = function(sameNumber) {
-	app.route("Practice3", null, true);
+	app.route("Practice2", null, true);
 };
 
 Practice3Controller.prototype.menu = function() {
@@ -186,22 +131,72 @@ Practice3Controller.prototype.menu = function() {
 Practice3Controller.prototype.pickQuestions = function() {
 	this.gameQuestions = [];
 	
-	for(var setNumber = 0; setNumber < this.questionSets.length; setNumber++) {
-		// create an array of numbers
-		var list = [];
-		while(list.length < 3) {
-			var questionNumber = MathUtil.random(0, this.questionSets[setNumber].length);
-			if (list.indexOf(questionNumber) == -1) {
-				list.push(questionNumber);
-				this.gameQuestions.push({set: setNumber, question: questionNumber});
-			}
-		}
+	var list = [];
+	for(var i = 21; i < 100; i++) {
+		list.push(i);
 	}
+	
+	list = ArrayUtil.shuffleArray(list);
+	
+	// first set
+	for(var questionNumber = 0; questionNumber < 17; questionNumber++) {
+		
+		// skip these questions
+		if (questionNumber >= 4 && questionNumber <= 8) continue;
+	
+		var num = list.pop();
+		var ones = MathUtil.getOnes(num);
+		var tens = MathUtil.getTens(num);
+		var onesWord = MathUtil.convertNumberToWord(ones);
+		var tensWord = MathUtil.convertNumberToWord(tens);
+		var word = MathUtil.convertNumberToWord(num);
+		var gameQuestion = {};
+
+		
+		var q = AdditionGameHelper.generateQuestion(questionNumber);
+		gameQuestion.questionText = "" + q.left + " + " + q.right + " = ___";
+		
+		switch(questionNumber) {
+			case 0:
+			case 1:
+			case 2:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(0,20,1), q.answer, 9);
+			break;
+			case 3:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(10,30,1), q.answer, 9);
+			break;
+			case 9:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(50,70,1), q.answer, 9);
+			break;
+			case 10:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(0,100,10), q.answer, 9);
+			break;
+			case 11:
+			case 12:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(90,110,1), q.answer, 9);
+			break;
+			case 13:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(0,190,10), q.answer, 9);
+			break;
+			case 14:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(110,130,1), q.answer, 9);
+			break;
+			case 15:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(120,140,1), q.answer, 9);
+			break;
+			case 16:
+				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(100,199,1), q.answer, 9);
+			break;
+		}
+		
+		gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(q.answer);
+		
+		this.gameQuestions.push(gameQuestion);
+	}
+	
+	
 };
 
-Practice3Controller.prototype.getCurrentQuestion = function() {
-	return this.questionSets[this.gameQuestions[this.currentQuestion].set][this.gameQuestions[this.currentQuestion].question];
-};
 
 Practice3Controller.prototype.mistakeMade = function() {
 	this.mistakesCount++;
@@ -212,4 +207,21 @@ Practice3Controller.prototype.achievedStars = function (starsCount) {
 	if (unitRecordsModel.getStars(app.currentGame) < starsCount) {
 		unitRecordsModel.setStars(app.currentGame, starsCount);
 	}
+};
+
+Practice3Controller.prototype.createKeyboardTexts = function() {
+	var output = [];
+	output.push(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
+	
+	var numberList = [];
+	var wordList = [];
+	for(var i = 21; i < 100; i++) {
+		numberList.push(i.toString());
+		wordList.push(MathUtil.convertNumberToWord(i));
+	}
+	
+	output.push(wordList);
+	output.push(numberList);
+	
+	return output;
 };
