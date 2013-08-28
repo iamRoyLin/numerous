@@ -1,6 +1,7 @@
 @font-face {
 	font-family: mainFont;
-	src: url('fonts/ocrae.ttf');
+	/* src: url('fonts/ocrae.ttf'); */
+	src: url('fonts/horatiodmed.ttf');
 }
 
 * {
