@@ -314,23 +314,20 @@ AdditionGameView.prototype.drawEggs = function () {
 			this.animation.stop();
 			this.moveToTop();
 			this.setScale(1.5, 1.5);
-			
-		
 		});
 		egg.on('dragend', function() {	
+			if (!app.view.activitiesEnabled) {
+				app.view.declineEgg(this);
+				return;
+			}
 			
 		
 			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 				// accept the egg
 				app.view.acceptEgg(this);
-				this.setScale(1, 1);
-				//this.animation.start();
 			} else {
 				// decline the egg
 				app.view.declineEgg(this);
-				//this.animation.start();
-				this.setScale(1, 1);
-				this.animation.start();
 				// record any errors
 				if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 					app.view.errorMade(app.view.ERROR_TYPES.DRAG_EGG_TO_TENS);
@@ -372,6 +369,7 @@ AdditionGameView.prototype.drawNewEgg = function (x, y) {
 
 // accepts the egg onto the truck
 AdditionGameView.prototype.acceptEgg = function(egg) {
+	egg.setScale(1, 1);
 	this.sayCompliment();
 	Music.play(this.sounds.acceptEgg);
 	this.eggsInGroup.push(egg);
@@ -399,13 +397,16 @@ AdditionGameView.prototype.sayCompliment = function() {
 
 // declines the egg and puts it back
 AdditionGameView.prototype.declineEgg = function(egg) {
+	egg.setScale(1, 1);
 	// play the decline egg sound
 	Music.play(this.sounds.declineEgg);
 	WidgetUtil.animateMove(egg, 0.4, egg.originalX, egg.originalY);
+	egg.animation.start();
 };
 
 // package up the eggs and put it in the TENS on the truck
 AdditionGameView.prototype.packageEggs = function () {
+	this.activitiesEnabled = false;
 
 	// draw the wrapper
 	var wrapper = new Kinetic.Image({image: this.images.pack});
@@ -464,12 +465,11 @@ AdditionGameView.prototype.packageEggs = function () {
 				scaleY: 0.60,
 				onFinish: function() {
 					app.view.drawEggsGroup();
-					
-					
 					if (app.view.packsInGroup.length == 10) {
 						app.view.packagePacks();
 					} else {
 						app.view.refreshNumbers();
+						app.view.activitiesEnabled = true;
 					}
 				}
 			});
@@ -519,16 +519,17 @@ AdditionGameView.prototype.drawPacks = function() {
 			this.setScale(1.2, 1.2);
 		});
 		pack.on('dragend', function() {
-
+			if (!app.view.activitiesEnabled) {
+				app.view.declinePack(this);
+				return;
+			}
+		
 			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 				// accept the pack
-				this.setScale(0.6, 0.6);
 				app.view.acceptPack(this);
 			} else {
 				// decline the pack
-				this.setScale(0.6, 0.6);
 				app.view.declinePack(this);
-				this.animation.start();
 				
 				// record any errors
 				if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
@@ -584,6 +585,7 @@ AdditionGameView.prototype.drawNewPack = function(x, y) {
 
 // accept pack
 AdditionGameView.prototype.acceptPack = function(pack) {
+	pack.setScale(0.6, 0.6);
 	Music.play(this.sounds.acceptEgg);
 	this.sayCompliment();
 	
@@ -606,12 +608,16 @@ AdditionGameView.prototype.acceptPack = function(pack) {
 
 // decline pack
 AdditionGameView.prototype.declinePack = function(pack) {
+	pack.setScale(0.6, 0.6);
 	Music.play(this.sounds.declineEgg);
 	WidgetUtil.animateMove(pack, 0.4, pack.originalX, pack.originalY);
+	pack.animation.start();
 };
 
 // package up the packs into a box/crate
 AdditionGameView.prototype.packagePacks = function() {
+	this.activitiesEnabled = false;
+	
 	this.boxesInGroup.push(this.packsGroup);
 
 	// draw the wrapper
@@ -659,9 +665,9 @@ AdditionGameView.prototype.packagePacks = function() {
 				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.boxLocation.x),
 				y: DimensionUtil.decimalToActualHeight(app.view.viewVars.boxLocation.y),
 				onFinish: function() {
-
 					app.view.drawPacksGroup();
 					app.view.refreshNumbers();
+					app.view.activitiesEnabled = true;
 				}
 			});
 			tween2.play();		
