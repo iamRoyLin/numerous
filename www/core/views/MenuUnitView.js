@@ -8,7 +8,6 @@ MenuUnitView.prototype.finalize = function() {
 
 };
 
-
 MenuUnitView.prototype.drawTitle = function() {
 	var	title = new Kinetic.Image({image: this.images.title});
 	WidgetUtil.glue(title, {

@@ -121,10 +121,11 @@ Practice3Controller.prototype.nextQuestion = function() {
 
 
 Practice3Controller.prototype.restart = function(sameNumber) {
-	app.route("Practice2", null, true);
+	app.route("Practice3", null, true);
 };
 
 Practice3Controller.prototype.menu = function() {
+	
 	app.route("MenuUnit", null, true);
 };
 
