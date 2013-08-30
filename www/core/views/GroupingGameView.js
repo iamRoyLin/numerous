@@ -96,19 +96,21 @@ GroupingGameView.prototype.drawRabbit = function () {
 
 //Rabbit animation
 GroupingGameView.prototype.shakeHead = function () {
-	app.view. anim1.start();
-	setTimeout(function(){
-		app.view.anim1.stop();
-		app.view.anim2.start();
-	}, 300);
-	setTimeout(function(){
-		app.view.anim2.stop();
-		app.view.anim1.start();
-	}, 900);
-	
-	setTimeout(function(){
-		app.view.anim1.stop();
-	}, 1200);
+	if(!app.view.anim1.isRunning() && !app.view.anim2.isRunning()){
+		app.view. anim1.start();
+		setTimeout(function(){
+			app.view.anim1.stop();
+			app.view.anim2.start();
+		}, 300);
+		setTimeout(function(){
+			app.view.anim2.stop();
+			app.view.anim1.start();
+		}, 900);
+		
+		setTimeout(function(){
+			app.view.anim1.stop();
+		}, 1200);
+	}
 };
 // Draws the think cloud 
 GroupingGameView.prototype.drawThinkCloud = function () {
