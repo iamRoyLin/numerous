@@ -11,8 +11,10 @@
 	<!-- testSuites -->
 	
 	<script src="tests/testMathUtil.js"></script>
+	<script src="tests/testAdditionGameHelper.js"></script>
 	
 	<script> 
+		QUnit.config.autostart = false;
 	
 		$(function(){
 			$("#includedContent").load("index.html", function () {
@@ -22,7 +24,8 @@
 						if (Music) {
 							Music.stopBackgroundMusic();
 						}
-					}, 500);
+						QUnit.start();
+					}, 400);
 			}); 
 		});
 		
