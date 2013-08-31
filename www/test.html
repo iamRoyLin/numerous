@@ -12,6 +12,8 @@
 	
 	<script src="tests/testMathUtil.js"></script>
 	<script src="tests/testAdditionGameHelper.js"></script>
+	<script src="tests/testArrayUtil.js"></script>
+	<script src="tests/testDimensionUtil.js"></script>
 	
 	<script> 
 		QUnit.config.autostart = false;
@@ -20,11 +22,12 @@
 			$("#includedContent").load("index.html", function () {
 				$(this).css("display", "none");
 				$("body").css("background", "none");
+					QUnit.start();
 					setTimeout(function () {
 						if (Music) {
 							Music.stopBackgroundMusic();
 						}
-						QUnit.start();
+						
 					}, 400);
 			}); 
 		});

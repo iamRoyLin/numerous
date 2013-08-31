@@ -1,3 +1,4 @@
+module( "testMathUtil" );
 
 test("test random number generation between two same numbers", function() {
 	var rand = MathUtil.random(5,5);

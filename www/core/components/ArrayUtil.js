@@ -1,3 +1,5 @@
+
+
 var ArrayUtil = new function () {
 
 	this.shuffleArray = function(arr) {
