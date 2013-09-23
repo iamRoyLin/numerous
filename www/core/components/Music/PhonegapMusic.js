@@ -5,16 +5,8 @@ var PhonegapMusic = new Class ({
 	// call this function to play a sound
 	play: function (src) {
 		if(Storage.get("settingSound", true) == true){
-			if (Env.phoneGap) {
-				var myMedia = new Media(src);
-				myMedia.play({ playAudioWhenScreenIsLocked: false });
-			} else {
-				soundManager.createSound({
-					url: src,
-					autoLoad: true,
-					autoPlay: true
-				});
-			}
+			var myMedia = new Media(src);
+			myMedia.play({ playAudioWhenScreenIsLocked: false });
 		}
 	},
 	
