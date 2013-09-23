@@ -1,8 +1,8 @@
 var PhonegapMusic = new Class ({
 	Implements: Music,
-	
+		
 	isPlaying: false,
-	
+		
 	// call this function to play a sound
 	play: function (src) {
 		if(Storage.get("settingSound", true) == true){
@@ -11,34 +11,41 @@ var PhonegapMusic = new Class ({
 		}
 	},
 	
+	
+	onError: function(error) {
+            alert('code: '    + error.code    + '\n' + 
+                  'message: ' + error.message + '\n');
+	},
+
 	playBackgroundMusic: function (src) {
 		if(Storage.get("settingMusic", true) == true){
 			if(this.isPlaying == false){
 				this.backgroundMusic = new Media(
 					src,
-					function() {	
+					function() {
+						
 					},
 					function (error) {
 						alert('code: ' + error.code + ' ||  message: ' + error.message);
 					}
 				);
-				this.backgroundmusic.setVolume(0.2);
+				this.backgroundMusic.setVolume(0.2);
 				this.isPlaying = true;
-				this.backgroundmusic.play({ numberOfLoops: 999, playAudioWhenScreenIsLocked : false});
+				this.backgroundMusic.play({ numberOfLoops: 999, playAudioWhenScreenIsLocked : false});
 			}
 		}
 	},
 	
 	pauseBackgroundMusic: function () {
 		if (this.isPlaying) {
-			this.backgroundmusic.pause();
+			this.backgroundMusic.pause();
 			this.isPlaying = false;
 		}
 	},
 	
 	resumeBackgroundMusic: function () {
 		if (!this.isPlaying) {
-			this.backgroundmusic.play({ numberOfLoops: 999});
+			this.backgroundMusic.play({ numberOfLoops: 999});
 			this.isPlaying = true;
 		}
 	},
@@ -46,10 +53,11 @@ var PhonegapMusic = new Class ({
 	stopBackgroundMusic: function () {
 		if (this.isPlaying == true) {
 			if (this.backgroundMusic) {
-				this.backgroundmusic.stop();
+				this.backgroundMusic.stop();
 				this.isPlaying = false;
 			}
 		}
 	},
 	
 });
+
