@@ -19,5 +19,3 @@ var ArrayUtil = new Class ({
 	},
 	
 });
-
-var arrayUtil = new ArrayUtil();

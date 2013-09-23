@@ -22,5 +22,4 @@ var DimensionUtil = new Class ({
 	
 });
 
-var dimensionUtil = new DimensionUtil();
 

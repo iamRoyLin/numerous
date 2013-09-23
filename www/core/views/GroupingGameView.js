@@ -491,7 +491,7 @@ GroupingGameView.prototype.drawPauseWidgets = function() {
 	
 	buttonMenu.on('click tap', function () {
 		music.play(app.view.sounds.select);
-		if(Storage.get("settingMusic") == true){
+		if(storage.get("settingMusic") == true){
 			music.stopBackgroundMusic();
 		}
 		app.controller.menu();
@@ -1024,7 +1024,7 @@ GroupingGameView.prototype.finish = function(score) {
 	});
 	buttonMenu.on('click tap', function () {
 		music.play(app.view.sounds.select);
-		if(Storage.get("settingMusic") == true){
+		if(storage.get("settingMusic") == true){
 			music.stopBackgroundMusic();
 		}
 		app.controller.menu();

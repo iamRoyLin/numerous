@@ -11,7 +11,7 @@ var BrowserMusic = new Class ({
 	},
 
 	play: function (src) {
-		if(Storage.get("settingSound", true) == true){
+		if(storage.get("settingSound", true) == true){
 			soundManager.createSound({
 				url: src,
 				autoLoad: true,
@@ -21,8 +21,8 @@ var BrowserMusic = new Class ({
 	},
 	
 	playBackgroundMusic: function (src) {
-		if(Storage.get("settingMusic", true) == true){
-			if(this.backgroundMusic == null || this.backgroundmusic.playState == 0 ){
+		if(storage.get("settingMusic", true) == true){
+			if(this.backgroundMusic == null || this.backgroundMusic.playState == 0 ){
 				this.backgroundMusic = soundManager.createSound({
 					url: src,
 					autoLoad: true,
@@ -47,7 +47,7 @@ var BrowserMusic = new Class ({
 	
 	stopBackgroundMusic: function () {
 		if (this.backgroundMusic != null) {
-			this.backgroundmusic.stop();
+			this.backgroundMusic.stop();
 		}
 	},
 	

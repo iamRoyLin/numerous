@@ -36,5 +36,3 @@ var LoaderUtil = new Class ({
 	
 });
 
-
-var loaderUtil = new LoaderUtil();

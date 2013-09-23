@@ -172,7 +172,7 @@ GroupingGame3Controller.prototype.initialize = function() {
 	
 	var title = mathUtil.convertNumberToWord(this.goalNumber);
 	
-	if(Storage.get("settingMusic") == true){
+	if(storage.get("settingMusic") == true){
 		music.stopBackgroundMusic();
 		music.playBackgroundMusic(this.sounds.background);
 	}
@@ -188,7 +188,7 @@ GroupingGame3Controller.prototype.initialize = function() {
 	this.view.drawTitle(title);	
 	
 	app.stage.draw();
-	SoundUtil.sayNumber(this.goalNumber);
+	speechUtil.sayNumber(this.goalNumber);
 };
 
 // destructor

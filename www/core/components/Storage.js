@@ -1,19 +1,18 @@
-var Storage = new function () {
+var Storage = new Class ({
 
-	this.set = function(key, value) {
+	set: function(key, value) {
 		$.jStorage.set(key, value);
-	};
+	},
 	
-	this.get = function(key, defaultValue) {
+	get: function(key, defaultValue) {
 		if ($.jStorage.get(key, null) == null) {
 			$.jStorage.set(key, defaultValue);
 		}
 		return $.jStorage.get(key);
-	};
+	},
 	
-	this.deleteKey = function(key) {
+	deleteKey: function(key) {
 		$.jStorage.deleteKey(key);
-	};
+	},
 	
-}
-
+});

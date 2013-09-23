@@ -127,4 +127,3 @@ var AdditionGameHelper = new Class ({
 	
 });
 
-var additionGameHelper = new AdditionGameHelper();

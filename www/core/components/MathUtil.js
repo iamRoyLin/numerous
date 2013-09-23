@@ -123,7 +123,3 @@ var MathUtil = new Class ({
 	},
 	
 });
-
-var mathUtil = new MathUtil();
-
-

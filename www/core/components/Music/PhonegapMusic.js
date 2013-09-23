@@ -5,7 +5,7 @@ var PhonegapMusic = new Class ({
 		
 	// call this function to play a sound
 	play: function (src) {
-		if(Storage.get("settingSound", true) == true){
+		if(storage.get("settingSound", true) == true){
 			var myMedia = new Media(src);
 			myMedia.play({ playAudioWhenScreenIsLocked: false });
 		}
@@ -18,7 +18,7 @@ var PhonegapMusic = new Class ({
 	},
 
 	playBackgroundMusic: function (src) {
-		if(Storage.get("settingMusic", true) == true){
+		if(storage.get("settingMusic", true) == true){
 			if(this.isPlaying == false){
 				this.backgroundMusic = new Media(
 					src,

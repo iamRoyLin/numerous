@@ -26,5 +26,3 @@ var KeyboardTextsGenerator = new Class ({
 	
 });
 
-var keyboardTextsGenerator = new KeyboardTextsGenerator();
-

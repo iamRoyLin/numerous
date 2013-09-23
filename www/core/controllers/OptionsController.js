@@ -31,9 +31,9 @@ OptionsController.prototype.initialize = function () {
 	//______________________________________________________________
 	//FOLLOWING THREE VARIABLES SHOULD BE RECORDED IN DATABASE
 	//______________________________________________________________
-	//app.view.soundOn = Storage.get("settingSound", true);
-	//app.view.musicOn = Storage.get("settingMusic", true);
-	//app.view.levelLocked = Storage.get("lockLevel", false);;
+	//app.view.soundOn = storage.get("settingSound", true);
+	//app.view.musicOn = storage.get("settingMusic", true);
+	//app.view.levelLocked = storage.get("lockLevel", false);;
 	
 	//dimensions
 	app.view.viewVars = {};

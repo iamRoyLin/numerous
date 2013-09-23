@@ -85,18 +85,18 @@ App.prototype.initialize = function () {
 		{name:"Practice", page:"Practice3"}
 	];
 	
-	app.page = Storage.get("page", "Home");
-	app.pageParams = Storage.get("pageParams", null);
+	app.page = storage.get("page", "Home");
+	app.pageParams = storage.get("pageParams", null);
 	
-	app.currentUnit = Storage.get("currentUnit", 0);
-	app.currentGame = Storage.get("currentGame", 0);
+	app.currentUnit = storage.get("currentUnit", 0);
+	app.currentGame = storage.get("currentGame", 0);
 	
 	app.route(app.page, app.pageParams);
 };
 
 App.prototype.route = function(page, pageParams, shouldReload) {
-	Storage.set("page", page);
-	Storage.set("pageParams", pageParams);
+	storage.set("page", page);
+	storage.set("pageParams", pageParams);
 	
 	if (this.controller != null) {
 		if (shouldReload) {
@@ -141,7 +141,7 @@ App.prototype.nextGame = function () {
 		return false;
 	} else {
 		app.currentGame++;
-		Storage.set("currentGame", app.currentGame);
+		storage.set("currentGame", app.currentGame);
 		return true;
 	}
 };
@@ -154,11 +154,11 @@ App.prototype.getCurrentPageParams = function () {
 
 App.prototype.setCurrentGame = function (gameName) {
 	this.currentGame = gameName;
-	Storage.set("currentGame", gameName);
+	storage.set("currentGame", gameName);
 }
 App.prototype.setCurrentUnit = function (unitNumber) {
 	this.currentUnit = unitNumber;
-	Storage.set("currentUnit", unitNumber);
+	storage.set("currentUnit", unitNumber);
 }
 
 

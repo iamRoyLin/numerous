@@ -60,12 +60,12 @@ OptionsView.prototype.drawSoundButtons = function() {
 	musicCross.hide();
 	
 	//check whether hide the cross
-	if ( Storage.get("settingSound", true) == true) {
+	if ( storage.get("settingSound", true) == true) {
 			soundCross.hide();
 		} else {
 			soundCross.show();
 	}
-	if ( Storage.get("settingMusic", true) == true) {
+	if ( storage.get("settingMusic", true) == true) {
 			musicCross.hide();
 		} else {
 			musicCross.show();
@@ -74,14 +74,14 @@ OptionsView.prototype.drawSoundButtons = function() {
 	//check turn on/off sound/music
 	sound.on('click tap', function () {
 		music.play(app.view.sounds.select);
-		if ( Storage.get("settingSound", true) == true) {
+		if ( storage.get("settingSound", true) == true) {
 			//turn off the sound
 			soundCross.show();
-			Storage.set("settingSound", false);
+			storage.set("settingSound", false);
 		} else {
 			//turn on the sound
 			soundCross.hide();
-			Storage.set("settingSound", true);
+			storage.set("settingSound", true);
 		}
 		app.stage.draw();	
 			
@@ -89,15 +89,15 @@ OptionsView.prototype.drawSoundButtons = function() {
 	
 	music.on('click tap', function () {
 		music.play(app.view.sounds.select);
-		if ( Storage.get("settingMusic", true) == true) {
+		if ( storage.get("settingMusic", true) == true) {
 			//turn off the sound
 			musicCross.show();
-			Storage.set("settingMusic", false);
+			storage.set("settingMusic", false);
 			music.stopBackgroundMusic();
 		} else {
 			//turn on the sound
 			musicCross.hide();
-			Storage.set("settingMusic", true);
+			storage.set("settingMusic", true);
 			music.playBackgroundMusic(app.view.sounds.background);
 		}
 		app.stage.draw();	
@@ -148,7 +148,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	});
 	app.layer.add(iconLock);
 	
-	if (Storage.get("lockLevel", true) == true){
+	if (storage.get("lockLevel", true) == true){
 		buttonLock.hide();
 		buttonUnlock.show();
 		iconLock.show();
@@ -162,7 +162,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	buttonLock.on('click tap', function () {
 		music.play(app.view.sounds.select);
 		//lock levels
-		Storage.set("lockLevel", true);
+		storage.set("lockLevel", true);
 		buttonUnlock.show();
 		iconLock.show();
 		buttonLock.hide();
@@ -172,7 +172,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	buttonUnlock.on('click tap', function () {
 		music.play(app.view.sounds.select);
 		//unlock levels
-		Storage.set("lockLevel", false);
+		storage.set("lockLevel", false);
 		buttonLock.show();
 		iconLock.hide();
 		buttonUnlock.hide();
@@ -192,7 +192,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 		music.play(app.view.sounds.select);
 		//do something
 		for(var i =0; i < app.UNIT_GAMES.length; i++) {
-			Storage.deleteKey("unit" + i + "Stars");
+			storage.deleteKey("unit" + i + "Stars");
 		}
 	});
 	

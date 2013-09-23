@@ -147,7 +147,7 @@ GroupingGame2Controller.prototype.initialize = function() {
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = true;
 	
-	if(Storage.get("settingMusic") == true){
+	if(storage.get("settingMusic") == true){
 		music.stopBackgroundMusic();
 		music.playBackgroundMusic(this.sounds.background);
 	}
@@ -167,7 +167,7 @@ GroupingGame2Controller.prototype.initialize = function() {
 	this.view.drawTitle(title);	
 	
 	app.stage.draw();
-	SoundUtil.sayNumber(this.goalNumber);
+	speechUtil.sayNumber(this.goalNumber);
 };
 
 // destructor

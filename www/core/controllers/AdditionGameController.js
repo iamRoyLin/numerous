@@ -204,7 +204,7 @@ AdditionGameController.prototype.initialize = function() {
 	//var title = mathUtil.convertNumberToWord(this.goalNumber);
 	var title = this.goalNumber + " + " + this.goalNumber2 + " = ?";
 	
-	if(Storage.get("settingMusic") == true){
+	if(storage.get("settingMusic") == true){
 		music.stopBackgroundMusic();
 		music.playBackgroundMusic(this.sounds.background);
 	}

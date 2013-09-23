@@ -1,23 +1,33 @@
-function UnitRecordsModel(unitNumber) {
+var UnitRecordsModel = new Class ({
 
 	// key for accessing storage
-	this.keyName = "unit" + unitNumber + "Stars";
+	keyName: null,
 
 	// variable for storing default stars data structure if not set already
-	var defaultStars = [];
-	for(var i = 0; i < app.UNIT_GAMES[unitNumber].length; i++) defaultStars[i] = 0;
+	defaultStars: [],
 	
-	// get the stars from the database
-	this.starsEarned = Storage.get(this.keyName, defaultStars);
+	starsEarned: [],
 	
+	initialize: function (unitNumber) {
+		this.unitNumber = unitNumber;
+		this.keyName = "unit" + this.unitNumber + "Stars";
 	
-	this.getStars = function(gameNumber) {
-		this.starsEarned = Storage.get(this.keyName, defaultStars);
+		for(var i = 0; i < app.UNIT_GAMES[this.unitNumber].length; i++) {
+			this.defaultStars[i] = 0;
+		}
+		
+		// get the stars from the database
+		this.starsEarned = storage.get(this.keyName, this.defaultStars);
+	},
+	
+	getStars: function(gameNumber) {
+		this.starsEarned = storage.get(this.keyName, this.defaultStars);
 		return this.starsEarned[gameNumber];
-	};
+	},
 	
-	this.setStars = function(gameNumber, starsCount) {
+	setStars: function(gameNumber, starsCount) {
 		this.starsEarned[gameNumber] = starsCount;
-		Storage.set(this.keyName, this.starsEarned);
-	};
-};
+		storage.set(this.keyName, this.starsEarned);
+	},
+
+});

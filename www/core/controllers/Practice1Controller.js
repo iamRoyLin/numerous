@@ -125,7 +125,7 @@ Practice1Controller.prototype.initialize = function () {
 	this.view.setImages(this.images);
 	this.view.setSounds(this.sounds);
 	
-	if(Storage.get("settingMusic") == true){
+	if(storage.get("settingMusic") == true){
 		music.stopBackgroundMusic();
 		music.playBackgroundMusic(this.sounds.background);
 	}

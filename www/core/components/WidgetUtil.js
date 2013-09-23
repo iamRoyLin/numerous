@@ -104,4 +104,3 @@ var WidgetUtil = new Class ({
 	
 });
 
-var widgetUtil = new WidgetUtil();
