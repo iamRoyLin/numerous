@@ -1,4 +1,4 @@
-var BrowserMusic = Class ({
+var BrowserMusic = new Class ({
 	Implements: Music,
 	
 	isPlaying: false,

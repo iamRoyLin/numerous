@@ -1,4 +1,5 @@
 var PhonegapMusic = new Class ({
+	Implements: Music,
 	
 	isPlaying: false,
 	
