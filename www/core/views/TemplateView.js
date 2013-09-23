@@ -1,11 +1,14 @@
-function TemplateView(controller) {
-	this.controller = controller;
-};
-// Simulate inheritance
-TemplateView.prototype = new View();
+var TemplateView = new Class ({
+	Extends: View,
 
-// destructor (is automatically called when you leave the page)
-TemplateView.prototype.finalize = function() {
+	initialize: function(controller) {
+		this.controller = controller;
+	},
+	
+	// destructor (is automatically called when you leave the page)
+	finalize: function() {
+	
+	},
 
-};
+});
 
