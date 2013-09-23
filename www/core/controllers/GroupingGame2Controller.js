@@ -148,12 +148,12 @@ GroupingGame2Controller.prototype.initialize = function() {
 	app.view.viewVars.usePacks = true;
 	
 	if(Storage.get("settingMusic") == true){
-		Music.stopBackgroundMusic();
-		Music.playBackgroundMusic(this.sounds.background);
+		music.stopBackgroundMusic();
+		music.playBackgroundMusic(this.sounds.background);
 	}
 	
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-	var title = MathUtil.convertNumberToWord(this.goalNumber);
+	var title = mathUtil.convertNumberToWord(this.goalNumber);
 	
 	this.view.drawRabbit();
 	this.view.drawThinkCloud();

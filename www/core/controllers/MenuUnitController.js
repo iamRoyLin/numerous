@@ -27,7 +27,7 @@ MenuUnitController.prototype.initialize = function () {
 	this.view.setImages(this.images);
 	this.view.setSounds(this.sounds);
 	
-	Music.playBackgroundMusic(this.sounds.background);
+	music.playBackgroundMusic(this.sounds.background);
 	this.view.drawTitle();
 	this.view.drawButtonBack();
 	this.view.drawBoxes(this.unitRecordsModel);

@@ -62,7 +62,7 @@ AdditionGameController.prototype.initialize = function() {
 	
 	
 	// currentGame veriable may be directly converted into difficulty
-	var q = AdditionGameHelper.generateQuestion(app.currentGame);
+	var q = additionGameHelper.generateQuestion(app.currentGame);
 	this.goalNumber = q.left;
 	this.goalNumber2 = q.right;
 	
@@ -201,12 +201,12 @@ AdditionGameController.prototype.initialize = function() {
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = true;
 	
-	//var title = MathUtil.convertNumberToWord(this.goalNumber);
+	//var title = mathUtil.convertNumberToWord(this.goalNumber);
 	var title = this.goalNumber + " + " + this.goalNumber2 + " = ?";
 	
 	if(Storage.get("settingMusic") == true){
-		Music.stopBackgroundMusic();
-		Music.playBackgroundMusic(this.sounds.background);
+		music.stopBackgroundMusic();
+		music.playBackgroundMusic(this.sounds.background);
 	}
 	
 	this.view.initialize();

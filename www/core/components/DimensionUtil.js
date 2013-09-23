@@ -1,21 +1,26 @@
-var DimensionUtil = new function () {
-	this.width = Env.width;
-	this.height = Env.height;
+var DimensionUtil = new Class ({
 
+	width: Env.width,
+	
+	height: Env.height,
 
-	this.decimalToActualHeight = function (h) {
+	decimalToActualHeight: function (h) {
 		return h * this.height;
-	}
-	this.actualToDecimalHeight = function(h) {
+	},
+	
+	actualToDecimalHeight: function(h) {
 		return h / this.height;
-	}
+	},
 	
-	this.decimalToActualWidth = function (w) {
+	decimalToActualWidth: function (w) {
 		return w * this.width;
-	}
-	this.actualToDecimalWidth = function(w) {
-		return w / this.width;
-	}
+	},
 	
-}
+	actualToDecimalWidth: function(w) {
+		return w / this.width;
+	},
+	
+});
+
+var dimensionUtil = new DimensionUtil();
 

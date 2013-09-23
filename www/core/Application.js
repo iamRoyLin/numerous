@@ -128,7 +128,7 @@ App.prototype.route = function(page, pageParams, shouldReload) {
 	eval("this.controller = new " + app.page + "Controller(app.view, app.pageParams);");
 	
 	// loads all images
-	LoaderUtil.load(this.controller.images, this._loaded);
+	loaderUtil.load(this.controller.images, this._loaded);
 };
 
 App.prototype._loaded = function() {
@@ -201,10 +201,10 @@ if (Env.phoneGap) {
 
 document.addEventListener("pause", function () {
 	navigator.splashscreen.show();
-	Music.pauseBackgroundMusic();
+	music.pauseBackgroundMusic();
 }, false);
 
 document.addEventListener("resume", function () {
 	navigator.splashscreen.hide();
-	Music.resumeBackgroundMusic();
+	music.resumeBackgroundMusic();
 }, false);

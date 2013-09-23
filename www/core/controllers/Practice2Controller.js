@@ -74,8 +74,8 @@ Practice2Controller.prototype.initialize = function () {
 	this.view.setSounds(this.sounds);
 	
 	if(Storage.get("settingMusic") == true){
-		Music.stopBackgroundMusic();
-		Music.playBackgroundMusic(this.sounds.background);
+		music.stopBackgroundMusic();
+		music.playBackgroundMusic(this.sounds.background);
 	}
 	
 	this.view.drawBlackBoard();
@@ -136,16 +136,16 @@ Practice2Controller.prototype.pickQuestions = function() {
 		list.push(i);
 	}
 	
-	list = ArrayUtil.shuffleArray(list);
+	list = arrayUtil.shuffleArray(list);
 	
 	// first set
 	for(var questionNumber = 0; questionNumber < 12; questionNumber++) {
 		var num = list.pop();
-		var ones = MathUtil.getOnes(num);
-		var tens = MathUtil.getTens(num);
-		var onesWord = MathUtil.convertNumberToWord(ones);
-		var tensWord = MathUtil.convertNumberToWord(tens);
-		var word = MathUtil.convertNumberToWord(num);
+		var ones = mathUtil.getOnes(num);
+		var tens = mathUtil.getTens(num);
+		var onesWord = mathUtil.convertNumberToWord(ones);
+		var tensWord = mathUtil.convertNumberToWord(tens);
+		var word = mathUtil.convertNumberToWord(num);
 		var gameQuestion = {};
 		
 		switch (questionNumber) {
@@ -153,41 +153,41 @@ Practice2Controller.prototype.pickQuestions = function() {
 			case 1:
 				// set 1
 				gameQuestion.questionText = word + " is the same as ___ tens and " + onesWord + " ones.";
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], tensWord, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(this.keyboardTexts[0], tensWord, 9);
 				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(tensWord);
 			break;
 			case 2:
 			case 3:
 				// set 2
 				gameQuestion.questionText = word + " is the same as " + tensWord + " tens and ___ ones.";
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], onesWord, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(this.keyboardTexts[0], onesWord, 9);
 				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(onesWord);
 			break;
 			case 4:
 			case 5:
 				// set 3
 				gameQuestion.questionText = tensWord + " tens and " + onesWord + " ones is the same as ___";
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[1], word, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(this.keyboardTexts[1], word, 9);
 				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(word);
 			break;
 			case 6:
 			case 7:
 				// set 4
 				gameQuestion.questionText = tensWord + " tens and " + onesWord + " ones is the same as ___";
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[2], num.toString(), 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(this.keyboardTexts[2], num.toString(), 9);
 				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(num.toString());
 			break;
 			case 8:
 			case 9:
 				// set 5
 				gameQuestion.questionText = num.toString() + " is the same as ___ tens and " + onesWord + " ones";
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], tensWord, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(this.keyboardTexts[0], tensWord, 9);
 				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(tensWord);
 			break;
 			case 10:
 			case 11:
 				gameQuestion.questionText = num.toString() + " is the same as " + tensWord + " tens and ___ ones";
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(this.keyboardTexts[0], onesWord, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(this.keyboardTexts[0], onesWord, 9);
 				gameQuestion.correctAnswerId = gameQuestion.keyboardTexts.indexOf(onesWord);
 			break;
 		};
@@ -219,7 +219,7 @@ Practice2Controller.prototype.createKeyboardTexts = function() {
 	var wordList = [];
 	for(var i = 21; i < 100; i++) {
 		numberList.push(i.toString());
-		wordList.push(MathUtil.convertNumberToWord(i));
+		wordList.push(mathUtil.convertNumberToWord(i));
 	}
 	
 	output.push(wordList);

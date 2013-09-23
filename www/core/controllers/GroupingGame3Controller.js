@@ -165,16 +165,16 @@ GroupingGame3Controller.prototype.initialize = function() {
 		app.groupingGame3RestartNumber = null;
 	} else {
 		this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-		this.goalNumber += MathUtil.random(0,9);
+		this.goalNumber += mathUtil.random(0,9);
 	}
 	
 
 	
-	var title = MathUtil.convertNumberToWord(this.goalNumber);
+	var title = mathUtil.convertNumberToWord(this.goalNumber);
 	
 	if(Storage.get("settingMusic") == true){
-		Music.stopBackgroundMusic();
-		Music.playBackgroundMusic(this.sounds.background);
+		music.stopBackgroundMusic();
+		music.playBackgroundMusic(this.sounds.background);
 	}
 
 	this.view.drawBelts();

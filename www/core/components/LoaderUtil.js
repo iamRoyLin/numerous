@@ -1,7 +1,7 @@
-var LoaderUtil = new function () {
+var LoaderUtil = new Class ({
 
 	// loads images
-	this.load = function(images, callback) {
+	load: function(images, callback) {
 		var loader = new PxLoader();
 	
 		for(var key in images) {
@@ -18,10 +18,10 @@ var LoaderUtil = new function () {
 		
 		loader.addCompletionListener(callback);
 		loader.start();	
-	};
+	},
 
 	// unloads images
-	this.unload = function(images) {
+	unload: function(images) {
 		for(var key in images) {
 		
 			if (images[key] instanceof Array) {
@@ -32,8 +32,9 @@ var LoaderUtil = new function () {
 				delete images[key];
 			}
 		}
-	};
+	},
 	
-}
+});
 
 
+var loaderUtil = new LoaderUtil();

@@ -11,7 +11,7 @@ OptionsView.prototype.finalize = function() {
 
 OptionsView.prototype.drawTitle = function() {
 	var title = new Kinetic.Image({image: this.images.titleOptions});
-	WidgetUtil.glue(title, {
+	widgetUtil.glue(title, {
 		width: this.viewVars.titleDimensions.width,
 		height: this.viewVars.titleDimensions.height,
 		dx: this.viewVars.titleDimensions.x,
@@ -22,7 +22,7 @@ OptionsView.prototype.drawTitle = function() {
 
 OptionsView.prototype.drawSoundButtons = function() {
 	var sound = new Kinetic.Image({image: this.images.iconSound});
-	WidgetUtil.glue(sound, {
+	widgetUtil.glue(sound, {
 		width: this.viewVars.iconSoundDimensions.width,
 		height: this.viewVars.iconSoundDimensions.height,
 		dx: this.viewVars.iconSoundDimensions.x,
@@ -31,7 +31,7 @@ OptionsView.prototype.drawSoundButtons = function() {
 	app.layer.add(sound);
 	
 	var soundCross = new Kinetic.Image({image: this.images.iconCross});
-	WidgetUtil.glue(soundCross, {
+	widgetUtil.glue(soundCross, {
 		width: this.viewVars.iconSoundCrossDimensions.width,
 		height: this.viewVars.iconSoundCrossDimensions.height,
 		dx: this.viewVars.iconSoundCrossDimensions.x,
@@ -41,7 +41,7 @@ OptionsView.prototype.drawSoundButtons = function() {
 	soundCross.hide();
 	
 	var music = new Kinetic.Image({image: this.images.iconMusic});
-	WidgetUtil.glue(music, {
+	widgetUtil.glue(music, {
 		width: this.viewVars.iconMusicDimensions.width,
 		height: this.viewVars.iconMusicDimensions.height,
 		dx: this.viewVars.iconMusicDimensions.x,
@@ -50,7 +50,7 @@ OptionsView.prototype.drawSoundButtons = function() {
 	app.layer.add(music);
 	
 	var musicCross = new Kinetic.Image({image: this.images.iconCross});
-	WidgetUtil.glue(musicCross, {
+	widgetUtil.glue(musicCross, {
 		width: this.viewVars.iconMusicCrossDimensions.width,
 		height: this.viewVars.iconMusicCrossDimensions.height,
 		dx: this.viewVars.iconMusicCrossDimensions.x,
@@ -73,7 +73,7 @@ OptionsView.prototype.drawSoundButtons = function() {
 	
 	//check turn on/off sound/music
 	sound.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		if ( Storage.get("settingSound", true) == true) {
 			//turn off the sound
 			soundCross.show();
@@ -88,17 +88,17 @@ OptionsView.prototype.drawSoundButtons = function() {
 	});
 	
 	music.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		if ( Storage.get("settingMusic", true) == true) {
 			//turn off the sound
 			musicCross.show();
 			Storage.set("settingMusic", false);
-			Music.stopBackgroundMusic();
+			music.stopBackgroundMusic();
 		} else {
 			//turn on the sound
 			musicCross.hide();
 			Storage.set("settingMusic", true);
-			Music.playBackgroundMusic(app.view.sounds.background);
+			music.playBackgroundMusic(app.view.sounds.background);
 		}
 		app.stage.draw();	
 			
@@ -107,7 +107,7 @@ OptionsView.prototype.drawSoundButtons = function() {
 
 OptionsView.prototype.drawOptionsButtons = function() {
 	var buttonStatistics = new Kinetic.Image({image: this.images.buttonStatistics});
-	WidgetUtil.glue(buttonStatistics, {
+	widgetUtil.glue(buttonStatistics, {
 		width: this.viewVars.buttonStatisticsDimensions.width,
 		height: this.viewVars.buttonStatisticsDimensions.height,
 		dx: this.viewVars.buttonStatisticsDimensions.x,
@@ -116,13 +116,13 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	app.layer.add(buttonStatistics);
 	
 	buttonStatistics.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		//do something
 			
 	});
 	
 	var buttonLock = new Kinetic.Image({image: this.images.buttonLock});
-	WidgetUtil.glue(buttonLock, {
+	widgetUtil.glue(buttonLock, {
 		width: this.viewVars.buttonLockDimensions.width,
 		height: this.viewVars.buttonLockDimensions.height,
 		dx: this.viewVars.buttonLockDimensions.x,
@@ -131,7 +131,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	app.layer.add(buttonLock);
 	
 	var buttonUnlock = new Kinetic.Image({image: this.images.buttonUnlock});
-	WidgetUtil.glue(buttonUnlock, {
+	widgetUtil.glue(buttonUnlock, {
 		width: this.viewVars.buttonUnlockDimensions.width,
 		height: this.viewVars.buttonUnlockDimensions.height,
 		dx: this.viewVars.buttonUnlockDimensions.x,
@@ -140,7 +140,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	app.layer.add(buttonUnlock);
 	
 	var iconLock = new Kinetic.Image({image: this.images.iconLock});
-	WidgetUtil.glue(iconLock, {
+	widgetUtil.glue(iconLock, {
 		width: this.viewVars.iconLockDimensions.width,
 		height: this.viewVars.iconLockDimensions.height,
 		dx: this.viewVars.iconLockDimensions.x,
@@ -160,7 +160,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	}
 	
 	buttonLock.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		//lock levels
 		Storage.set("lockLevel", true);
 		buttonUnlock.show();
@@ -170,7 +170,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	});
 	
 	buttonUnlock.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		//unlock levels
 		Storage.set("lockLevel", false);
 		buttonLock.show();
@@ -180,7 +180,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	});
 	
 	var buttonReset = new Kinetic.Image({image: this.images.buttonReset});
-	WidgetUtil.glue(buttonReset, {
+	widgetUtil.glue(buttonReset, {
 		width: this.viewVars.buttonResetDimensions.width,
 		height: this.viewVars.buttonResetDimensions.height,
 		dx: this.viewVars.buttonResetDimensions.x,
@@ -189,7 +189,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	app.layer.add(buttonReset);
 	
 	buttonReset.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		//do something
 		for(var i =0; i < app.UNIT_GAMES.length; i++) {
 			Storage.deleteKey("unit" + i + "Stars");
@@ -197,7 +197,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	});
 	
 	var buttonAbout = new Kinetic.Image({image: this.images.buttonAbout});
-	WidgetUtil.glue(buttonAbout, {
+	widgetUtil.glue(buttonAbout, {
 		width: this.viewVars.buttonAboutDimensions.width,
 		height: this.viewVars.buttonAboutDimensions.height,
 		dx: this.viewVars.buttonAboutDimensions.x,
@@ -206,7 +206,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 	app.layer.add(buttonAbout);
 	
 	buttonAbout.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		//do something
 			
 	});
@@ -215,7 +215,7 @@ OptionsView.prototype.drawOptionsButtons = function() {
 
 OptionsView.prototype.drawTitle = function() {
 	var title = new Kinetic.Image({image: this.images.titleOptions});
-	WidgetUtil.glue(title, {
+	widgetUtil.glue(title, {
 		width: this.viewVars.titleDimensions.width,
 		height: this.viewVars.titleDimensions.height,
 		dx: this.viewVars.titleDimensions.x,
@@ -226,7 +226,7 @@ OptionsView.prototype.drawTitle = function() {
 
 OptionsView.prototype.drawHomeButton = function() {
 	var buttonHome = new Kinetic.Image({image: this.images.buttonHome});
-	WidgetUtil.glue(buttonHome, {
+	widgetUtil.glue(buttonHome, {
 		width: this.viewVars.homeButtonDimensions.width,
 		height: this.viewVars.homeButtonDimensions.height,
 		dx: this.viewVars.homeButtonDimensions.x,
@@ -235,7 +235,7 @@ OptionsView.prototype.drawHomeButton = function() {
 	app.layer.add(buttonHome);
 	
 	buttonHome.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.home()
 	});
 }

@@ -15,7 +15,7 @@ PracticeView.prototype.finalize = function() {
 // draw rabbit
 PracticeView.prototype.drawRabbit = function() {
 	var body = new Kinetic.Image({image: this.images.rabbitBody});
-	WidgetUtil.glue(body, {
+	widgetUtil.glue(body, {
 		width: 0.36,
 		height: 0.664,
 		dx: 0.05,
@@ -24,7 +24,7 @@ PracticeView.prototype.drawRabbit = function() {
 	app.layer.add(body);
 	
 	var head = new Kinetic.Image({image: this.images.rabbitHead});
-	WidgetUtil.glue(head, {
+	widgetUtil.glue(head, {
 		width: 0.36,
 		height: 0.664,
 		dx: 0.05,
@@ -36,7 +36,7 @@ PracticeView.prototype.drawRabbit = function() {
 // draw black board
 PracticeView.prototype.drawBlackBoard = function() {
 	var board = new Kinetic.Image({image: this.images.blackBoard});
-	WidgetUtil.glue(board, {
+	widgetUtil.glue(board, {
 		width: 0.82,
 		height: 0.42,
 		dx: 0.17,
@@ -48,7 +48,7 @@ PracticeView.prototype.drawBlackBoard = function() {
 
 PracticeView.prototype.drawButtonNextBig = function() {
 	this.buttonNextBig = new Kinetic.Image({image: this.images.buttonNextBig});
-	WidgetUtil.glue(this.buttonNextBig, {
+	widgetUtil.glue(this.buttonNextBig, {
 		width: 0.4,
 		height: 0.43,
 		dx: 0.47,
@@ -63,7 +63,7 @@ PracticeView.prototype.drawButtonNextBig = function() {
 		}	
 	
 	
-		Music.play(app.view.sounds.next);
+		music.play(app.view.sounds.next);
 		if (!app.controller.keyboardEnabled) {
 			return;
 		}
@@ -93,10 +93,10 @@ PracticeView.prototype.drawButtonNextBig = function() {
 PracticeView.prototype.drawQuestion = function() {
 
 	this.questionNumberTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.83),
-		y: DimensionUtil.decimalToActualHeight(0.08),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
+		x: dimensionUtil.decimalToActualWidth(0.83),
+		y: dimensionUtil.decimalToActualHeight(0.08),
+		scaleX: 1/1024*dimensionUtil.width,
+		scaleY: 1/768*dimensionUtil.height,
 		fontSize: 30,
 		fontFamily: 'mainFont',
 		fill: 'white',
@@ -105,11 +105,11 @@ PracticeView.prototype.drawQuestion = function() {
 	app.layer.add(this.questionNumberTextWidget);
 	
 	this.questionTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.25),
-		y: DimensionUtil.decimalToActualHeight(0.13),
-		width: DimensionUtil.decimalToActualWidth(0.67 / (1/1024*DimensionUtil.width)),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
+		x: dimensionUtil.decimalToActualWidth(0.25),
+		y: dimensionUtil.decimalToActualHeight(0.13),
+		width: dimensionUtil.decimalToActualWidth(0.67 / (1/1024*dimensionUtil.width)),
+		scaleX: 1/1024*dimensionUtil.width,
+		scaleY: 1/768*dimensionUtil.height,
 		fontSize: 45,
 		fontFamily: 'mainFont',
 		fill: 'white',
@@ -121,8 +121,8 @@ PracticeView.prototype.drawQuestion = function() {
 	
 	this.placeHolderEgg = new Kinetic.Image({
 		image: this.images.placeHolderEgg,
-		width: DimensionUtil.decimalToActualWidth(0.18),
-		height: DimensionUtil.decimalToActualHeight(0.22)
+		width: dimensionUtil.decimalToActualWidth(0.18),
+		height: dimensionUtil.decimalToActualHeight(0.22)
 	});
 	app.layer.add(this.placeHolderEgg);
 	this.placeHolderEgg.hide();
@@ -130,7 +130,7 @@ PracticeView.prototype.drawQuestion = function() {
 	if (Env.debug) {
 		this.placeHolderEgg.setDraggable(true);
 		this.placeHolderEgg.on('dragend touchend', function () {
-			console.log("placeholder egg at x:" + DimensionUtil.actualToDecimalWidth(this.getX()) + " y:" + DimensionUtil.actualToDecimalHeight(this.getY()));
+			console.log("placeholder egg at x:" + dimensionUtil.actualToDecimalWidth(this.getX()) + " y:" + dimensionUtil.actualToDecimalHeight(this.getY()));
 		});
 	}
 };
@@ -156,17 +156,17 @@ PracticeView.prototype.appendTextToBoard = function(newText) {
 	
 	// need to calc width/height AFTER creation
 	// set width and check for newline
-	var width = DimensionUtil.actualToDecimalWidth(textWidget.getWidth());
+	var width = dimensionUtil.actualToDecimalWidth(textWidget.getWidth());
 	if (this.board.accumLineWidth + width > this.board.maxLineWidth) {
 		this.board.verticalAlign += this.board.lineHeight;
 		this.board.accumLineWidth = this.board.leftMargin;
 	}
 	// set X
-	textWidget.setX(DimensionUtil.decimalToActualWidth(this.board.accumLineWidth));
+	textWidget.setX(dimensionUtil.decimalToActualWidth(this.board.accumLineWidth));
 	this.board.accumLineWidth += width;
 	
 	// set Y
-	textWidget.setY(DimensionUtil.decimalToActualHeight(this.board.verticalAlign) - textWidget.getHeight() / 2);
+	textWidget.setY(dimensionUtil.decimalToActualHeight(this.board.verticalAlign) - textWidget.getHeight() / 2);
 	app.layer.add(textWidget);
 	app.stage.draw();
 }
@@ -174,16 +174,16 @@ PracticeView.prototype.appendTextToBoard = function(newText) {
 PracticeView.prototype.appendPlaceHolderEggToBoard = function () {
 	// need to calc width/height AFTER creation
 	// set width and check for newline
-	var width = DimensionUtil.actualToDecimalWidth(this.placeHolderEgg.getWidth());
+	var width = dimensionUtil.actualToDecimalWidth(this.placeHolderEgg.getWidth());
 	if (this.board.accumLineWidth + width > this.board.maxLineWidth) {
 	this.board.verticalAlign += this.board.lineHeight;
 	this.board.accumLineWidth = this.board.leftMargin;
 	}
 	// set X
-	this.placeHolderEgg.setX(DimensionUtil.decimalToActualWidth(this.board.accumLineWidth));
+	this.placeHolderEgg.setX(dimensionUtil.decimalToActualWidth(this.board.accumLineWidth));
 	this.board.accumLineWidth += width;
 	// set Y
-	this.placeHolderEgg.setY(DimensionUtil.decimalToActualHeight(this.board.verticalAlign) - this.placeHolderEgg.getHeight() / 2);
+	this.placeHolderEgg.setY(dimensionUtil.decimalToActualHeight(this.board.verticalAlign) - this.placeHolderEgg.getHeight() / 2);
 	this.placeHolderEgg.moveToTop();
 	this.placeHolderEgg.show();
 };
@@ -244,26 +244,26 @@ PracticeView.prototype.drawKeyboard = function() {
 		
 		// group
 		this.keyboard.groups[groupNumber] = new Kinetic.Group({
-			x: DimensionUtil.decimalToActualWidth(x),
-			y: DimensionUtil.decimalToActualHeight(y),
+			x: dimensionUtil.decimalToActualWidth(x),
+			y: dimensionUtil.decimalToActualHeight(y),
 		});
 		app.layer.add(this.keyboard.groups[groupNumber]);
 
 		// keyboard button
 		this.keyboard.buttons[groupNumber] = new Kinetic.Image({
 			image: this.images.eggs[groupNumber],
-			width: DimensionUtil.decimalToActualWidth(0.18),
-			height: DimensionUtil.decimalToActualHeight(0.22)
+			width: dimensionUtil.decimalToActualWidth(0.18),
+			height: dimensionUtil.decimalToActualHeight(0.22)
 		});
 		this.keyboard.groups[groupNumber].add(this.keyboard.buttons[groupNumber]);
 		
 		// keyboard button text
 		this.keyboard.texts[groupNumber] = new Kinetic.Text({
-			x: DimensionUtil.decimalToActualWidth(0.01),
-			y: DimensionUtil.decimalToActualHeight(0.1),
-			width: DimensionUtil.decimalToActualWidth(0.15 / (1/1024*DimensionUtil.width)),
-			scaleX: 1/1024*DimensionUtil.width,
-			scaleY: 1/768*DimensionUtil.height,
+			x: dimensionUtil.decimalToActualWidth(0.01),
+			y: dimensionUtil.decimalToActualHeight(0.1),
+			width: dimensionUtil.decimalToActualWidth(0.15 / (1/1024*dimensionUtil.width)),
+			scaleX: 1/1024*dimensionUtil.width,
+			scaleY: 1/768*dimensionUtil.height,
 			fontSize: 25,
 			fontFamily: 'mainFont',
 			fill: 'black',
@@ -288,8 +288,8 @@ PracticeView.prototype.changeKeyboard = function(keyboardTexts) {
 		this.keyboard.groups[i].setOpacity(1);
 		
 		// set their location in case they were moved
-		this.keyboard.groups[i].setX(DimensionUtil.decimalToActualWidth(this.keyboard.xPositions[i]));
-		this.keyboard.groups[i].setY(DimensionUtil.decimalToActualHeight(this.keyboard.yPositions[i]));
+		this.keyboard.groups[i].setX(dimensionUtil.decimalToActualWidth(this.keyboard.xPositions[i]));
+		this.keyboard.groups[i].setY(dimensionUtil.decimalToActualHeight(this.keyboard.yPositions[i]));
 		
 		// set the text of the keyboard
 		this.keyboard.texts[i].setText(keyboardTexts[i]);
@@ -302,10 +302,10 @@ PracticeView.prototype.keyboardClick = function(keyboardGroup) {
 	keyboardGroup.moveToTop();
 
 	if (keyboardGroup.id == this.correctAnswerId) {
-		Music.play(app.view.sounds.acceptEgg);
+		music.play(app.view.sounds.acceptEgg);
 		this.answeredRight(keyboardGroup.id);
 	} else {
-		Music.play(app.view.sounds.declineEgg);
+		music.play(app.view.sounds.declineEgg);
 		this.answeredWrong(keyboardGroup.id);
 	}
 };
@@ -401,7 +401,7 @@ PracticeView.prototype.finish = function(score) {
 		fill: 'black',
 		opacity: 0.62
 	});
-	WidgetUtil.glue(overlay, {
+	widgetUtil.glue(overlay, {
 		width: 1,
 		height: 1,
 		dx: 0,
@@ -411,7 +411,7 @@ PracticeView.prototype.finish = function(score) {
 	
 	// draw title
 	var finishTitle = new Kinetic.Image({image: finishTitleImage});
-	WidgetUtil.glue(finishTitle, {
+	widgetUtil.glue(finishTitle, {
 		width: 0.45,
 		height: 0.15,
 		dx: 0.27,
@@ -422,7 +422,7 @@ PracticeView.prototype.finish = function(score) {
 	if (starsImage != null) {
 		// draw stars
 		var starsWidget = new Kinetic.Image({image: starsImage});
-		WidgetUtil.glue(starsWidget, {
+		widgetUtil.glue(starsWidget, {
 			width: 0.35,
 			height: 0.14,
 			dx: 0.325,
@@ -438,7 +438,7 @@ PracticeView.prototype.finish = function(score) {
 	if (score == 0) {
 		// draw retry button only
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
-		WidgetUtil.glue(buttonRetry, {
+		widgetUtil.glue(buttonRetry, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.32,
@@ -447,7 +447,7 @@ PracticeView.prototype.finish = function(score) {
 		
 		// draw retry button only
 		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
-		WidgetUtil.glue(buttonMenu, {
+		widgetUtil.glue(buttonMenu, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.52,
@@ -455,7 +455,7 @@ PracticeView.prototype.finish = function(score) {
 		});
 	} else {
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
-		WidgetUtil.glue(buttonRetry, {
+		widgetUtil.glue(buttonRetry, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.32,
@@ -464,7 +464,7 @@ PracticeView.prototype.finish = function(score) {
 		
 		// draw retry button only
 		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
-		WidgetUtil.glue(buttonMenu, {
+		widgetUtil.glue(buttonMenu, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.52,
@@ -474,13 +474,13 @@ PracticeView.prototype.finish = function(score) {
 	}
 	
 	buttonRetry.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.restart();
 	});
 	buttonMenu.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		if(Storage.get("settingMusic") == true){
-			Music.stopBackgroundMusic();
+			music.stopBackgroundMusic();
 		}
 		app.controller.menu();
 	});
@@ -500,7 +500,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 
 	// pause button
 	var buttonPause = new Kinetic.Image({image: this.images.buttonPause});
-	WidgetUtil.glue(buttonPause, {
+	widgetUtil.glue(buttonPause, {
 		width: this.viewVars.pauseButtonDimensions.width,
 		height: this.viewVars.pauseButtonDimensions.height,
 		dx: this.viewVars.pauseButtonDimensions.x,
@@ -508,7 +508,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	});
 	app.layer.add(buttonPause);
 	buttonPause.on('click tap', function() {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.view.pause();
 	});
 	
@@ -520,7 +520,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 		fill: 'black',
 		opacity: 0.62
 	});
-	WidgetUtil.glue(overlay, {
+	widgetUtil.glue(overlay, {
 		width: 1,
 		height: 1,
 		dx: 0,
@@ -530,7 +530,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	
 	// paused label
 	var labelPaused = new Kinetic.Image({image: this.images.labelPaused});
-	WidgetUtil.glue(labelPaused, {
+	widgetUtil.glue(labelPaused, {
 		width: 0.3,
 		height: 0.1,
 		dx: 0.35,
@@ -540,7 +540,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 
 	// resume button
 	var buttonResume = new Kinetic.Image({image: this.images.buttonResume});
-	WidgetUtil.glue(buttonResume, {
+	widgetUtil.glue(buttonResume, {
 		width: 0.18,
 		height: 0.25,
 		dx: 0.21,
@@ -549,13 +549,13 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonResume);
 	
 	buttonResume.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.view.unpause();
 	});
 	
 	// menu button
 	var buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
-	WidgetUtil.glue(buttonMenu, {
+	widgetUtil.glue(buttonMenu, {
 		width: 0.18,
 		height: 0.25,
 		dx: 0.41,
@@ -564,16 +564,16 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonMenu);
 	
 	buttonMenu.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		if(Storage.get("settingMusic") == true){
-			Music.stopBackgroundMusic();
+			music.stopBackgroundMusic();
 		}
 		app.controller.menu();
 	});
 	
 	// restart button
 	var buttonRestart = new Kinetic.Image({image: this.images.buttonRestart});
-	WidgetUtil.glue(buttonRestart, {
+	widgetUtil.glue(buttonRestart, {
 		width: 0.18,
 		height: 0.25,
 		dx: 0.61,
@@ -582,7 +582,7 @@ PracticeView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonRestart);
 	
 	buttonRestart.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.restart();
 	});
 	

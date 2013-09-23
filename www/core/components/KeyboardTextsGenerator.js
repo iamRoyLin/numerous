@@ -1,12 +1,12 @@
-var KeyboardTextsGenerator = new function () {
+var KeyboardTextsGenerator = new Class ({
 	
 	// texts: all the texts from the pool of text (may contain correct text)
 	// correctText: the correct answer
 	// the number of texts to generate
-	this.generate = function (texts, correctText, textsCount) {
+	generate: function (texts, correctText, textsCount) {
 		var output = [correctText];
 		
-		var shuffledTexts = ArrayUtil.shuffleArray(texts);
+		var shuffledTexts = arrayUtil.shuffleArray(texts);
 		
 		while(output.length != textsCount) {
 			if (shuffledTexts.length == 0) {
@@ -20,8 +20,11 @@ var KeyboardTextsGenerator = new function () {
 			}
 		}
 		
-		output = ArrayUtil.shuffleArray(output);
+		output = arrayUtil.shuffleArray(output);
 		return output;
-	}
-}
+	},
+	
+});
+
+var keyboardTextsGenerator = new KeyboardTextsGenerator();
 

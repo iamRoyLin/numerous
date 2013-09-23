@@ -146,11 +146,11 @@ GroupingGameController.prototype.initialize = function() {
 	// determines whether packs are being used.
 	app.view.viewVars.usePacks = false;
 	this.goalNumber = app.UNIT_GAMES[app.currentUnit][app.currentGame].goalNumber;
-	var title = MathUtil.convertNumberToWord(this.goalNumber);
+	var title = mathUtil.convertNumberToWord(this.goalNumber);
 	
 	if(Storage.get("settingMusic") == true){
-		Music.stopBackgroundMusic();
-		Music.playBackgroundMusic(this.sounds.background);
+		music.stopBackgroundMusic();
+		music.playBackgroundMusic(this.sounds.background);
 	}
 	
 	

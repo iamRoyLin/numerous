@@ -17,7 +17,7 @@ HomeView.prototype.draw = function() {
 
 HomeView.prototype._drawBackground = function() {
 	var background = new Kinetic.Image({image: this.images.background});
-	WidgetUtil.glue(background, {
+	widgetUtil.glue(background, {
 		width: 1,
 		height: 1,
 		dx: 0,
@@ -30,7 +30,7 @@ HomeView.prototype._drawButtons = function() {
 
 	//play button
 	var	playButton = new Kinetic.Image({image: this.images.playButton});
-	WidgetUtil.glue(playButton, {
+	widgetUtil.glue(playButton, {
 		width: 0.20,
 		height: 0.28,
 		dx: 0.23,
@@ -38,13 +38,13 @@ HomeView.prototype._drawButtons = function() {
 	});
 	app.layer.add(playButton);
 	playButton.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.play();
 	});
 	
 	//options button
 	var	optionsButton = new Kinetic.Image({image: this.images.optionsButton});
-	WidgetUtil.glue(optionsButton, {
+	widgetUtil.glue(optionsButton, {
 		width: 0.20,
 		height: 0.28,
 		dx: 0.55,
@@ -52,7 +52,7 @@ HomeView.prototype._drawButtons = function() {
 	});
 	app.layer.add(optionsButton);
 	optionsButton.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.settings();
 	});
 	
@@ -63,11 +63,11 @@ HomeView.prototype._drawButtons = function() {
 			var scaleY = -1 * Math.sin(frame.time / 200) * 0.06 + 0.9;
         		// scale x and y
         		playButton.setScale(scaleX, scaleY);
-				playButton.setX(DimensionUtil.decimalToActualWidth(0.23 + dx));
-				playButton.setY(DimensionUtil.decimalToActualHeight(0.5 + dy));
+				playButton.setX(dimensionUtil.decimalToActualWidth(0.23 + dx));
+				playButton.setY(dimensionUtil.decimalToActualHeight(0.5 + dy));
         		optionsButton.setScale(scaleX, scaleY);
-				optionsButton.setX(DimensionUtil.decimalToActualWidth(0.55 + dx));
-				optionsButton.setY(DimensionUtil.decimalToActualHeight(0.5 + dy));
+				optionsButton.setX(dimensionUtil.decimalToActualWidth(0.55 + dx));
+				optionsButton.setY(dimensionUtil.decimalToActualHeight(0.5 + dy));
       	}, app.layer);
 
       	anim.start();

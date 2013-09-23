@@ -1,6 +1,8 @@
-var WidgetUtil = new function () {
-	this.width = Env.width;
-	this.height = Env.height;
+var WidgetUtil = new Class ({
+	
+	width: Env.width,
+	
+	height: Env.height,
 
 	/*
 	 * Glues a KineticJs node to the correct position with a correct size relative to screen size.
@@ -15,7 +17,7 @@ var WidgetUtil = new function () {
 	 * 		@param dy (decimal): y-displacement of image from side it is glued (proportional to screen size).
 	 * }
 	 */
-	this.glue = function (node, params) {
+	glue: function (node, params) {
 		var myWidth, myHight, myX, myY;
 		
 		myWidth = params.width * this.width;
@@ -40,7 +42,7 @@ var WidgetUtil = new function () {
 		node.setY(myY);
 		node.setWidth(myWidth);
 		node.setHeight(myHeight);
-	};
+	},
 	
 	
 	/*
@@ -51,7 +53,7 @@ var WidgetUtil = new function () {
 	 * @param radius the radius which determines what is close
 	 * @return boolean
 	 */
-	this.isNearPoint = function(node, x, y, radius) {
+	isNearPoint: function(node, x, y, radius) {
 		// we are working in real width and height and not decimal
 		x = x * this.width;
 		y = y * this.height;
@@ -70,7 +72,7 @@ var WidgetUtil = new function () {
 			// Too far
 			return false;
 		}
-	}
+	},
 	
 	/*
 	 * Determines if the center of the object is within radius of a specified point
@@ -81,26 +83,25 @@ var WidgetUtil = new function () {
 	 * @param radiusArray an array of radius which determines what is close
 	 * @return boolean
 	 */
-	this.isNearPoints = function(node, xArray, yArray, radiusArray) {
+	isNearPoints: function(node, xArray, yArray, radiusArray) {
 		for (var i = 0; i < radiusArray.length; i++) {
 			if (this.isNearPoint(node, xArray[i], yArray[i], radiusArray[i])) {
 				return true;
 			}
 		}
 		return false;
-	}
+	},
 	
-	this.animateMove = function(node, duration, x, y) {
+	animateMove: function(node, duration, x, y) {
 		var tween = new Kinetic.Tween({
 			node: node, 
 			duration: duration,
-			x: DimensionUtil.decimalToActualWidth(x),
-			y: DimensionUtil.decimalToActualHeight(y)
+			x: dimensionUtil.decimalToActualWidth(x),
+			y: dimensionUtil.decimalToActualHeight(y)
 		});
 		tween.play();
-	}
+	},
 	
-	
-	
-}
+});
 
+var widgetUtil = new WidgetUtil();

@@ -14,8 +14,6 @@
 	<!-- phonegap essentials. note this file does not exist. -->
 	<script src="phonegap.js"></script>
 	
-
-	
 	<!-- ============================== libraries ============================== -->
 	
 	<!-- jQuery -->
@@ -32,22 +30,26 @@
 	<script type="text/javascript" src="lib/PxLoader/PxLoaderImage.js"></script>
 	<script type="text/javascript" src="lib/PxLoader/PxLoaderSound.js"></script> 
 	
+	<!-- SoundManager -->
 	<script type="text/javascript" src="lib/soundmanager/script/soundmanager2-nodebug-jsmin.js"></script>
-	<!--<script type="text/javascript" src="lib/soundmanager/script/soundmanager2.js"></script>-->
 	
-	<script type="text/javascript" src="lib/PxLoader/PxLoaderSound.js"></script> 
+	<!-- MooTools -->
+	<script type="text/javascript" src="lib/mootools/mootools-core-1.4.5.js"></script> 
 	
 	<!-- ==================== initialise envrionment settings ==================== -->
 	<script src="core/Environment.js"></script>
 	
 	<!-- ============================== components ============================== -->
 	<script src="core/components/Storage.js"></script>
-	<script src="core/components/Music.js"></script>
+	
+	<script src="core/components/Music/Music.js"></script>
+	<script src="core/components/Music/PhonegapMusic.js"></script>
+	<script src="core/components/Music/BrowserMusic.js"></script>
+
 	
 	<script src="core/components/KeyboardTextsGenerator.js"></script>
 	
 	<script src="core/components/ArrayUtil.js"></script>
-	<script src="core/components/AlertUtil.js"></script>
 	<script src="core/components/MathUtil.js"></script>
 	<script src="core/components/DimensionUtil.js"></script>
 	<script src="core/components/WidgetUtil.js"></script>
@@ -55,7 +57,7 @@
 	<script src="core/components/SoundUtil.js"></script>
 	<script src="core/components/AdditionGameHelper.js"></script>
 
-	
+	<script src="core/ComponentsInitialization.js"></script>
 	
 	
 	<!-- ============================== MVC base classes ============================== -->

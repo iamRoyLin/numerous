@@ -74,8 +74,8 @@ Practice3Controller.prototype.initialize = function () {
 	this.view.setSounds(this.sounds);
 	
 	if(Storage.get("settingMusic") == true){
-		Music.stopBackgroundMusic();
-		Music.playBackgroundMusic(this.sounds.background);
+		music.stopBackgroundMusic();
+		music.playBackgroundMusic(this.sounds.background);
 	}
 	
 	this.view.drawBlackBoard();
@@ -137,7 +137,7 @@ Practice3Controller.prototype.pickQuestions = function() {
 		list.push(i);
 	}
 	
-	list = ArrayUtil.shuffleArray(list);
+	list = arrayUtil.shuffleArray(list);
 	
 	// first set
 	for(var questionNumber = 0; questionNumber < 17; questionNumber++) {
@@ -146,47 +146,47 @@ Practice3Controller.prototype.pickQuestions = function() {
 		if (questionNumber >= 4 && questionNumber <= 8) continue;
 	
 		var num = list.pop();
-		var ones = MathUtil.getOnes(num);
-		var tens = MathUtil.getTens(num);
-		var onesWord = MathUtil.convertNumberToWord(ones);
-		var tensWord = MathUtil.convertNumberToWord(tens);
-		var word = MathUtil.convertNumberToWord(num);
+		var ones = mathUtil.getOnes(num);
+		var tens = mathUtil.getTens(num);
+		var onesWord = mathUtil.convertNumberToWord(ones);
+		var tensWord = mathUtil.convertNumberToWord(tens);
+		var word = mathUtil.convertNumberToWord(num);
 		var gameQuestion = {};
 
 		
-		var q = AdditionGameHelper.generateQuestion(questionNumber);
+		var q = additionGameHelper.generateQuestion(questionNumber);
 		gameQuestion.questionText = "" + q.left + " + " + q.right + " = ___";
 		
 		switch(questionNumber) {
 			case 0:
 			case 1:
 			case 2:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(0,20,1), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(0,20,1), q.answer, 9);
 			break;
 			case 3:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(10,30,1), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(10,30,1), q.answer, 9);
 			break;
 			case 9:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(50,70,1), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(50,70,1), q.answer, 9);
 			break;
 			case 10:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(0,100,10), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(0,100,10), q.answer, 9);
 			break;
 			case 11:
 			case 12:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(90,110,1), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(90,110,1), q.answer, 9);
 			break;
 			case 13:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(0,190,10), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(0,190,10), q.answer, 9);
 			break;
 			case 14:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(110,130,1), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(110,130,1), q.answer, 9);
 			break;
 			case 15:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(120,140,1), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(120,140,1), q.answer, 9);
 			break;
 			case 16:
-				gameQuestion.keyboardTexts = KeyboardTextsGenerator.generate(ArrayUtil.generateNumberArray(100,199,1), q.answer, 9);
+				gameQuestion.keyboardTexts = keyboardTextsGenerator.generate(arrayUtil.generateNumberArray(100,199,1), q.answer, 9);
 			break;
 		}
 		
@@ -218,7 +218,7 @@ Practice3Controller.prototype.createKeyboardTexts = function() {
 	var wordList = [];
 	for(var i = 21; i < 100; i++) {
 		numberList.push(i.toString());
-		wordList.push(MathUtil.convertNumberToWord(i));
+		wordList.push(mathUtil.convertNumberToWord(i));
 	}
 	
 	output.push(wordList);

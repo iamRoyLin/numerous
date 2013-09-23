@@ -10,7 +10,7 @@ MenuUnitView.prototype.finalize = function() {
 
 MenuUnitView.prototype.drawTitle = function() {
 	var	title = new Kinetic.Image({image: this.images.title});
-	WidgetUtil.glue(title, {
+	widgetUtil.glue(title, {
 		width: 0.5,
 		height: 0.12,
 		dx: 0.25,
@@ -21,7 +21,7 @@ MenuUnitView.prototype.drawTitle = function() {
 
 MenuUnitView.prototype.drawButtonBack = function() {
 	var	buttonBack = new Kinetic.Image({image: this.images.buttonBack});
-	WidgetUtil.glue(buttonBack, {
+	widgetUtil.glue(buttonBack, {
 		width: 0.10,
 		height: 0.17,
 		dx: 0.05,
@@ -30,7 +30,7 @@ MenuUnitView.prototype.drawButtonBack = function() {
 	app.layer.add(buttonBack);
 	
 	buttonBack.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.back();
 	});
 };
@@ -44,13 +44,13 @@ MenuUnitView.prototype.drawBoxes = function(unitRecordsModel) {
 			
 		// group
 		var group = new Kinetic.Group({
-			x: DimensionUtil.decimalToActualWidth(x),
-			y: DimensionUtil.decimalToActualHeight(y)
+			x: dimensionUtil.decimalToActualWidth(x),
+			y: dimensionUtil.decimalToActualHeight(y)
 		});
 
 		// box
 		var box = new Kinetic.Image({image: this.images.box});
-		WidgetUtil.glue(box, {
+		widgetUtil.glue(box, {
 			width: 0.12,
 			height: 0.19,
 			dx: 0,
@@ -60,7 +60,7 @@ MenuUnitView.prototype.drawBoxes = function(unitRecordsModel) {
 		
 		// stars
 		var stars = new Kinetic.Image({image: this.images.stars[unitRecordsModel.getStars(boxNumber)]});
-		WidgetUtil.glue(stars, {
+		widgetUtil.glue(stars, {
 			width: 0.1,
 			height: 0.05,
 			dx: 0.01,
@@ -70,11 +70,11 @@ MenuUnitView.prototype.drawBoxes = function(unitRecordsModel) {
 		
 		// text
 		var text = new Kinetic.Text({
-			x: DimensionUtil.decimalToActualWidth(0.01),
-			y: DimensionUtil.decimalToActualHeight(0.05),
-			width: DimensionUtil.decimalToActualWidth(0.099 / (1/1024*DimensionUtil.width)),
-			scaleX: 1/1024*DimensionUtil.width,
-			scaleY: 1/768*DimensionUtil.height,
+			x: dimensionUtil.decimalToActualWidth(0.01),
+			y: dimensionUtil.decimalToActualHeight(0.05),
+			width: dimensionUtil.decimalToActualWidth(0.099 / (1/1024*dimensionUtil.width)),
+			scaleX: 1/1024*dimensionUtil.width,
+			scaleY: 1/768*dimensionUtil.height,
 			text: app.UNIT_GAMES[app.currentUnit][boxNumber].name,
 			fontSize: 25,
 			fontFamily: 'mainFont',
@@ -87,7 +87,7 @@ MenuUnitView.prototype.drawBoxes = function(unitRecordsModel) {
 		
 		group.gameId = boxNumber;
 		group.on('click tap', function () {
-			Music.play(app.view.sounds.select);
+			music.play(app.view.sounds.select);
 			app.controller.game(this.gameId);
 		});
 	}

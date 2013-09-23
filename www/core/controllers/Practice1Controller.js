@@ -126,8 +126,8 @@ Practice1Controller.prototype.initialize = function () {
 	this.view.setSounds(this.sounds);
 	
 	if(Storage.get("settingMusic") == true){
-		Music.stopBackgroundMusic();
-		Music.playBackgroundMusic(this.sounds.background);
+		music.stopBackgroundMusic();
+		music.playBackgroundMusic(this.sounds.background);
 	}
 	
 	this.view.drawBlackBoard();
@@ -187,7 +187,7 @@ Practice1Controller.prototype.pickQuestions = function() {
 		// create an array of numbers
 		var list = [];
 		while(list.length < 3) {
-			var questionNumber = MathUtil.random(0, this.questionSets[setNumber].length);
+			var questionNumber = mathUtil.random(0, this.questionSets[setNumber].length);
 			if (list.indexOf(questionNumber) == -1) {
 				list.push(questionNumber);
 				this.gameQuestions.push({set: setNumber, question: questionNumber});

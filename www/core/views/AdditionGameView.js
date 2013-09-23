@@ -50,8 +50,8 @@ AdditionGameView.prototype.finalize = function () {
 AdditionGameView.prototype.drawEggsGroup = function() {
 	this.eggsInGroup = [];
 	this.eggsGroup = new Kinetic.Group({
-		x: DimensionUtil.decimalToActualWidth(this.viewVars.eggsGroupLocation.x),
-		y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsGroupLocation.y)
+		x: dimensionUtil.decimalToActualWidth(this.viewVars.eggsGroupLocation.x),
+		y: dimensionUtil.decimalToActualHeight(this.viewVars.eggsGroupLocation.y)
 	});
 	app.layer.add(this.eggsGroup);
 };
@@ -60,8 +60,8 @@ AdditionGameView.prototype.drawEggsGroup = function() {
 AdditionGameView.prototype.drawPacksGroup = function() {
 	this.packsInGroup = [];
 	this.packsGroup = new Kinetic.Group({
-		x: DimensionUtil.decimalToActualWidth(this.viewVars.packsGroupLocation.x),
-		y: DimensionUtil.decimalToActualHeight(this.viewVars.packsGroupLocation.y)
+		x: dimensionUtil.decimalToActualWidth(this.viewVars.packsGroupLocation.x),
+		y: dimensionUtil.decimalToActualHeight(this.viewVars.packsGroupLocation.y)
 	});
 	app.layer.add(this.packsGroup);
 };
@@ -69,7 +69,7 @@ AdditionGameView.prototype.drawPacksGroup = function() {
 // Draws the belts
 AdditionGameView.prototype.drawBelts = function() {
 	var belts = new Kinetic.Image({image: this.images.belts});
-	WidgetUtil.glue(belts, {
+	widgetUtil.glue(belts, {
 		width: this.viewVars.beltDimensions.width,
 		height: this.viewVars.beltDimensions.height,
 		dx: this.viewVars.beltDimensions.x,
@@ -81,7 +81,7 @@ AdditionGameView.prototype.drawBelts = function() {
 // Draws the tracks
 AdditionGameView.prototype.drawTracks = function () {
 	var track = new Kinetic.Image({image: this.images.track});
-	WidgetUtil.glue(track, {
+	widgetUtil.glue(track, {
 		width: this.viewVars.trackDimensions.width,
 		height: this.viewVars.trackDimensions.height,
 		dx: this.viewVars.trackDimensions.x,
@@ -93,7 +93,7 @@ AdditionGameView.prototype.drawTracks = function () {
 // Draw boards (only applied for unit3)
 AdditionGameView.prototype.drawBoards = function () {
 	var board1 = new Kinetic.Image({image: this.images.board1});
-	WidgetUtil.glue(board1, {
+	widgetUtil.glue(board1, {
 		width: this.viewVars.board1Dimensions.width,
 		height: this.viewVars.board1Dimensions.height,
 		dx: this.viewVars.board1Dimensions.x,
@@ -102,7 +102,7 @@ AdditionGameView.prototype.drawBoards = function () {
 	app.layer.add(board1);
 	
 	var board2 = new Kinetic.Image({image: this.images.board2});
-	WidgetUtil.glue(board2, {
+	widgetUtil.glue(board2, {
 		width: this.viewVars.board2Dimensions.width,
 		height: this.viewVars.board2Dimensions.height,
 		dx: this.viewVars.board2Dimensions.x,
@@ -116,7 +116,7 @@ AdditionGameView.prototype.drawThinkCloud = function () {
 	
 	// think cloud
 	this.thinkCloud = new Kinetic.Image({image: this.images.thinkCloud});
-	WidgetUtil.glue(this.thinkCloud, {
+	widgetUtil.glue(this.thinkCloud, {
 		width: this.viewVars.thinkCloudDimensions.width,
 		height: this.viewVars.thinkCloudDimensions.height,
 		dx: this.viewVars.thinkCloudDimensions.x,
@@ -126,11 +126,11 @@ AdditionGameView.prototype.drawThinkCloud = function () {
 	
 	// text in the think cloud
 	this.thinkCloudTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(this.viewVars.thinkCloudTextLocation.x),
-		y: DimensionUtil.decimalToActualHeight(this.viewVars.thinkCloudTextLocation.y),
-		width: DimensionUtil.decimalToActualWidth(0.28 / (1/1024*DimensionUtil.width)),
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
+		x: dimensionUtil.decimalToActualWidth(this.viewVars.thinkCloudTextLocation.x),
+		y: dimensionUtil.decimalToActualHeight(this.viewVars.thinkCloudTextLocation.y),
+		width: dimensionUtil.decimalToActualWidth(0.28 / (1/1024*dimensionUtil.width)),
+		scaleX: 1/1024*dimensionUtil.width,
+		scaleY: 1/768*dimensionUtil.height,
 		fontSize: 25,
 		fontFamily: 'mainFont',
 		fill: 'black',
@@ -155,7 +155,7 @@ AdditionGameView.prototype.displayThinkCloud = function(message, fontSize) {
 // draws the rabbit
 AdditionGameView.prototype.drawRabbitHead = function () {
 	var rabbitHead = new Kinetic.Image({image: this.images.rabbitHead});
-	WidgetUtil.glue(rabbitHead, {
+	widgetUtil.glue(rabbitHead, {
 		width: this.viewVars.rabbitDimensions.width,
 		height: this.viewVars.rabbitDimensions.height,
 		dx: this.viewVars.rabbitDimensions.x,
@@ -167,7 +167,7 @@ AdditionGameView.prototype.drawRabbitHead = function () {
 // draws the done button
 AdditionGameView.prototype.drawDoneButton = function() {
 	var buttonDone = new Kinetic.Image({image: this.images.buttonDone});
-	WidgetUtil.glue(buttonDone, {
+	widgetUtil.glue(buttonDone, {
 		width: this.viewVars.doneButtonDimensions.width,
 		height: this.viewVars.doneButtonDimensions.height,
 		dx: this.viewVars.doneButtonDimensions.x,
@@ -175,7 +175,7 @@ AdditionGameView.prototype.drawDoneButton = function() {
 	});
 	
 	buttonDone.on('click tap', function () {
-		Music.play(app.view.sounds.done);
+		music.play(app.view.sounds.done);
 		
 		var topNumber = (app.view.eggsInGroup.length) + (app.view.packsInGroup.length * 10) + (app.view.boxesInGroup.length * 100);
 		var goalSum = app.controller.goalNumber + app.controller.goalNumber2;
@@ -193,8 +193,8 @@ AdditionGameView.prototype.drawDoneButton = function() {
 // draws the number the student needs to perform
 AdditionGameView.prototype.drawTitle = function(title) {
 	 this.titleTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.15),
-		y: DimensionUtil.decimalToActualHeight(0.02),
+		x: dimensionUtil.decimalToActualWidth(0.15),
+		y: dimensionUtil.decimalToActualHeight(0.02),
 		
 		scaleX: 0,
 		scaleY: 0,
@@ -215,10 +215,10 @@ AdditionGameView.prototype.drawTitle = function(title) {
 			node: app.view.titleTextWidget,
 			duration: 0.7,
 			
-			scaleX: 1/1024*DimensionUtil.width,
-			scaleY: 1/768*DimensionUtil.height,
-			x: DimensionUtil.decimalToActualWidth(0.15),
-			y: DimensionUtil.decimalToActualHeight(0.02),
+			scaleX: 1/1024*dimensionUtil.width,
+			scaleY: 1/768*dimensionUtil.height,
+			x: dimensionUtil.decimalToActualWidth(0.15),
+			y: dimensionUtil.decimalToActualHeight(0.02),
 			
 		});
 		flyIn.play();
@@ -226,7 +226,7 @@ AdditionGameView.prototype.drawTitle = function(title) {
 	
 	this.titleAnim = new Kinetic.Animation(function(frame) {
         		app.view.titleTextWidget.setShadowOpacity(Math.sin(frame.time * 2 * Math.PI / 2000));
-        		app.view.titleTextWidget.setX(DimensionUtil.decimalToActualWidth(0.03) * Math.sin(frame.time * 2 * Math.PI / 2000) + DimensionUtil.decimalToActualWidth(0.17));
+        		app.view.titleTextWidget.setX(dimensionUtil.decimalToActualWidth(0.03) * Math.sin(frame.time * 2 * Math.PI / 2000) + dimensionUtil.decimalToActualWidth(0.17));
       	}, app.layer);
  	 
  	 this.titleAnim.start();
@@ -236,14 +236,14 @@ AdditionGameView.prototype.drawTitle = function(title) {
 AdditionGameView.prototype.drawNumbers = function() {
 	// top
 	this.topNumberTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.862),
-		y: DimensionUtil.decimalToActualHeight(0.260),
+		x: dimensionUtil.decimalToActualWidth(0.862),
+		y: dimensionUtil.decimalToActualHeight(0.260),
 		
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
+		scaleX: 1/1024*dimensionUtil.width,
+		scaleY: 1/768*dimensionUtil.height,
     	text: "",
 		align: "center",
-		width: DimensionUtil.decimalToActualWidth(0.125 / (1/1024*DimensionUtil.width)),
+		width: dimensionUtil.decimalToActualWidth(0.125 / (1/1024*dimensionUtil.width)),
 		fontFamily: 'mainFont',
     	fontSize: 60,
 		fill: 'black', // #2B8F4E
@@ -253,14 +253,14 @@ AdditionGameView.prototype.drawNumbers = function() {
 	
 	// bottom
 	this.botNumberTextWidget = new Kinetic.Text({
-		x: DimensionUtil.decimalToActualWidth(0.862),
-		y: DimensionUtil.decimalToActualHeight(0.80),
+		x: dimensionUtil.decimalToActualWidth(0.862),
+		y: dimensionUtil.decimalToActualHeight(0.80),
 		
-		scaleX: 1/1024*DimensionUtil.width,
-		scaleY: 1/768*DimensionUtil.height,
+		scaleX: 1/1024*dimensionUtil.width,
+		scaleY: 1/768*dimensionUtil.height,
     	text: "",
 		align: "center",
-		width: DimensionUtil.decimalToActualWidth(0.125 / (1/1024*DimensionUtil.width)),
+		width: dimensionUtil.decimalToActualWidth(0.125 / (1/1024*dimensionUtil.width)),
 		fontFamily: 'mainFont',
     	fontSize: 60,
 		fill: 'black', // #2B8F4E
@@ -290,7 +290,7 @@ AdditionGameView.prototype.drawEggs = function () {
 	// TOP EGGS
 	// ==============================
 
-	for(var eggId = 0; eggId < MathUtil.getOnes(this.viewVars.goalNumber); eggId++) {
+	for(var eggId = 0; eggId < mathUtil.getOnes(this.viewVars.goalNumber); eggId++) {
 		var egg = this.drawNewEgg(this.viewVars.eggsRelativeLocations[eggId].x, this.viewVars.eggsRelativeLocations[eggId].y);
 		egg.animation.stop();
 		this.eggsGroup.add(egg);
@@ -300,7 +300,7 @@ AdditionGameView.prototype.drawEggs = function () {
 	// ==============================
 	// BOTTOM EGGS
 	// ==============================
-	for(var eggId = 0; eggId < MathUtil.getOnes(this.viewVars.goalNumber2); eggId++) {
+	for(var eggId = 0; eggId < mathUtil.getOnes(this.viewVars.goalNumber2); eggId++) {
 		var x = this.viewVars.eggsBeltOffset.x + this.viewVars.eggsRelativeLocations[eggId].x;
 		var y = this.viewVars.eggsBeltOffset.y + this.viewVars.eggsRelativeLocations[eggId].y;
 		
@@ -322,16 +322,16 @@ AdditionGameView.prototype.drawEggs = function () {
 			}
 			
 		
-			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
+			if (widgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 				// accept the egg
 				app.view.acceptEgg(this);
 			} else {
 				// decline the egg
 				app.view.declineEgg(this);
 				// record any errors
-				if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
+				if (widgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 					app.view.errorMade(app.view.ERROR_TYPES.DRAG_EGG_TO_TENS);
-				} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltHundredsArea.X_ARRAY, app.view.viewVars.beltHundredsArea.Y_ARRAY, app.view.viewVars.beltHundredsArea.RADIUS_ARRAY)) {
+				} else if (widgetUtil.isNearPoints(this, app.view.viewVars.beltHundredsArea.X_ARRAY, app.view.viewVars.beltHundredsArea.Y_ARRAY, app.view.viewVars.beltHundredsArea.RADIUS_ARRAY)) {
 					app.view.errorMade(app.view.ERROR_TYPES.DRAG_EGG_TO_HUNDREDS);
 				}
 			}
@@ -342,9 +342,9 @@ AdditionGameView.prototype.drawEggs = function () {
 // draws one new egg
 AdditionGameView.prototype.drawNewEgg = function (x, y) {
 	var egg = new Kinetic.Image({
-		image: this.images.eggs[MathUtil.random(0, this.images.eggs.length-1)],
+		image: this.images.eggs[mathUtil.random(0, this.images.eggs.length-1)],
 	});
-	WidgetUtil.glue(egg, {
+	widgetUtil.glue(egg, {
 		width: this.viewVars.initialEggSize.width,
 		height: this.viewVars.initialEggSize.height,
 		dx: x,
@@ -358,8 +358,8 @@ AdditionGameView.prototype.drawNewEgg = function (x, y) {
 		var scaleY = -1 * Math.sin(frame.time / 200) * 0.06 + 0.9;
 		// scale x and y
 		egg.setScale(scaleX, scaleY);
-		egg.setX(DimensionUtil.decimalToActualWidth(x + dx));
-		egg.setY(DimensionUtil.decimalToActualHeight(y + dy));
+		egg.setX(dimensionUtil.decimalToActualWidth(x + dx));
+		egg.setY(dimensionUtil.decimalToActualHeight(y + dy));
 	}, app.layer);
 		
 	egg.animation.start();
@@ -371,13 +371,13 @@ AdditionGameView.prototype.drawNewEgg = function (x, y) {
 AdditionGameView.prototype.acceptEgg = function(egg) {
 	egg.setScale(1, 1);
 	this.sayCompliment();
-	Music.play(this.sounds.acceptEgg);
+	music.play(this.sounds.acceptEgg);
 	this.eggsInGroup.push(egg);
 	egg.remove();
 	this.eggsGroup.add(egg);
 	
-	egg.setX(DimensionUtil.decimalToActualWidth(this.viewVars.eggsRelativeLocations[this.eggsInGroup.length - 1].x));
-	egg.setY(DimensionUtil.decimalToActualHeight(this.viewVars.eggsRelativeLocations[this.eggsInGroup.length - 1].y));
+	egg.setX(dimensionUtil.decimalToActualWidth(this.viewVars.eggsRelativeLocations[this.eggsInGroup.length - 1].x));
+	egg.setY(dimensionUtil.decimalToActualHeight(this.viewVars.eggsRelativeLocations[this.eggsInGroup.length - 1].y));
 	egg.setDraggable(false);
 	egg.moveToTop();
 	app.stage.draw();
@@ -391,7 +391,7 @@ AdditionGameView.prototype.acceptEgg = function(egg) {
 
 AdditionGameView.prototype.sayCompliment = function() {
 	// say a compliment
-	var compliment = this.COMPLIMENTS[MathUtil.random(0, this.COMPLIMENTS.length-1)];
+	var compliment = this.COMPLIMENTS[mathUtil.random(0, this.COMPLIMENTS.length-1)];
 	this.displayThinkCloud(compliment, 50);
 };
 
@@ -399,8 +399,8 @@ AdditionGameView.prototype.sayCompliment = function() {
 AdditionGameView.prototype.declineEgg = function(egg) {
 	egg.setScale(1, 1);
 	// play the decline egg sound
-	Music.play(this.sounds.declineEgg);
-	WidgetUtil.animateMove(egg, 0.4, egg.originalX, egg.originalY);
+	music.play(this.sounds.declineEgg);
+	widgetUtil.animateMove(egg, 0.4, egg.originalX, egg.originalY);
 	egg.animation.start();
 };
 
@@ -410,7 +410,7 @@ AdditionGameView.prototype.packageEggs = function () {
 
 	// draw the wrapper
 	var wrapper = new Kinetic.Image({image: this.images.pack});
-	WidgetUtil.glue(wrapper, {
+	widgetUtil.glue(wrapper, {
 		width: 0.13,
 		height: 0.11,
 		dx: 0,
@@ -434,8 +434,8 @@ AdditionGameView.prototype.packageEggs = function () {
 		var tween = new Kinetic.Tween({
 			node: egg,
 			duration: 1.0,
-			x: DimensionUtil.decimalToActualWidth(this.viewVars.eggsPackedRelativeLocations[eggId].x),
-			y: DimensionUtil.decimalToActualHeight(this.viewVars.eggsPackedRelativeLocations[eggId].y),
+			x: dimensionUtil.decimalToActualWidth(this.viewVars.eggsPackedRelativeLocations[eggId].x),
+			y: dimensionUtil.decimalToActualHeight(this.viewVars.eggsPackedRelativeLocations[eggId].y),
 			onFinish: function () {
 				this.node.remove();
 			}
@@ -447,7 +447,7 @@ AdditionGameView.prototype.packageEggs = function () {
 	var adjustPackPositionTween = new Kinetic.Tween({
 		node: this.eggsGroup,
 		duration: 1.0,
-		y: DimensionUtil.decimalToActualHeight(0.28),
+		y: dimensionUtil.decimalToActualHeight(0.28),
 		onFinish: function () {
 			this.node.setX(this.node.getX() - app.view.packsGroup.getX());
 			this.node.setY(this.node.getY() - app.view.packsGroup.getY());
@@ -459,8 +459,8 @@ AdditionGameView.prototype.packageEggs = function () {
 			var moveEggsToTensTween = new Kinetic.Tween({
 				node: this.node,
 				duration: 0.5,
-				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.packsRelativeLocations[app.view.packsInGroup.length].x),
-				y: DimensionUtil.decimalToActualHeight(app.view.viewVars.packsRelativeLocations[app.view.packsInGroup.length].y),
+				x: dimensionUtil.decimalToActualWidth(app.view.viewVars.packsRelativeLocations[app.view.packsInGroup.length].x),
+				y: dimensionUtil.decimalToActualHeight(app.view.viewVars.packsRelativeLocations[app.view.packsInGroup.length].y),
 				scaleX: 0.60,
 				scaleY: 0.60,
 				onFinish: function() {
@@ -490,7 +490,7 @@ AdditionGameView.prototype.drawPacks = function() {
 	// ==============================
 	// TOP PACKS
 	// ==============================
-	for(var packId = 0; packId < MathUtil.getTens(this.viewVars.goalNumber); packId++) {
+	for(var packId = 0; packId < mathUtil.getTens(this.viewVars.goalNumber); packId++) {
 		var pack = this.drawNewPack(this.viewVars.packsRelativeLocations[packId].x, this.viewVars.packsRelativeLocations[packId].y);
 		pack.animation.stop();
 		this.packsGroup.add(pack);
@@ -502,7 +502,7 @@ AdditionGameView.prototype.drawPacks = function() {
 	// ==============================
 	// BOTTOM PACKS
 	// ==============================
-	for(var packId = 0; packId < MathUtil.getTens(this.viewVars.goalNumber2); packId++) {
+	for(var packId = 0; packId < mathUtil.getTens(this.viewVars.goalNumber2); packId++) {
 		var x = this.viewVars.packsBeltOffset.x + this.viewVars.packsRelativeLocations[packId].x;
 		var y = this.viewVars.packsBeltOffset.y + this.viewVars.packsRelativeLocations[packId].y;
 		
@@ -524,7 +524,7 @@ AdditionGameView.prototype.drawPacks = function() {
 				return;
 			}
 		
-			if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
+			if (widgetUtil.isNearPoints(this, app.view.viewVars.beltTensArea.X_ARRAY, app.view.viewVars.beltTensArea.Y_ARRAY, app.view.viewVars.beltTensArea.RADIUS_ARRAY)) {
 				// accept the pack
 				app.view.acceptPack(this);
 			} else {
@@ -532,9 +532,9 @@ AdditionGameView.prototype.drawPacks = function() {
 				app.view.declinePack(this);
 				
 				// record any errors
-				if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
+				if (widgetUtil.isNearPoints(this, app.view.viewVars.beltOnesArea.X_ARRAY, app.view.viewVars.beltOnesArea.Y_ARRAY, app.view.viewVars.beltOnesArea.RADIUS_ARRAY)) {
 					app.view.errorMade(app.view.ERROR_TYPES.DRAG_PACK_TO_ONES);
-				} else if (WidgetUtil.isNearPoints(this, app.view.viewVars.beltHundredsArea.X_ARRAY, app.view.viewVars.beltHundredsArea.Y_ARRAY, app.view.viewVars.beltHundredsArea.RADIUS_ARRAY)) {
+				} else if (widgetUtil.isNearPoints(this, app.view.viewVars.beltHundredsArea.X_ARRAY, app.view.viewVars.beltHundredsArea.Y_ARRAY, app.view.viewVars.beltHundredsArea.RADIUS_ARRAY)) {
 					app.view.errorMade(app.view.ERROR_TYPES.DRAG_PACK_TO_HUNDREDS);
 				}
 			}
@@ -546,8 +546,8 @@ AdditionGameView.prototype.drawPacks = function() {
 // draws a new pack
 AdditionGameView.prototype.drawNewPack = function(x, y) {
 	var pack = new Kinetic.Group({
-		x: DimensionUtil.decimalToActualWidth(x),
-		y: DimensionUtil.decimalToActualHeight(y),
+		x: dimensionUtil.decimalToActualWidth(x),
+		y: dimensionUtil.decimalToActualHeight(y),
 		scaleX: 0.60,
 		scaleY: 0.60
 	});
@@ -558,7 +558,7 @@ AdditionGameView.prototype.drawNewPack = function(x, y) {
 //	}
 
 	var wrapper = new Kinetic.Image({image: this.images.pack});
-	WidgetUtil.glue(wrapper, {
+	widgetUtil.glue(wrapper, {
 		width: 0.13,
 		height: 0.11,
 		dx: 0,
@@ -573,8 +573,8 @@ AdditionGameView.prototype.drawNewPack = function(x, y) {
 		var scaleY = -1 * Math.sin(frame.time / 200) * 0.06 + 0.6;
 		// scale x and y
 		pack.setScale(scaleX, scaleY);
-		pack.setX(DimensionUtil.decimalToActualWidth(x + dx));
-		pack.setY(DimensionUtil.decimalToActualHeight(y + dy));
+		pack.setX(dimensionUtil.decimalToActualWidth(x + dx));
+		pack.setY(dimensionUtil.decimalToActualHeight(y + dy));
 	}, app.layer);
 		
 	pack.animation.start();
@@ -586,15 +586,15 @@ AdditionGameView.prototype.drawNewPack = function(x, y) {
 // accept pack
 AdditionGameView.prototype.acceptPack = function(pack) {
 	pack.setScale(0.6, 0.6);
-	Music.play(this.sounds.acceptEgg);
+	music.play(this.sounds.acceptEgg);
 	this.sayCompliment();
 	
 	this.packsInGroup.push(pack);
 	pack.remove();
 	this.packsGroup.add(pack);
 	
-	pack.setX(DimensionUtil.decimalToActualWidth(this.viewVars.packsRelativeLocations[this.packsInGroup.length - 1].x));
-	pack.setY(DimensionUtil.decimalToActualHeight(this.viewVars.packsRelativeLocations[this.packsInGroup.length - 1].y));
+	pack.setX(dimensionUtil.decimalToActualWidth(this.viewVars.packsRelativeLocations[this.packsInGroup.length - 1].x));
+	pack.setY(dimensionUtil.decimalToActualHeight(this.viewVars.packsRelativeLocations[this.packsInGroup.length - 1].y));
 	pack.setDraggable(false);
 	pack.moveToTop();
 	app.stage.draw();
@@ -609,8 +609,8 @@ AdditionGameView.prototype.acceptPack = function(pack) {
 // decline pack
 AdditionGameView.prototype.declinePack = function(pack) {
 	pack.setScale(0.6, 0.6);
-	Music.play(this.sounds.declineEgg);
-	WidgetUtil.animateMove(pack, 0.4, pack.originalX, pack.originalY);
+	music.play(this.sounds.declineEgg);
+	widgetUtil.animateMove(pack, 0.4, pack.originalX, pack.originalY);
 	pack.animation.start();
 };
 
@@ -622,7 +622,7 @@ AdditionGameView.prototype.packagePacks = function() {
 
 	// draw the wrapper
 	var box = new Kinetic.Image({image: this.images.box});
-	WidgetUtil.glue(box, {
+	widgetUtil.glue(box, {
 		width: 0.17,
 		height: 0.24,
 		dx: 0,
@@ -634,7 +634,7 @@ AdditionGameView.prototype.packagePacks = function() {
 	var wrappingTween = new Kinetic.Tween({
 		node: box,
 		duration: 1.0,
-		y: DimensionUtil.decimalToActualHeight(-0.05)
+		y: dimensionUtil.decimalToActualHeight(-0.05)
 	});
 	wrappingTween.play();
 	
@@ -645,8 +645,8 @@ AdditionGameView.prototype.packagePacks = function() {
 		var tween = new Kinetic.Tween({
 			node: pack,
 			duration: 1.0,
-			x: DimensionUtil.decimalToActualWidth(this.viewVars.packsPackedRelativeLocations[packId].x),
-			y: DimensionUtil.decimalToActualHeight(this.viewVars.packsPackedRelativeLocations[packId].y),
+			x: dimensionUtil.decimalToActualWidth(this.viewVars.packsPackedRelativeLocations[packId].x),
+			y: dimensionUtil.decimalToActualHeight(this.viewVars.packsPackedRelativeLocations[packId].y),
 			onFinish: function () {
 				this.node.hide();
 			}
@@ -662,8 +662,8 @@ AdditionGameView.prototype.packagePacks = function() {
 			var tween2 = new Kinetic.Tween({
 				node: this.node,
 				duration: 0.5,
-				x: DimensionUtil.decimalToActualWidth(app.view.viewVars.boxLocation.x),
-				y: DimensionUtil.decimalToActualHeight(app.view.viewVars.boxLocation.y),
+				x: dimensionUtil.decimalToActualWidth(app.view.viewVars.boxLocation.x),
+				y: dimensionUtil.decimalToActualHeight(app.view.viewVars.boxLocation.y),
 				onFinish: function() {
 					app.view.drawPacksGroup();
 					app.view.refreshNumbers();
@@ -682,7 +682,7 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 
 	// pause button
 	var buttonPause = new Kinetic.Image({image: this.images.buttonPause});
-	WidgetUtil.glue(buttonPause, {
+	widgetUtil.glue(buttonPause, {
 		width: this.viewVars.pauseButtonDimensions.width,
 		height: this.viewVars.pauseButtonDimensions.height,
 		dx: this.viewVars.pauseButtonDimensions.x,
@@ -690,7 +690,7 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 	});
 	app.layer.add(buttonPause);
 	buttonPause.on('click tap', function() {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.view.pause();
 	});
 	
@@ -702,7 +702,7 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 		fill: 'black',
 		opacity: 0.62
 	});
-	WidgetUtil.glue(overlay, {
+	widgetUtil.glue(overlay, {
 		width: 1,
 		height: 1,
 		dx: 0,
@@ -712,7 +712,7 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 	
 	// paused label
 	var labelPaused = new Kinetic.Image({image: this.images.labelPaused});
-	WidgetUtil.glue(labelPaused, {
+	widgetUtil.glue(labelPaused, {
 		width: 0.3,
 		height: 0.1,
 		dx: 0.35,
@@ -722,7 +722,7 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 
 	// resume button
 	var buttonResume = new Kinetic.Image({image: this.images.buttonResume});
-	WidgetUtil.glue(buttonResume, {
+	widgetUtil.glue(buttonResume, {
 		width: 0.18,
 		height: 0.25,
 		dx: 0.21,
@@ -731,13 +731,13 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonResume);
 	
 	buttonResume.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.view.unpause();
 	});
 	
 	// menu button
 	var buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
-	WidgetUtil.glue(buttonMenu, {
+	widgetUtil.glue(buttonMenu, {
 		width: 0.18,
 		height: 0.25,
 		dx: 0.41,
@@ -746,13 +746,13 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonMenu);
 	
 	buttonMenu.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.menu();
 	});
 	
 	// restart button
 	var buttonRestart = new Kinetic.Image({image: this.images.buttonRestart});
-	WidgetUtil.glue(buttonRestart, {
+	widgetUtil.glue(buttonRestart, {
 		width: 0.18,
 		height: 0.25,
 		dx: 0.61,
@@ -761,7 +761,7 @@ AdditionGameView.prototype.drawPauseWidgets = function() {
 	this.pauseWidgetsGroup.add(buttonRestart);
 	
 	buttonRestart.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.restart(true);
 	});
 	
@@ -846,7 +846,7 @@ AdditionGameView.prototype.finish = function(score) {
 		fill: 'black',
 		opacity: 0.62
 	});
-	WidgetUtil.glue(overlay, {
+	widgetUtil.glue(overlay, {
 		width: 1,
 		height: 1,
 		dx: 0,
@@ -856,7 +856,7 @@ AdditionGameView.prototype.finish = function(score) {
 	
 	// draw title
 	var finishTitle = new Kinetic.Image({image: finishTitleImage});
-	WidgetUtil.glue(finishTitle, {
+	widgetUtil.glue(finishTitle, {
 		width: 0.45,
 		height: 0.15,
 		dx: 0.27,
@@ -867,7 +867,7 @@ AdditionGameView.prototype.finish = function(score) {
 	if (starsImage != null) {
 		// draw stars
 		var starsWidget = new Kinetic.Image({image: starsImage});
-		WidgetUtil.glue(starsWidget, {
+		widgetUtil.glue(starsWidget, {
 			width: 0.35,
 			height: 0.14,
 			dx: 0.325,
@@ -882,7 +882,7 @@ AdditionGameView.prototype.finish = function(score) {
 	if (score == 0) {
 		// draw retry button only
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
-		WidgetUtil.glue(buttonRetry, {
+		widgetUtil.glue(buttonRetry, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.32,
@@ -891,7 +891,7 @@ AdditionGameView.prototype.finish = function(score) {
 		
 		// draw retry button only
 		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
-		WidgetUtil.glue(buttonMenu, {
+		widgetUtil.glue(buttonMenu, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.52,
@@ -899,7 +899,7 @@ AdditionGameView.prototype.finish = function(score) {
 		});
 	} else {
 		buttonRetry = new Kinetic.Image({image: this.images.buttonRetry});
-		WidgetUtil.glue(buttonRetry, {
+		widgetUtil.glue(buttonRetry, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.24,
@@ -908,7 +908,7 @@ AdditionGameView.prototype.finish = function(score) {
 		
 		// draw retry button only
 		buttonMenu = new Kinetic.Image({image: this.images.buttonMenu});
-		WidgetUtil.glue(buttonMenu, {
+		widgetUtil.glue(buttonMenu, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.42,
@@ -916,7 +916,7 @@ AdditionGameView.prototype.finish = function(score) {
 		});
 		
 		var buttonNext = new Kinetic.Image({image: this.images.buttonNext});
-		WidgetUtil.glue(buttonNext, {
+		widgetUtil.glue(buttonNext, {
 			width: 0.18,
 			height: 0.25,
 			dx: 0.60,
@@ -924,17 +924,17 @@ AdditionGameView.prototype.finish = function(score) {
 		});
 		app.layer.add(buttonNext);	
 		buttonNext.on('click tap', function () {
-			Music.play(app.view.sounds.select);
+			music.play(app.view.sounds.select);
 			app.controller.nextGame();
 		});
 	}
 	
 	buttonRetry.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.restart();
 	});
 	buttonMenu.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.menu();
 	});
 	
@@ -958,18 +958,18 @@ AdditionGameView.prototype.drawAreas = function() {
 		for(var i = 0; i < area.X_ARRAY.length; i++) {
 			var ellipse = new Kinetic.Ellipse({
 				draggable: true,
-				x: DimensionUtil.decimalToActualWidth(area.X_ARRAY[i]),
-				y: DimensionUtil.decimalToActualHeight(area.Y_ARRAY[i]),
+				x: dimensionUtil.decimalToActualWidth(area.X_ARRAY[i]),
+				y: dimensionUtil.decimalToActualHeight(area.Y_ARRAY[i]),
 				radius: 
-					{x:DimensionUtil.decimalToActualWidth(area.RADIUS_ARRAY[i]), 
-					y:DimensionUtil.decimalToActualHeight(area.RADIUS_ARRAY[i])},
+					{x:dimensionUtil.decimalToActualWidth(area.RADIUS_ARRAY[i]), 
+					y:dimensionUtil.decimalToActualHeight(area.RADIUS_ARRAY[i])},
 				stroke: 'red',
 				strokeWidth: 6
 			});
 			app.layer.add(ellipse);
 				
 			ellipse.on('dragend', function () {
-				console.log("x:" + DimensionUtil.actualToDecimalWidth(this.getX()) + ", " + "y:" + DimensionUtil.actualToDecimalHeight(this.getY()));
+				console.log("x:" + dimensionUtil.actualToDecimalWidth(this.getX()) + ", " + "y:" + dimensionUtil.actualToDecimalHeight(this.getY()));
 			});
 		}
 	}

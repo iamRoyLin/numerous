@@ -24,7 +24,7 @@ MenuView.prototype.draw = function () {
 
 MenuView.prototype.drawTitle = function() {
 	var title = new Kinetic.Image({image: this.images.numerousTitle});
-	WidgetUtil.glue(title, {
+	widgetUtil.glue(title, {
 		width: 0.35,
 		height: 0.1,
 		dx: 0.31,
@@ -35,7 +35,7 @@ MenuView.prototype.drawTitle = function() {
 
 MenuView.prototype.drawHomeButton = function() {
 	var button = new Kinetic.Image({image: this.images.homeButton});
-	WidgetUtil.glue(button, {
+	widgetUtil.glue(button, {
 		width: 0.11,
 		height: 0.12,
 		dx: 0.05,
@@ -44,14 +44,14 @@ MenuView.prototype.drawHomeButton = function() {
 	app.layer.add(button);
 	
 	button.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		app.controller.home()
 	});
 }
 
 MenuView.prototype.drawArrows = function() {
 	this.arrowLeft = new Kinetic.Image({image: this.images.arrowLeft});
-	WidgetUtil.glue(this.arrowLeft, {
+	widgetUtil.glue(this.arrowLeft, {
 		width: 0.1,
 		height: 0.22,
 		dx: 0.1,
@@ -60,7 +60,7 @@ MenuView.prototype.drawArrows = function() {
 	app.layer.add(this.arrowLeft);
 	
 	this.arrowRight = new Kinetic.Image({image: this.images.arrowRight});
-	WidgetUtil.glue(this.arrowRight, {
+	widgetUtil.glue(this.arrowRight, {
 		width: 0.1,
 		height: 0.22,
 		dx: 0.8,
@@ -69,13 +69,13 @@ MenuView.prototype.drawArrows = function() {
 	app.layer.add(this.arrowRight);
 	
 	this.arrowLeft.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		this.moveToTop();
 		app.stage.draw();
 		app.view.left();
 	});
 	this.arrowRight.on('click tap', function () {
-		Music.play(app.view.sounds.select);
+		music.play(app.view.sounds.select);
 		this.moveToTop();
 		app.stage.draw();
 		app.view.right();
@@ -92,7 +92,7 @@ MenuView.prototype.drawGroups = function() {
 		this.unitsGroupArray[i] = new Kinetic.Group({});
 		
 		var myLabel = new Kinetic.Image({image: this.images.unitLabels[i]});
-		WidgetUtil.glue(myLabel, {
+		widgetUtil.glue(myLabel, {
 			width: 0.35,
 			height: 0.12,
 			dx: 0.3,
@@ -101,7 +101,7 @@ MenuView.prototype.drawGroups = function() {
 		this.unitsGroupArray[i].add(myLabel);
 		
 		var myButton = new Kinetic.Image({image: this.images.unitPlayButtons[i]});
-		WidgetUtil.glue(myButton, {
+		widgetUtil.glue(myButton, {
 			width: 0.3,
 			height: 0.43,
 			dx: 0.33,
@@ -110,7 +110,7 @@ MenuView.prototype.drawGroups = function() {
 		
 		// Need to edit when the unit name is changed
 		myButton.on('click tap', function () {
-			Music.play(app.view.sounds.select);
+			music.play(app.view.sounds.select);
 			app.controller.unitSelect(app.view.currentUnit);
 		});
 		
@@ -131,7 +131,7 @@ MenuView.prototype.left = function () {
 	var currentGroup = this.unitsGroupArray[this.currentUnit];
 	
 	preGroup.setOpacity(0);
-	preGroup.setX(DimensionUtil.decimalToActualWidth(-0.35));
+	preGroup.setX(dimensionUtil.decimalToActualWidth(-0.35));
 	preGroup.show();
 	
 	var tweenIn = new Kinetic.Tween({
@@ -145,7 +145,7 @@ MenuView.prototype.left = function () {
 	var tweenOut = new Kinetic.Tween({
 		node: currentGroup,
 		duration: 0.5,
-		x: DimensionUtil.decimalToActualWidth(0.35),
+		x: dimensionUtil.decimalToActualWidth(0.35),
 		opacity: 0,
 		//Check
 		onFinish: function () {
@@ -164,7 +164,7 @@ MenuView.prototype.right = function () {
 	var currentGroup = this.unitsGroupArray[this.currentUnit];
 	
 	nextGroup.setOpacity(0);
-	nextGroup.setX(DimensionUtil.decimalToActualWidth(0.35));
+	nextGroup.setX(dimensionUtil.decimalToActualWidth(0.35));
 	nextGroup.show();
 	
 	var tweenIn = new Kinetic.Tween({
@@ -178,7 +178,7 @@ MenuView.prototype.right = function () {
 	var tweenOut = new Kinetic.Tween({
 		node: currentGroup,
 		duration: 0.5,
-		x: DimensionUtil.decimalToActualWidth(-0.35),
+		x: dimensionUtil.decimalToActualWidth(-0.35),
 		opacity: 0,
 		//Check
 		onFinish: function () {
