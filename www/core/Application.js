@@ -133,7 +133,7 @@ var App = new Class ({
 	
 	_loaded: function () {
 		// tell the controller to perform
-		app.controller.initialize();
+		app.controller.start();
 	},
 	
 	nextGame: function () {
