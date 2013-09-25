@@ -1,9 +1,19 @@
+/**
+ * The music adapter to allow music to work on devices. Follows adapter pattern and wraps 
+ * around the phonegap module "Media".
+ */
 var PhonegapMusic = new Class ({
 	Implements: Music,
-		
+
+	/**
+	 * {boolean} indicates whether background music is currently being played.
+	 */
 	isPlaying: false,
 		
-	// call this function to play a sound
+	/**
+	 * Play a sound
+	 * @param {string} src the sound file path
+	 */
 	play: function (src) {
 		if(storage.get("settingSound", true) == true){
 			var myMedia = new Media(src);
@@ -11,12 +21,18 @@ var PhonegapMusic = new Class ({
 		}
 	},
 	
-	
+	/**
+	 * Is a callback specific to phonegap's Media module to call back on any errors that occur.
+	 */
 	onError: function(error) {
             alert('code: '    + error.code    + '\n' + 
                   'message: ' + error.message + '\n');
 	},
 
+	/**
+	 * Play a background music. If the same background music is already playing, then do nothing.
+	 * @param {string} src the sound file path
+	 */
 	playBackgroundMusic: function (src) {
 		if(storage.get("settingMusic", true) == true){
 			if(this.isPlaying == false){
@@ -36,6 +52,9 @@ var PhonegapMusic = new Class ({
 		}
 	},
 	
+	/**
+	 * Pauses the background music. This should be used in devices to ensure good use of application life cycle
+	 */
 	pauseBackgroundMusic: function () {
 		if (this.isPlaying) {
 			this.backgroundMusic.pause();
@@ -43,6 +62,9 @@ var PhonegapMusic = new Class ({
 		}
 	},
 	
+	/**
+	 * Resumes the background music. This should be used in devices to ensure good use of application life cycle
+	 */
 	resumeBackgroundMusic: function () {
 		if (!this.isPlaying) {
 			this.backgroundMusic.play({ numberOfLoops: 999});
@@ -50,6 +72,9 @@ var PhonegapMusic = new Class ({
 		}
 	},
 	
+	/**
+	 * Stops the background music.
+	 */
 	stopBackgroundMusic: function () {
 		if (this.isPlaying == true) {
 			if (this.backgroundMusic) {
@@ -60,4 +85,3 @@ var PhonegapMusic = new Class ({
 	},
 	
 });
-

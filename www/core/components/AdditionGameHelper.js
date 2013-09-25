@@ -1,7 +1,18 @@
+/**
+ * Class to help coordinate the levels of the addition games
+ */
 var AdditionGameHelper = new Class ({
 
 	// difficulty is between 0 and 16.
 	// generates an object {left: 0, right: 0, answer: 0}
+	/**
+	 * Generates a question based on a difficulty. The difficulty directly corresponds to a 
+	 * level in the addition game (between 0 and 16).
+	 * @param {integer} difficulty corresponds to levels in the addition game (between 0 and 16).
+	 * @returns {integer} q.left the left integer to add
+	 * @returns {integer} q.right the right integer to add
+	 * @returns {integer} q.answer the sum of the left and right integers
+	 */
 	generateQuestion: function(difficulty) {
 		var q = {};
 		switch (difficulty) {

@@ -243,7 +243,7 @@ app = new App();
 
 
 // life cycle events
-if (Env.phoneGap) {
+if (env.phoneGap) {
 	// register loading of device
 	app.registerWait()
 	document.addEventListener("deviceready", app.notifyDone, false);

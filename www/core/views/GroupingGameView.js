@@ -381,7 +381,7 @@ var GroupingGameView = new Class ({
 		});
 		
 		/*
-		if (Env.debug) {
+		if (env.debug) {
 			pack.on('touchmove dragmove', function() {
 				console.log("x:" + dimensionUtil.actualToDecimalWidth(this.getX()) + ", " + "y:" + dimensionUtil.actualToDecimalHeight(this.getY()));
 			});
@@ -541,7 +541,7 @@ var GroupingGameView = new Class ({
 			this.drawNewEgg();
 		}
 		
-		/*if (Env.debug) {
+		/*if (env.debug) {
 			// draw out the region ones
 			for (var i = 0; i < this.viewVars.beltOnesArea.RADIUS_ARRAY.length; i++) {
 				var ellipse = new Kinetic.Ellipse({

@@ -1,8 +1,8 @@
 var DimensionUtil = new Class ({
 
-	width: Env.width,
+	width: env.width,
 	
-	height: Env.height,
+	height: env.height,
 
 	decimalToActualHeight: function (h) {
 		return h * this.height;

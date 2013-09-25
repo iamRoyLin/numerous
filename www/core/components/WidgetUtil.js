@@ -1,8 +1,8 @@
 var WidgetUtil = new Class ({
 	
-	width: Env.width,
+	width: env.width,
 	
-	height: Env.height,
+	height: env.height,
 
 	/*
 	 * Glues a KineticJs node to the correct position with a correct size relative to screen size.

@@ -129,7 +129,7 @@ var PracticeView = new Class({
 		app.layer.add(this.placeHolderEgg);
 		this.placeHolderEgg.hide();
 		
-		if (Env.debug) {
+		if (env.debug) {
 			this.placeHolderEgg.setDraggable(true);
 			this.placeHolderEgg.on('dragend touchend', function () {
 				console.log("placeholder egg at x:" + dimensionUtil.actualToDecimalWidth(this.getX()) + " y:" + dimensionUtil.actualToDecimalHeight(this.getY()));

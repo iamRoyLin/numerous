@@ -230,7 +230,7 @@ var AdditionGameController = new Class({
 		
 		this.view.drawNumbers();	
 		
-		if (Env.debug) {
+		if (env.debug) {
 			this.view.drawAreas();
 		}
 		

@@ -1,6 +1,11 @@
+/**
+ * This script is used to initialise all the components that is to be used in
+ * the application.
+ */
+
 var storage = new Storage();
 	
-if (Env.phoneGap) {
+if (env.phoneGap) {
 	var music = new PhonegapMusic();
 } else {
 	var music = new BrowserMusic();
