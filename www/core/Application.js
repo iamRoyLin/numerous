@@ -1,9 +1,22 @@
+/**
+ * The application is a class that is instantiated upon software startup
+ * It is mainly used to route between views and also holds some global
+ * application data and variables
+ */
 var App = new Class ({
 	
+	/**
+	 * Constructor
+	 */
 	initialize: function () {
+	
 	},
 	
-	start: function () {	
+	/**
+	 * The start function to call when all extenal extensions, libraries and frameworks have
+	 * finished loading.
+	 */
+	start: function () {
 		this.view = null;
 		this.controller = null;
 		
@@ -63,6 +76,7 @@ var App = new Class ({
 			{name:"Practice", page:"Practice2"}
 		];
 		
+		// Unit 3 games
 		this.UNIT_GAMES[2] = [
 			{name:"? + ? \n = ?",  page:"AdditionGame"},
 			{name:"? + ? \n = 1?",  page:"AdditionGame"},
@@ -94,6 +108,18 @@ var App = new Class ({
 		app.route(app.page, app.pageParams);
 	},
 
+	/**
+	 * The method is used to route between different controllers and hence, views(pages) 
+	 * in the application. The method will also automatically load all the images (using 
+	 * the loader class) specified in the controller's member "images".
+	 * @param {string} page the name of the page to route to. The convention is to use
+	 * the controller's class's name. For example "HomeController", the page will be "Home"
+	 * @param {object} an object to hold extra data the a page may need
+	 * @param {boolean} shouldReload the boolean indicates whether the application should
+	 * refresh the page and unload all resources before entering the view(page). This is done
+	 * to increase the performance of the overall application, as the application will slow
+	 * down if page is not refreshed regularly.
+	 */
 	route: function(page, pageParams, shouldReload) {
 		storage.set("page", page);
 		storage.set("pageParams", pageParams);
@@ -113,9 +139,6 @@ var App = new Class ({
 					this.layer.remove();
 				}	
 			}
-
-			
-
 		}
 		
 		this.page = page;
@@ -131,11 +154,19 @@ var App = new Class ({
 		loaderUtil.load(this.controller.images, this._loaded);
 	},
 	
+	/**
+	 * The method is a callback, and is called when all images are finished loading for
+	 * a specified controller. Then it tells the controller to start.
+	 */
 	_loaded: function () {
-		// tell the controller to perform
 		app.controller.start();
 	},
 	
+	/**
+	 * Tells the application to move to the next game.
+	 * @returns {boolean} indicates whether there is a next game. False will indicate that
+	 * it has reached the last level of the unit.
+	 */
 	nextGame: function () {
 		if (app.currentGame >= app.UNIT_GAMES[app.currentUnit].length-1) {
 			return false;
@@ -146,25 +177,45 @@ var App = new Class ({
 		}
 	},
 	
-	
+	/**
+	 * Gets the name of the current page that the application is currently on
+	 * @returns {string} the name of the current page
+	 */
 	getCurrentPage: function () {
 		return app.UNIT_GAMES[app.currentUnit][app.currentGame].page;
 	},
 	
+	/**
+	 * Gets the page params of the current page
+	 * @returns {object} the page paramters for the current page
+	 */
 	getCurrentPageParams: function () {
 		return app.UNIT_GAMES[app.currentUnit][app.currentGame].params;
 	},
 
+	/**
+	 * Sets the current level of the unit
+	 * @param {integer} gameName the game level to make the application go to
+	 */
 	setCurrentGame: function (gameName) {
 		this.currentGame = gameName;
 		storage.set("currentGame", gameName);
 	},
 	
+	/**
+	 * Sets the unit of the application
+	 * @param {integer} unitNumber the unit number to set the application to
+	 */
 	setCurrentUnit: function (unitNumber) {
 		this.currentUnit = unitNumber;
 		storage.set("currentUnit", unitNumber);
 	},
 
+	/**
+	 * Following the observer pattern, the application may register components
+	 * that it needs to wait for. A corresponding "notifyDone" method should be called
+	 * for every "registerWait" in order for the application to start.
+	 */
 	registerWait: function() {
 		if (app.objectsWaiting == null) {
 			app.objectsWaiting = 0;
@@ -172,6 +223,10 @@ var App = new Class ({
 		app.objectsWaiting++;
 	},
 	
+	/**
+	 * Following the observer pattern, the application should notify done for every
+	 * register wait that is called.
+	 */
 	notifyDone: function() {
 		app.objectsWaiting--;
 		if (app.objectsWaiting == 0) {
@@ -184,14 +239,10 @@ var App = new Class ({
 
 
 // start new app
-
-
 app = new App();
 
 
 // life cycle events
-
-
 if (Env.phoneGap) {
 	// register loading of device
 	app.registerWait()
@@ -206,11 +257,19 @@ if (Env.phoneGap) {
 	$(app.notifyDone);
 }
 
+/**
+ * Life-cycle events for putting the application into the background of a device (note that this
+ * is only used on devices)
+ */
 document.addEventListener("pause", function () {
 	navigator.splashscreen.show();
 	music.pauseBackgroundMusic();
 }, false);
 
+/**
+ * Life-cycle events for bring the application back into the foreground (note that this
+ * is only used on devices)
+ */
 document.addEventListener("resume", function () {
 	navigator.splashscreen.hide();
 	music.resumeBackgroundMusic();
