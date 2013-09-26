@@ -4,15 +4,24 @@
 var OptionsView = new Class ( /** @lends OptionsView.prototype */ {
 	Extends: View,
 	
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function (controller) {
 		this.controller = controller;
 	},
 	
-	// destructor (is automatically called when you leave the page)
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 
 	},
 
+	/**
+	 * Draw the title
+	 */
 	drawTitle: function() {
 		var title = new Kinetic.Image({image: this.images.titleOptions});
 		widgetUtil.glue(title, {
@@ -23,7 +32,10 @@ var OptionsView = new Class ( /** @lends OptionsView.prototype */ {
 		});
 		app.layer.add(title);
 	},
-
+	
+	/**
+	 * Draw the sound and music buttons
+	 */
 	drawSoundButtons: function() {
 		var sound = new Kinetic.Image({image: this.images.iconSound});
 		widgetUtil.glue(sound, {
@@ -109,6 +121,9 @@ var OptionsView = new Class ( /** @lends OptionsView.prototype */ {
 		});
 	},
 
+	/**
+	 * Draw the other options, such as "statistics", "lock/unlock levels", "reset" and "about"
+	 */
 	drawOptionsButtons: function() {
 		var buttonStatistics = new Kinetic.Image({image: this.images.buttonStatistics});
 		widgetUtil.glue(buttonStatistics, {
@@ -217,17 +232,9 @@ var OptionsView = new Class ( /** @lends OptionsView.prototype */ {
 		
 	},
 
-	drawTitle: function() {
-		var title = new Kinetic.Image({image: this.images.titleOptions});
-		widgetUtil.glue(title, {
-			width: this.viewVars.titleDimensions.width,
-			height: this.viewVars.titleDimensions.height,
-			dx: this.viewVars.titleDimensions.x,
-			dy: this.viewVars.titleDimensions.y
-		});
-		app.layer.add(title);
-	},
-
+	/**
+	 * Draws buttons for backing to the home screen
+	 */
 	drawHomeButton: function() {
 		var buttonHome = new Kinetic.Image({image: this.images.buttonHome});
 		widgetUtil.glue(buttonHome, {

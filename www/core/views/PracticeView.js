@@ -169,6 +169,7 @@ var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 
 	/**
 	 * Append text to the board
+	 * @param {string} newText new text on the board
 	 */
 	appendTextToBoard: function(newText) {
 		var textWidget = new Kinetic.Text({
@@ -339,6 +340,10 @@ var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 		app.stage.draw();
 	},
 
+	/**
+	 * Detect keyboard click
+	 * @param {Group} keyboardGroup is the group of keyboard eggs
+	 */
 	keyboardClick: function(keyboardGroup) {
 		keyboardGroup.moveToTop();
 
@@ -350,6 +355,11 @@ var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 			this.answeredWrong(keyboardGroup.id);
 		}
 	},
+	
+	/**
+	 * Do actions if selected is the right answer
+	 * @param {integer} id number of the keyboard that selected
+	 */
 	answeredRight: function(id) {
 
 		app.controller.keyboardEnabled = false;
@@ -389,6 +399,10 @@ var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 		
 	},
 	
+	/**
+	 * Do actions if selected is the wrong answer
+	 * @param {integer} id number of the keyboard that selected
+	 */
 	answeredWrong: function(id) {
 		
 		app.controller.keyboardEnabled = false;
@@ -406,8 +420,11 @@ var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 		
 		this.mistakeMadeThisRound = true;
 	},
-
-	// Finsih the game. Score: 0 for fail, 1 to 3 for stars
+	
+	/**
+	 * Finsih the game. Score: 0 for fail, 1 to 3 for stars
+	 * @param {integer} score is the rank of the game
+	 */
 	finish: function(score) {
 		var finishTitleImage = null;
 		var starsImage = null;
@@ -535,7 +552,10 @@ var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 		
 	},
 
-	// draws all the pause widgets then hides them. Shows when the pause function is called
+	
+	/**
+	 * Draws all the pause widgets then hides them. Shows when the pause function is called
+	 */
 	drawPauseWidgets: function() {
 
 		// pause button
@@ -630,14 +650,19 @@ var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 		this.pauseWidgetsGroup.hide();
 	},
 
-	// pause the game
+	
+	/**
+	 * Pause the game
+	 */
 	pause: function() {
 		this.pauseWidgetsGroup.show();
 		this.pauseWidgetsGroup.moveToTop();
 		app.stage.draw();
 	},
 
-	// unpause the game
+	/**
+	 * Unpause the game
+	 */
 	unpause: function() {
 		this.pauseWidgetsGroup.hide();
 		app.stage.draw();
