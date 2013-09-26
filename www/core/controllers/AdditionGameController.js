@@ -1,7 +1,7 @@
 /**
- * The controller to control the addition game view
+ * @class The controller to control the addition game view
  */
-var AdditionGameController = new Class({
+var AdditionGameController = new Class( /** @lends AdditionGameController.prototype */ {
 
 	/**
 	 * Constructor

@@ -1,7 +1,7 @@
 /**
- * Class to manimuplate arrays
+ * @class Class to manimuplate arrays
  */	
-var ArrayUtil = new Class ({
+var ArrayUtil = new Class ( /** @lends ArrayUtil.prototype */ {
 	
 	/**
 	 * Constructor

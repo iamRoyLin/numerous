@@ -1,7 +1,7 @@
 /**
- * Class to convert dimensions to and from decimal (e.g. "0.43") and real dimensions (e.g. "420" pixels, which depends on screen size)
+ * @class Class to convert dimensions to and from decimal (e.g. "0.43") and real dimensions (e.g. "420" pixels, which depends on screen size)
  */
-var DimensionUtil = new Class ({
+var DimensionUtil = new Class ( /** @lends DimensionUtil.prototype */ {
 
 	/**
 	 * Represents the width of the canvas

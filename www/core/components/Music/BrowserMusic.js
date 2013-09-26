@@ -1,8 +1,8 @@
 /**
- * The music adapter to allow music to work in a browser. Follows adapter pattern and wraps 
+ * @class The music adapter to allow music to work in a browser. Follows adapter pattern and wraps 
  * around the external pluggin "SoundManager2".
  */
-var BrowserMusic = new Class ({
+var BrowserMusic = new Class ( /** @lends BrowserMusic.prototype */ {
 	Implements: Music,
 	
 	/**

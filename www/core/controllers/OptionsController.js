@@ -1,7 +1,7 @@
 /**
- * The controller to control the OptionsView
+ * @class The controller to control the OptionsView
  */
-var OptionsController = new Class({
+var OptionsController = new Class( /** @lends OptionsController.prototype */ {
 
 	/**
 	 * Constructor

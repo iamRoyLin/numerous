@@ -1,9 +1,9 @@
 /**
- * The application is a class that is instantiated upon software startup
+ * @class The application is a class that is instantiated upon software startup
  * It is mainly used to route between views and also holds some global
  * application data and variables
  */
-var App = new Class ({
+var App = new Class ( /** @lends App.prototype */ {
 	
 	/**
 	 * Constructor
@@ -257,19 +257,16 @@ if (env.phoneGap) {
 	$(app.notifyDone);
 }
 
-/**
- * Life-cycle events for putting the application into the background of a device (note that this
- * is only used on devices)
- */
+
+// Life-cycle events for putting the application into the background of a device (note that this
+// is only used on devices)
 document.addEventListener("pause", function () {
 	navigator.splashscreen.show();
 	music.pauseBackgroundMusic();
 }, false);
 
-/**
- * Life-cycle events for bring the application back into the foreground (note that this
- * is only used on devices)
- */
+// Life-cycle events for bring the application back into the foreground (note that this
+// is only used on devices)
 document.addEventListener("resume", function () {
 	navigator.splashscreen.hide();
 	music.resumeBackgroundMusic();

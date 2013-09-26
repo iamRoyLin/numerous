@@ -1,7 +1,7 @@
 /**
- * The controller to control the practive view for unit 3
+ * @class The controller to control the practive view for unit 3
  */
-var Practice3Controller = new Class({
+var Practice3Controller = new Class( /** @lends Practice3Controller.prototype */ {
 		
 	/**
 	 * Constructor

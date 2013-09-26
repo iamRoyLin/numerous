@@ -1,7 +1,7 @@
 /**
- * The controller to control GroupingGameView for the second unit
+ * @class The controller to control GroupingGameView for the second unit
  */
-var GroupingGame3Controller = new Class({
+var GroupingGame3Controller = new Class( /** @lends GroupingGame3Controller.prototype */ {
 
 	/**
 	 * Constructor

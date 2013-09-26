@@ -1,7 +1,7 @@
 /**
- * Class to speak out a number
+ * @class Class to speak out a number
  */
-var SpeechUtil = new Class ({
+var SpeechUtil = new Class ( /** @lends SpeechUtil.prototype */ {
 
 	/**
 	 * speak out a number

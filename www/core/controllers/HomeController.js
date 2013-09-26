@@ -1,7 +1,7 @@
 /**
- * The controller to control the HomeView
+ * @class The controller to control the HomeView
  */
-var HomeController = new Class({
+var HomeController = new Class( /** @lends HomeController.prototype */ {
 
 	/**
 	 * Constructor

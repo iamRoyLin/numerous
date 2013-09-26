@@ -1,7 +1,7 @@
 /**
- * Class to help generate the keyboard text in the practice level
+ * @class Class to help generate the keyboard text in the practice level
  */
-var KeyboardTextsGenerator = new Class ({
+var KeyboardTextsGenerator = new Class ( /** @lends KeyboardTextsGenerator.prototype */ {
 	
 	/**
 	 * Generate the keyboard text for the practice level

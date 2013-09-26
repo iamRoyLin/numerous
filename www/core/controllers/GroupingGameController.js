@@ -1,7 +1,7 @@
 /**
- * The controller to control GroupingGameView for the first half of the first unit
+ * @class The controller to control GroupingGameView for the first half of the first unit
  */
-var GroupingGameController = new Class ({
+var GroupingGameController = new Class ( /** @lends GroupingGameController.prototype */ {
 
 	/**
 	 * Constructor

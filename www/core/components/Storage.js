@@ -1,7 +1,7 @@
 /**
- * Class to persistently store the data in a key-value format
+ * @class Class to persistently store the data in a key-value format
  */
-var Storage = new Class ({
+var Storage = new Class ( /** @lends Storage.prototype */ {
 
 	/**
 	 * Stores a key-value pair in persistent storage

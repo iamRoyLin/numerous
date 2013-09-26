@@ -1,8 +1,8 @@
 /**
- * The music adapter to allow music to work on devices. Follows adapter pattern and wraps 
+ * @class The music adapter to allow music to work on devices. Follows adapter pattern and wraps 
  * around the phonegap module "Media".
  */
-var PhonegapMusic = new Class ({
+var PhonegapMusic = new Class ( /** @lends PhonegapMusic.prototype */ {
 	Implements: Music,
 
 	/**

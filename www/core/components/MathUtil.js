@@ -1,7 +1,7 @@
 /**
- * Class to codify numbers to words, words to numbers, get floor, get remainder and random number
+ * @class Class to codify numbers to words, words to numbers, get floor, get remainder and random number
  */
-var MathUtil = new Class ({
+var MathUtil = new Class ( /** @lends MathUtil.prototype */ {
 
 	/**
 	 * map of words with key of numbers

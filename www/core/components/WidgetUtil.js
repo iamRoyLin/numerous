@@ -1,4 +1,7 @@
-var WidgetUtil = new Class ({
+/**
+ * @class Class help position widgets on the screen
+ */
+var WidgetUtil = new Class ( /** @lends WidgetUtil.prototype */ {
 	
 	/**
 	 * Represents the width of the canvas

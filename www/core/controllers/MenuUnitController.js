@@ -1,7 +1,7 @@
 /**
- * The controller to control the MenuUnit
+ * @class The controller to control the MenuUnit
  */
-var MenuUnitController = new Class({
+var MenuUnitController = new Class( /** @lends MenuUnitController.prototype */ {
 
 	/**
 	 * Constructor

@@ -1,7 +1,7 @@
 /**
- * The base music class to implement. 
+ * @class The base music class to implement. 
  */
-var Music = new Class ({
+var Music = new Class ( /** @lends Music.prototype */ {
 	
 	/**
 	 * Play a sound

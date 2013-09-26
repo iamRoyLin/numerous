@@ -1,7 +1,7 @@
 /**
- * Class to load images into memory using PxLoader
+ * @class Class to load images into memory using PxLoader
  */
-var LoaderUtil = new Class ({
+var LoaderUtil = new Class ( /** @lends LoaderUtil.prototype */ {
 
 	/**
 	 * Loads the images into memory.

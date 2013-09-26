@@ -1,7 +1,7 @@
 /**
- * The base view class that other view classes should extend
+ * @class The base view class that other view classes should extend
  */
-var View = new Class ({
+var View = new Class ( /** @lends View.prototype */ {
 	
 	/**
 	 * {object} to hold resources of all image resouces belonging to a view

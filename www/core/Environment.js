@@ -1,7 +1,7 @@
 /**
- * The class is used to give information to the application about its current environment.
+ * @class The class is used to give information to the application about its current environment.
  */
-var Env = new Class ({
+var Env = new Class ( /** @lends Env.prototype */ {
 	
 	/**
 	 * {integer} The screen width of the device or browser

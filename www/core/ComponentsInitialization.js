@@ -1,7 +1,5 @@
-/**
- * This script is used to initialise all the components that is to be used in
- * the application.
- */
+// This script is used to initialise all the components that is to be used in
+// the application.
 
 var storage = new Storage();
 	

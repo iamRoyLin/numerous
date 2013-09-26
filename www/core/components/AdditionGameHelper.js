@@ -1,7 +1,7 @@
 /**
- * Class to help coordinate the levels of the addition games
+ * @class Class to help coordinate the levels of the addition games
  */
-var AdditionGameHelper = new Class ({
+var AdditionGameHelper = new Class ( /** @lends AdditionGameHelper.prototype */ {
 
 	/**
 	 * Generates a question based on a difficulty. The difficulty directly corresponds to a 
