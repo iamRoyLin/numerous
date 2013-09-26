@@ -1,6 +1,12 @@
+/**
+ * Class to load and unload images by using PxLoader
+ */
 var LoaderUtil = new Class ({
 
-	// loads images
+	/**
+	 * Load images
+	 * @param TO COMMENT
+	 */
 	load: function(images, callback) {
 		var loader = new PxLoader();
 	
@@ -20,7 +26,10 @@ var LoaderUtil = new Class ({
 		loader.start();	
 	},
 
-	// unloads images
+	/**
+	 * Unload images
+	 * @param TO COMMENT
+	 */
 	unload: function(images) {
 		for(var key in images) {
 		

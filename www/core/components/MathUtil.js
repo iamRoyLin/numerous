@@ -1,7 +1,15 @@
+/**
+ * Class to codify numbers to words, words to numbers, get floor, get remainder and random number
+ */
 var MathUtil = new Class ({
-
+	/**
+	 * map of words with key of numbers
+	 */
 	NUMBER_TO_WORDS_MAP: [],
 	
+	/**
+	 * map numbers to words
+	 */
 	initialize: function () {
 		this.NUMBER_TO_WORDS_MAP[0] = "ZERO";
 		this.NUMBER_TO_WORDS_MAP[1] = "ONE";
@@ -106,18 +114,39 @@ var MathUtil = new Class ({
 		this.NUMBER_TO_WORDS_MAP[100] = "ONE-HUNDRED";
 	},
 
+	/**
+	 * generate random number
+	 * @param {integer} minimum number of range
+	 * @param {integer} maximum number of range
+	 * @return {integer} random number generated within the specified range
+	 */
 	random: function(min, max) {
 		return Math.floor(min + Math.random()*(max-min+1));
 	},
 	
+	/**
+	 * get the ones part of a number
+	 * @param {integer} the number that want to process
+	 * @return {integer} the ones part of the input number
+	 */
 	getOnes: function (number) {
 		return (number % 10);
 	},
 	
+	/**
+	 * get the tens part of a number
+	 * @param {integer} the number that want to process
+	 * @return {integer} the tens part of the input number
+	 */
 	getTens: function (number) {
 		return Math.floor(number / 10);
 	},
 	
+	/**
+	 * get a word from a number
+	 * @param {integer} a number that want to get its word
+	 * @return {string} the word of the input number
+	 */
 	convertNumberToWord: function(number) {
 		return this.NUMBER_TO_WORDS_MAP[number];
 	},

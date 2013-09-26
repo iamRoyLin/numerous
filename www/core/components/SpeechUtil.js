@@ -1,5 +1,12 @@
+/**
+ * Class to speak out a number
+ */
 var SpeechUtil = new Class ({
 
+	/**
+	 * speak out a number
+	 * @param {string} the word of a number you want the system to say
+	 */
 	sayNumber: function(number) {
 		music.play("sounds/numbers/" + number + ".mp3");
 	},
