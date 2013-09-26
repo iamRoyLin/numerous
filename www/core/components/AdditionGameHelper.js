@@ -3,8 +3,6 @@
  */
 var AdditionGameHelper = new Class ({
 
-	// difficulty is between 0 and 16.
-	// generates an object {left: 0, right: 0, answer: 0}
 	/**
 	 * Generates a question based on a difficulty. The difficulty directly corresponds to a 
 	 * level in the addition game (between 0 and 16).
