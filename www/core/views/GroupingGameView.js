@@ -1,7 +1,7 @@
 /**
- * Class to help coordinate the view of the grouping games
+ * @class Class to help coordinate the view of the grouping games
  */
-var GroupingGameView = new Class ({
+var GroupingGameView = new Class ( /** @lends GroupingGameView.prototype */ {
 	Extends: View,
 	
 	/**

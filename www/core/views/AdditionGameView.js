@@ -1,7 +1,7 @@
 /**
- * Class to help coordinate the view of the addition games
+ * @class Class to help coordinate the view of the addition games
  */
-var AdditionGameView = new Class ({
+var AdditionGameView = new Class ( /** @lends AdditionGameView.prototype */ {
 	Extends: View,
 	
 	/**

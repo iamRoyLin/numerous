@@ -1,7 +1,7 @@
 /**
- * Class to help coordinate the view of the home screen
+ * @class Class to help coordinate the view of the home screen
  */
-var HomeView = new Class({
+var HomeView = new Class( /** @lends HomeView.prototype */ {
 	Extends: View,
 	
 	/**

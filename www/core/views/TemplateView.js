@@ -1,4 +1,7 @@
-var TemplateView = new Class ({
+/**
+ * @class Template view that should be copied when creating a new view
+ */
+var TemplateView = new Class ( /** @lends TemplateView.prototype */ {
 	Extends: View,
 
 	/**

@@ -1,7 +1,7 @@
 /**
- * Class to help coordinate the view of level selection screen
+ * @class Class to help coordinate the view of level selection screen
  */
-var MenuUnitView = new Class({
+var MenuUnitView = new Class( /** @lends MenuUnitView.prototype */ {
 	Extends: View,
 	
 	/**

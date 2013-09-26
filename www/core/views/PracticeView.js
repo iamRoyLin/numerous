@@ -1,4 +1,7 @@
-var PracticeView = new Class({
+/**
+ * @class Class to help coordinate the view of the practice games
+ */
+var PracticeView = new Class( /** @lends PracticeView.prototype */ {
 	Extends: View,
 	
 	/**

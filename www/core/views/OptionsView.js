@@ -1,4 +1,7 @@
-var OptionsView = new Class ({
+/**
+ * @class Class to help coordinate the view of options screen
+ */
+var OptionsView = new Class ( /** @lends OptionsView.prototype */ {
 	Extends: View,
 	
 	initialize: function (controller) {
