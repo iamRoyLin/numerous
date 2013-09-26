@@ -1,5 +1,11 @@
+/**
+ * The controller to control GroupingGameView for the second unit
+ */
 var GroupingGame3Controller = new Class({
 
+	/**
+	 * Constructor
+	 */
 	initialize: function () {
 		
 		// Image that are automatically loaded
@@ -52,6 +58,10 @@ var GroupingGame3Controller = new Class({
 		this.sounds.background = "sounds/background_music/game.mp3";
 	},
 
+	/**
+	 * Callback that is called when all images are loaded.
+	 * So that the controller can tell the view to start presenting
+	 */
 	start: function() {
 		this.view = new GroupingGameView(this);
 		app.view = this.view;
@@ -191,11 +201,17 @@ var GroupingGame3Controller = new Class({
 		speechUtil.sayNumber(this.goalNumber);
 	},
 
-	// destructor
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 		
 	},
 
+	/**
+	 * Restart the game
+	 * @param {boolean} sameNumber to indicate if restart should restart with the same number
+	 */
 	restart: function(sameNumber) {
 		app.view.titleAnim.stop();
 		if (sameNumber) {
@@ -204,12 +220,18 @@ var GroupingGame3Controller = new Class({
 		app.route(app.getCurrentPage(), app.getCurrentPageParams(), true);
 	},
 
+	/**
+	 * Navigate to main menu
+	 */
 	menu: function() {
 		app.view.titleAnim.stop();
 		app.route("MenuUnit", null, true);
 
 	},
 
+	/**
+	 * Navigate to the next game
+	 */
 	nextGame: function() {
 		app.view.titleAnim.stop();
 		if (app.nextGame()) {
@@ -219,6 +241,10 @@ var GroupingGame3Controller = new Class({
 		}
 	},
 
+	/**
+	 * Saves the stars achieved by the user to persistent storage
+	 * @param {integer} starsCount the number of stars achieved by the user
+	 */
 	achievedStars: function (starsCount) {
 		var unitRecordsModel = new UnitRecordsModel(app.currentUnit);
 		if (unitRecordsModel.getStars(app.currentGame) < starsCount) {

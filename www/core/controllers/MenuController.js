@@ -1,5 +1,11 @@
+/**
+ * The controller to control the MenuView
+ */
 var MenuController = new Class ({
 
+	/**
+	 * Constructor
+	 */
 	initialize: function () {
 
 		// Images. These will automatically be loaded
@@ -22,6 +28,10 @@ var MenuController = new Class ({
 		
 	},
 
+	/**
+	 * Callback that is called when all images are loaded.
+	 * So that the controller can tell the view to start presenting
+	 */
 	start: function () {
 		this.view = new MenuView(this);
 		app.view = this.view;
@@ -31,19 +41,31 @@ var MenuController = new Class ({
 		this.view.draw();
 	},
 
-	// destructor
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 		
 	},
 
+	/**
+	 * Navigate to the main menu
+	 */
 	play: function () {
 		
 	},
 
+	/**
+	 * Navigate back to the home page
+	 */
 	home: function () {
 		app.route("Home");
 	},
 
+	/**
+	 * Navigate to a unit page
+	 * @param {integer} unit the unit to navigate into
+	 */
 	unitSelect: function(unit) {
 		app.setCurrentUnit(unit);
 		app.route("MenuUnit");

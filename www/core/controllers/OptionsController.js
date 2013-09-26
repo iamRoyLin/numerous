@@ -1,5 +1,11 @@
+/**
+ * The controller to control the OptionsView
+ */
 var OptionsController = new Class({
 
+	/**
+	 * Constructor
+	 */
 	initialize: function () {
 		// Images. These will automatically be loaded
 		this.images = {};
@@ -25,7 +31,10 @@ var OptionsController = new Class({
 		this.sounds.background = "sounds/background_music/menu.mp3";
 	},
 
-	// Happens when images are loaded
+	/**
+	 * Callback that is called when all images are loaded.
+	 * So that the controller can tell the view to start presenting
+	 */
 	start: function () {
 		this.view = new OptionsView(this);
 		app.view = this.view;
@@ -62,11 +71,16 @@ var OptionsController = new Class({
 		app.stage.draw();
 	},
 
+	/**
+	 * Navigate back to the home page
+	 */
 	home: function () {
 		app.route("Home");
 	},
 
-	// destructor (is automatically called when you leave the page)
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 		
 	},

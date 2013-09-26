@@ -1,5 +1,11 @@
+/**
+ * The controller to control the practive view for unit 1
+ */
 var Practice1Controller = new Class ({
-	
+
+	/**
+	 * Constructor
+	 */
 	initialize: function () {
 
 		// Images. These will automatically be loaded
@@ -51,7 +57,10 @@ var Practice1Controller = new Class ({
 		//view.draw();
 	},
 
-	// Happens when images are loaded
+	/**
+	 * Callback that is called when all images are loaded.
+	 * So that the controller can tell the view to start presenting
+	 */
 	start: function () {
 		this.view = new PracticeView(this);
 		app.view = this.view;
@@ -148,11 +157,16 @@ var Practice1Controller = new Class ({
 		this.nextQuestion();
 	},
 
-	// destructor (is automatically called when you leave the page)
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 		
 	},
 
+	/**
+	 * Presents the next quesiton
+	 */
 	nextQuestion: function() {
 		this.currentQuestion++;
 		if (this.currentQuestion >= this.gameQuestions.length) {
@@ -168,20 +182,27 @@ var Practice1Controller = new Class ({
 		
 		this.view.presentNextQuestion(questionText, progressText, keyboardTexts, correctAnswerId);
 		
-		
 		return true;
 	},
 
-
-
+	/**
+	 * Restart the game
+	 * @param {boolean} sameNumber to indicate if restart should restart with the same number
+	 */
 	restart: function(sameNumber) {
 		app.route("Practice1", null, true);
 	},
 
+	/**
+	 * Navigates into the main menu
+	 */
 	menu: function() {
 		app.route("MenuUnit", null, true);
 	},
 
+	/**
+	 * Picks the set of questions for this practice and stores it into this.gameQuestions field.
+	 */
 	pickQuestions: function() {
 		this.gameQuestions = [];
 		
@@ -198,14 +219,25 @@ var Practice1Controller = new Class ({
 		}
 	},
 
+	/**
+	 * Gets the current question
+	 * @returns {string} the current question
+	 */
 	getCurrentQuestion: function() {
 		return this.questionSets[this.gameQuestions[this.currentQuestion].set][this.gameQuestions[this.currentQuestion].question];
 	},
 
+	/**
+	 * Record an increase in the number of mistakes made
+	 */
 	mistakeMade: function() {
 		this.mistakesCount++;
 	},
 
+	/**
+	 * Saves the stars achieved by the user to persistent storage
+	 * @param {integer} starsCount the number of stars achieved by the user
+	 */
 	achievedStars: function (starsCount) {
 		var unitRecordsModel = new UnitRecordsModel(app.currentUnit);
 		if (unitRecordsModel.getStars(app.currentGame) < starsCount) {

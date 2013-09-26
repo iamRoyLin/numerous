@@ -1,5 +1,11 @@
+/**
+ * The controller to control the HomeView
+ */
 var HomeController = new Class({
 
+	/**
+	 * Constructor
+	 */
 	initialize: function () {
 		
 		// Images. These will automatically be loaded
@@ -14,6 +20,10 @@ var HomeController = new Class({
 		
 	},
 
+	/**
+	 * Callback that is called when all images are loaded.
+	 * So that the controller can tell the view to start presenting
+	 */
 	start: function () {
 		this.view = new HomeView(this);
 		app.view = this.view;
@@ -26,15 +36,23 @@ var HomeController = new Class({
 		this.view.draw();
 	},
 
-	// destructor
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 		
 	},
 
+	/**
+	 * Navigate to the main menu
+	 */
 	play: function () {
 		app.route("Menu");
 	},
 
+	/**
+	 * Navigate to the settings page
+	 */
 	settings: function() {
 		app.route("Options");
 	},
