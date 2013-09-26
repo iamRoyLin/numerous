@@ -1,7 +1,7 @@
 /**
- * Used for modelling the data of student progress.
+ * @class Used for modelling the data of student progress.
  */
-var UnitRecordsModel = new Class ({
+var UnitRecordsModel = new Class ( /** @lends UnitRecordsModel.prototype */ {
 
 	/**
 	 * Key for the key-value pair when accessing the storage
