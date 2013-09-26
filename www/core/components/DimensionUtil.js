@@ -1,5 +1,5 @@
 /**
- * Class to help coordinate the dimensions of patterns in the game
+ * Class to convert dimensions to and from decimal (e.g. "0.43") and real dimensions (e.g. "420" pixels, which depends on screen size)
  */
 var DimensionUtil = new Class ({
 
@@ -15,8 +15,8 @@ var DimensionUtil = new Class ({
 	
 	/**
 	 * Convert decimal height to the actual height
-	 * @param {float} decimal height
-	 * @return {double} actual height
+	 * @param {float} h decimal height
+	 * @returns {double} actual height
 	 */
 	decimalToActualHeight: function (h) {
 		return h * this.height;
@@ -24,8 +24,8 @@ var DimensionUtil = new Class ({
 	
 	/**
 	 * Convert actual height to the decimal height
-	 * @param {double} actual height
-	 * @return {float} decimal height
+	 * @param {double} h actual height
+	 * @returns {float} decimal height
 	 */
 	actualToDecimalHeight: function(h) {
 		return h / this.height;
@@ -33,8 +33,8 @@ var DimensionUtil = new Class ({
 	
 	/**
 	 * Convert decimal width to the actual width
-	 * @param {float} decimal width
-	 * @return {double} actual width
+	 * @param {float} w decimal width
+	 * @returns {double} actual width
 	 */
 	decimalToActualWidth: function (w) {
 		return w * this.width;
@@ -42,8 +42,8 @@ var DimensionUtil = new Class ({
 	
 	/**
 	 * Convert actual width to the decimal width
-	 * @param {double} actual width
-	 * @return {float} decimal width
+	 * @param {double} w actual width
+	 * @returns {float} decimal width
 	 */
 	actualToDecimalWidth: function(w) {
 		return w / this.width;

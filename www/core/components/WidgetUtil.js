@@ -12,7 +12,7 @@ var WidgetUtil = new Class ({
 
 	/**
 	 * Glues a KineticJs node to the correct position with a correct size relative to screen size.
-	 * @param {Node} node the KineticJs node
+	 * @param {Kinetic.Node} node the KineticJs node
 	 * @param {boolean} params.glueTop true for glue top and false (or no definition) for glue bottom. defaults to true
 	 * @param {boolean} params.glueLeft true for glue left and false (or no definition) for glue right. defaults to true
 	 * @param {float} params.width a decimal between 0 and 1 (proportional to screen size).
@@ -50,11 +50,11 @@ var WidgetUtil = new Class ({
 	
 	/**
 	 * Determines if the center of the object is within radius of a specified point
-	 * @param {Node} node the KineticJs node
+	 * @param {Kinetic.Node} node the KineticJs node
 	 * @param {float} x a decimal representing horrizontal position of destination between 0 and 1
 	 * @param {float} y a decimal representing vertical position of destination etween 0 and 1
 	 * @param {float} radius a decimal representing radius which determines what is close
-	 * @returns {boolean}
+	 * @returns {boolean} if it is near the point
 	 */
 	isNearPoint: function(node, x, y, radius) {
 		// we are working in real width and height and not decimal
@@ -79,12 +79,11 @@ var WidgetUtil = new Class ({
 	
 	/**
 	 * Determines if the center of the object is within radius of a specified point
-	 * @return boolean
-	 * @param node the KineticJs node
-	 * @param xArray an array of horrizontal positions of destination between 0 and 1
-	 * @param yArray an array of vertical positions of destination etween 0 and 1
-	 * @param radiusArray an array of radius which determines what is close
-	 * @return boolean
+	 * @param {Kinetic.Node} node the KineticJs node
+	 * @param {array} xArray an array of horrizontal positions of destination between 0 and 1
+	 * @param {array} yArray an array of vertical positions of destination etween 0 and 1
+	 * @param {array} radiusArray an array of radius which determines what is close
+	 * @returns {boolean}
 	 */
 	isNearPoints: function(node, xArray, yArray, radiusArray) {
 		for (var i = 0; i < radiusArray.length; i++) {
@@ -95,6 +94,13 @@ var WidgetUtil = new Class ({
 		return false;
 	},
 	
+	/**
+	 * Moves a node (slowly) to a new destination
+	 * @param {Kinetic.Node} node the KineticJs node
+	 * @param {integer} duration in milliseconds for the entire animation
+	 * @param {float} x the x location to move to (between 0 and 1)
+	 * @param {float} y the y location to move to (between 0 and 1)
+	 */
 	animateMove: function(node, duration, x, y) {
 		var tween = new Kinetic.Tween({
 			node: node, 

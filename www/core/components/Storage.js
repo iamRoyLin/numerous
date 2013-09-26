@@ -1,22 +1,22 @@
 /**
- * Class to store the data
+ * Class to persistently store the data in a key-value format
  */
 var Storage = new Class ({
 
 	/**
-	 * TO COMMENT
-	 * @param
-	 * @param
+	 * Stores a key-value pair in persistent storage
+	 * @param key the identifier
+	 * @param value the value to store
 	 */
 	set: function(key, value) {
 		$.jStorage.set(key, value);
 	},
 	
 	/**
-	 * TO COMMENT
-	 * @param
-	 * @param
-	 * @return
+	 * gets the value given a key from the persistent storage
+	 * @param key the identifier
+	 * @param defaultValue is the value to return if the entry does not already exist in the storage
+	 * @returns the value corresponding to the key
 	 */
 	get: function(key, defaultValue) {
 		if ($.jStorage.get(key, null) == null) {
@@ -26,8 +26,8 @@ var Storage = new Class ({
 	},
 	
 	/**
-	 * TO COMMENT
-	 * @param
+	 * the key to delete from the persistent storage
+	 * @param key the key to delete
 	 */
 	deleteKey: function(key) {
 		$.jStorage.deleteKey(key);

@@ -1,11 +1,12 @@
 /**
- * Class to load and unload images by using PxLoader
+ * Class to load images into memory using PxLoader
  */
 var LoaderUtil = new Class ({
 
 	/**
-	 * Load images
-	 * @param TO COMMENT
+	 * Loads the images into memory.
+	 * @param {object} images a object containing strings of images. This can be nested to contain objects containings strings of images
+	 * @param {function} callback to call ones all the images have finished loading into memory
 	 */
 	load: function(images, callback) {
 		var loader = new PxLoader();
@@ -28,7 +29,7 @@ var LoaderUtil = new Class ({
 
 	/**
 	 * Unload images
-	 * @param TO COMMENT
+	 * @param {object} images the objects of images to unload
 	 */
 	unload: function(images) {
 		for(var key in images) {

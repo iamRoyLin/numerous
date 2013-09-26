@@ -11,9 +11,9 @@ var ArrayUtil = new Class ({
 	},
 	
 	/**
-	 * Randomly rearrange arrays
-	 * @param {array} array that you want to shuffle
-	 * @return {array} rearranged array
+	 * Randomly rearranges the array
+	 * @param {array} arr array that you want to shuffle
+	 * @returns {array} arr rearranged array
 	 */	
 	shuffleArray: function(arr) {
 		arr2 = arr.slice(0);
@@ -26,7 +26,7 @@ var ArrayUtil = new Class ({
 	 * @param {integer} lower value
 	 * @param {integer} upper value
 	 * @param {integer} increment value
-	 * @param {array} generated array
+	 * @returns {array} generated array
 	 */	
 	generateNumberArray: function(lower, upper, increment) {
 		var output = [];

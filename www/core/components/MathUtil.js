@@ -2,13 +2,14 @@
  * Class to codify numbers to words, words to numbers, get floor, get remainder and random number
  */
 var MathUtil = new Class ({
+
 	/**
 	 * map of words with key of numbers
 	 */
 	NUMBER_TO_WORDS_MAP: [],
 	
 	/**
-	 * map numbers to words
+	 * Constructor
 	 */
 	initialize: function () {
 		this.NUMBER_TO_WORDS_MAP[0] = "ZERO";
@@ -116,9 +117,9 @@ var MathUtil = new Class ({
 
 	/**
 	 * generate random number
-	 * @param {integer} minimum number of range
-	 * @param {integer} maximum number of range
-	 * @return {integer} random number generated within the specified range
+	 * @param {integer} min minimum number of range
+	 * @param {integer} max maximum number of range
+	 * @returns {integer} random number generated within the specified range
 	 */
 	random: function(min, max) {
 		return Math.floor(min + Math.random()*(max-min+1));
@@ -126,8 +127,8 @@ var MathUtil = new Class ({
 	
 	/**
 	 * get the ones part of a number
-	 * @param {integer} the number that want to process
-	 * @return {integer} the ones part of the input number
+	 * @param {integer} number that you want to get the ones
+	 * @returns {integer} the ones part of the input number
 	 */
 	getOnes: function (number) {
 		return (number % 10);
@@ -135,8 +136,8 @@ var MathUtil = new Class ({
 	
 	/**
 	 * get the tens part of a number
-	 * @param {integer} the number that want to process
-	 * @return {integer} the tens part of the input number
+	 * @param {integer} number the number that want to process
+	 * @returns {integer} the tens part of the input number
 	 */
 	getTens: function (number) {
 		return Math.floor(number / 10);
@@ -144,8 +145,8 @@ var MathUtil = new Class ({
 	
 	/**
 	 * get a word from a number
-	 * @param {integer} a number that want to get its word
-	 * @return {string} the word of the input number
+	 * @param {integer} number a number that want to get its word
+	 * @returns {string} the word of the input number
 	 */
 	convertNumberToWord: function(number) {
 		return this.NUMBER_TO_WORDS_MAP[number];

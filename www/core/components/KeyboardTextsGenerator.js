@@ -5,10 +5,10 @@ var KeyboardTextsGenerator = new Class ({
 	
 	/**
 	 * Generate the keyboard text for the practice level
-	 * @param {array[String]} all the texts from the pool of text (may contain correct text)
-	 * @param {string} the correct answer
-	 * @param {integer} the number of texts to generate
-	 * @return {array[string]} shuffled keyborad texts
+	 * @param {array} texts all the texts from the pool of text (may contain correct text)
+	 * @param {string} correctText the correct answer
+	 * @param {integer} textsCount the number of texts to generate
+	 * @returns {array} shuffled keyborad texts
 	 */
 	generate: function (texts, correctText, textsCount) {
 		var output = [correctText];
