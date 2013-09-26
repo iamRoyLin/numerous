@@ -1,21 +1,24 @@
 var WidgetUtil = new Class ({
 	
+	/**
+	 * Represents the width of the canvas
+	 */
 	width: env.width,
 	
+	/**
+	 * Represents the height of the canvas
+	 */
 	height: env.height,
 
-	/*
+	/**
 	 * Glues a KineticJs node to the correct position with a correct size relative to screen size.
-	 * 
-	 * @param node the KineticJs node
-	 * @param params {
-	 * 		@param glueTop (boolean): true for glue top and false (or no definition) for glue bottom. defaults to true
-	 * 		@param glueLeft (boolean): true for glue left and false (or no definition) for glue right. defaults to true
-	 * 		@param width (decimal): between 0 and 1 (proportional to screen size).
-	 * 		@param height (decimal): between 0 and 1 (proportional to screen size).
-	 * 		@param dx (decimal): x-displacement of image from side it is glued (proportional to screen size).
-	 * 		@param dy (decimal): y-displacement of image from side it is glued (proportional to screen size).
-	 * }
+	 * @param {Node} node the KineticJs node
+	 * @param {boolean} params.glueTop true for glue top and false (or no definition) for glue bottom. defaults to true
+	 * @param {boolean} params.glueLeft true for glue left and false (or no definition) for glue right. defaults to true
+	 * @param {float} params.width a decimal between 0 and 1 (proportional to screen size).
+	 * @param {float} params.height a decimal between 0 and 1 (proportional to screen size).
+	 * @param {float} params.dx a decimal representing x-displacement of image from side it is glued (proportional to screen size).
+	 * @param {float} params.dy decimal representing y-displacement of image from side it is glued (proportional to screen size).
 	 */
 	glue: function (node, params) {
 		var myWidth, myHight, myX, myY;
@@ -45,13 +48,13 @@ var WidgetUtil = new Class ({
 	},
 	
 	
-	/*
+	/**
 	 * Determines if the center of the object is within radius of a specified point
-	 * @param node the KineticJs node
-	 * @param x horrizontal position of destination between 0 and 1
-	 * @param y vertical position of destination etween 0 and 1
-	 * @param radius the radius which determines what is close
-	 * @return boolean
+	 * @param {Node} node the KineticJs node
+	 * @param {float} x a decimal representing horrizontal position of destination between 0 and 1
+	 * @param {float} y a decimal representing vertical position of destination etween 0 and 1
+	 * @param {float} radius a decimal representing radius which determines what is close
+	 * @returns {boolean}
 	 */
 	isNearPoint: function(node, x, y, radius) {
 		// we are working in real width and height and not decimal
@@ -74,7 +77,7 @@ var WidgetUtil = new Class ({
 		}
 	},
 	
-	/*
+	/**
 	 * Determines if the center of the object is within radius of a specified point
 	 * @return boolean
 	 * @param node the KineticJs node
