@@ -56,14 +56,14 @@ var OptionsView = new Class ( /** @lends OptionsView.prototype */ {
 		app.layer.add(soundCross);
 		soundCross.hide();
 		
-		var music = new Kinetic.Image({image: this.images.iconMusic});
-		widgetUtil.glue(music, {
+		var musicbutton = new Kinetic.Image({image: this.images.iconMusic});
+		widgetUtil.glue(musicbutton, {
 			width: this.viewVars.iconMusicDimensions.width,
 			height: this.viewVars.iconMusicDimensions.height,
 			dx: this.viewVars.iconMusicDimensions.x,
 			dy: this.viewVars.iconMusicDimensions.y
 		});
-		app.layer.add(music);
+		app.layer.add(musicbutton);
 		
 		var musicCross = new Kinetic.Image({image: this.images.iconCross});
 		widgetUtil.glue(musicCross, {
@@ -103,7 +103,7 @@ var OptionsView = new Class ( /** @lends OptionsView.prototype */ {
 				
 		});
 		
-		music.on('click tap', function () {
+		musicbutton.on('click tap', function () {
 			music.play(app.view.sounds.select);
 			if ( storage.get("settingMusic", true) == true) {
 				//turn off the sound
