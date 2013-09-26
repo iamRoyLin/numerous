@@ -1,15 +1,31 @@
+/**
+ * Class to help coordinate the view of the home screen
+ */
 var HomeView = new Class({
 	Extends: View,
 	
+	/**
+	 * Controller that controls this view
+	 */
 	controller: null,
 	
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function (controller) {
 		this.controller = controller;
 	},
 
+	/**
+	 * Destructor
+	 */
 	finalize: function () {
 	},
 	
+	/**
+	 * Draw the background and buttons on the screen
+	 */
 	draw: function () {
 		this._drawBackground();
 		this._drawButtons();
@@ -18,6 +34,9 @@ var HomeView = new Class({
 		app.stage.draw();
 	},
 	
+	/**
+	 * Draw the background
+	 */
 	_drawBackground: function() {
 		var background = new Kinetic.Image({image: this.images.background});
 		widgetUtil.glue(background, {
@@ -29,6 +48,9 @@ var HomeView = new Class({
 		app.layer.add(background);
 	},
 	
+	/**
+	 * Draw buttons
+	 */
 	_drawButtons: function() {
 
 		//play button

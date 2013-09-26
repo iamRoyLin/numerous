@@ -1,11 +1,17 @@
 var TemplateView = new Class ({
 	Extends: View,
 
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function(controller) {
 		this.controller = controller;
 	},
 	
-	// destructor (is automatically called when you leave the page)
+	/**
+	 * Destructor(is automatically called when you leave the page)
+	 */
 	finalize: function() {
 	
 	},

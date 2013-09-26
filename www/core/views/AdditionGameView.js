@@ -1,6 +1,13 @@
+/**
+ * Class to help coordinate the view of the addition games
+ */
 var AdditionGameView = new Class ({
 	Extends: View,
 	
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function (controller) {
 		this.controller = controller;
 		
@@ -43,12 +50,16 @@ var AdditionGameView = new Class ({
 
 
 
-	// destructor
+	/**
+	 * Destructor
+	 */
 	finalize : function () {
 		
 	},
 
-	// draw new eggs (ones) group
+	/**
+	 * Draw new eggs (ones) group
+	 */
 	drawEggsGroup : function() {
 		this.eggsInGroup = [];
 		this.eggsGroup = new Kinetic.Group({
@@ -58,7 +69,9 @@ var AdditionGameView = new Class ({
 		app.layer.add(this.eggsGroup);
 	},
 
-	// draw new packs (tens) group
+	/**
+	 * Draw new packs (tens) group
+	 */
 	drawPacksGroup : function() {
 		this.packsInGroup = [];
 		this.packsGroup = new Kinetic.Group({
@@ -68,7 +81,10 @@ var AdditionGameView = new Class ({
 		app.layer.add(this.packsGroup);
 	},
 
-	// Draws the belts
+	
+	/**
+	 * Draws the belts
+	 */
 	drawBelts : function() {
 		var belts = new Kinetic.Image({image: this.images.belts});
 		widgetUtil.glue(belts, {
@@ -80,7 +96,10 @@ var AdditionGameView = new Class ({
 		app.layer.add(belts);
 	},
 
-	// Draws the tracks
+	
+	/**
+	 * Draws the tracks
+	 */
 	drawTracks : function () {
 		var track = new Kinetic.Image({image: this.images.track});
 		widgetUtil.glue(track, {
@@ -92,7 +111,9 @@ var AdditionGameView = new Class ({
 		app.layer.add(track);
 	},
 
-	// Draw boards (only applied for unit3)
+	/**
+	 * Draw boards (only applied for unit3)
+	 */
 	drawBoards : function () {
 		var board1 = new Kinetic.Image({image: this.images.board1});
 		widgetUtil.glue(board1, {
@@ -113,7 +134,9 @@ var AdditionGameView = new Class ({
 		app.layer.add(board2);
 	},
 
-	// Draws the think cloud 
+	/**
+	 * Draws the think cloud 
+	 */
 	drawThinkCloud : function () {
 		
 		// think cloud
@@ -143,7 +166,11 @@ var AdditionGameView = new Class ({
 		this.displayThinkCloud("Lets do some addition! Drag eggs onto the truck!");
 	},
 
-	// Displays a message in the think cloud
+	/**
+	 * Displays a message in the think cloud
+	 * @param {string} message want to display
+	 * @param {integer} fontsize
+	 */
 	displayThinkCloud : function(message, fontSize) {
 		if (fontSize == null) {
 			fontSize = 25;
@@ -154,7 +181,9 @@ var AdditionGameView = new Class ({
 		app.stage.draw();
 	},
 
-	// draws the rabbit
+	/**
+	 * Draws the rabbit
+	 */
 	drawRabbitHead : function () {
 		var rabbitHead = new Kinetic.Image({image: this.images.rabbitHead});
 		widgetUtil.glue(rabbitHead, {
@@ -166,7 +195,9 @@ var AdditionGameView = new Class ({
 		app.layer.add(rabbitHead);
 	},
 
-	// draws the done button
+	/**
+	 * Draws the done button
+	 */
 	drawDoneButton : function() {
 		var buttonDone = new Kinetic.Image({image: this.images.buttonDone});
 		widgetUtil.glue(buttonDone, {
@@ -192,7 +223,10 @@ var AdditionGameView = new Class ({
 		app.layer.add(buttonDone);
 	},
 
-	// draws the number the student needs to perform
+	/**
+	 * Draws the number the student needs to perform
+	 * @param {string} title word of number for the title place
+	 */
 	drawTitle : function(title) {
 		 this.titleTextWidget = new Kinetic.Text({
 			x: dimensionUtil.decimalToActualWidth(0.15),
@@ -235,6 +269,9 @@ var AdditionGameView = new Class ({
 
 	},
 
+	/**
+	 * Draws the number to indicate the numbers of eggs or packs on the belts or trucks
+	 */
 	drawNumbers : function() {
 		// top
 		this.topNumberTextWidget = new Kinetic.Text({
@@ -273,6 +310,9 @@ var AdditionGameView = new Class ({
 		this.refreshNumbers();
 	},
 
+	/**
+	 * Refresh indicated numbers on the board when new eggs or packs are added in or removed
+	 */
 	refreshNumbers : function() {
 		var goalNumber = this.viewVars.goalNumber + this.viewVars.goalNumber2;
 		var topNumber = (this.eggsInGroup.length) + (this.packsInGroup.length * 10) + (this.boxesInGroup.length * 100);
@@ -283,8 +323,9 @@ var AdditionGameView = new Class ({
 		app.stage.draw();
 	},
 
-
-	// draws all the eggs
+	/**
+	 * Draws all the eggs
+	 */
 	drawEggs : function () {
 		this.eggsGroup.moveToTop();
 		this.packsGroup.moveToTop();
@@ -341,7 +382,11 @@ var AdditionGameView = new Class ({
 		}
 	},
 
-	// draws one new egg
+	/**
+	 * Draws one new egg
+	 * @param {float} x the width of position of a new egg
+	 * @param {float} y the height of position of a new egg
+	 */
 	drawNewEgg : function (x, y) {
 		var egg = new Kinetic.Image({
 			image: this.images.eggs[mathUtil.random(0, this.images.eggs.length-1)],
@@ -369,7 +414,10 @@ var AdditionGameView = new Class ({
 		return egg;
 	},
 
-	// accepts the egg onto the truck
+	/**
+	 * Accepts the egg onto the truck
+	 * @param {Kinetic.Image} egg egg to be accepted
+	 */
 	acceptEgg : function(egg) {
 		egg.setScale(1, 1);
 		this.sayCompliment();
@@ -391,13 +439,18 @@ var AdditionGameView = new Class ({
 		}
 	},
 
+	/**
+	 * Say a compliment
+	 */
 	sayCompliment : function() {
-		// say a compliment
 		var compliment = this.COMPLIMENTS[mathUtil.random(0, this.COMPLIMENTS.length-1)];
 		this.displayThinkCloud(compliment, 50);
 	},
 
-	// declines the egg and puts it back
+	/**
+	 * Declines the egg and puts it back
+	 * @param {Kinetic.Image} egg to be declined
+	 */
 	declineEgg : function(egg) {
 		egg.setScale(1, 1);
 		// play the decline egg sound
@@ -406,7 +459,9 @@ var AdditionGameView = new Class ({
 		egg.animation.start();
 	},
 
-	// package up the eggs and put it in the TENS on the truck
+	/**
+	 * Package up the eggs and put it in the TENS on the truck
+	 */
 	packageEggs : function () {
 		this.activitiesEnabled = false;
 
@@ -484,7 +539,9 @@ var AdditionGameView = new Class ({
 		adjustPackPositionTween.play();
 	},
 
-	// draws all the packs
+	/**
+	 * Draws all the packs
+	 */
 	drawPacks : function() {
 		this.eggsGroup.moveToTop();
 		this.packsGroup.moveToTop();
@@ -545,7 +602,11 @@ var AdditionGameView = new Class ({
 		
 	},
 
-	// draws a new pack
+	/**
+	 * Draws a new pack
+	 * @param {float} x the width of position of a new pack
+	 * @param {float} y the height of position of a new pack
+	 */
 	drawNewPack : function(x, y) {
 		var pack = new Kinetic.Group({
 			x: dimensionUtil.decimalToActualWidth(x),
@@ -553,11 +614,6 @@ var AdditionGameView = new Class ({
 			scaleX: 0.60,
 			scaleY: 0.60
 		});
-		
-	//	for(var i = 0; i < 10; i++) {
-	//		var egg = this.drawNewEgg(this.viewVars.eggsPackedRelativeLocations[i].x, this.viewVars.eggsPackedRelativeLocations[i].y);
-	//		pack.add(egg);
-	//	}
 
 		var wrapper = new Kinetic.Image({image: this.images.pack});
 		widgetUtil.glue(wrapper, {
@@ -585,7 +641,10 @@ var AdditionGameView = new Class ({
 		return pack;
 	},
 
-	// accept pack
+	/**
+	 * Accept pack
+	 * @param {Kinetic.Image} pack  pack to be accepted
+	 */
 	acceptPack : function(pack) {
 		pack.setScale(0.6, 0.6);
 		music.play(this.sounds.acceptEgg);
@@ -608,7 +667,10 @@ var AdditionGameView = new Class ({
 		}
 	},
 
-	// decline pack
+	/**
+	 * Decline pack
+	 * @param {Kinetic.Image} pack  pack to be declined
+	 */
 	declinePack : function(pack) {
 		pack.setScale(0.6, 0.6);
 		music.play(this.sounds.declineEgg);
@@ -678,8 +740,9 @@ var AdditionGameView = new Class ({
 		tween.play();
 	},
 
-
-	// draws all the pause widgets then hides them. Shows when the pause function is called
+	/**
+	 * Draws all the pause widgets then hides them. Shows when the pause function is called
+	 */
 	drawPauseWidgets : function() {
 
 		// pause button
@@ -771,20 +834,27 @@ var AdditionGameView = new Class ({
 		this.pauseWidgetsGroup.hide();
 	},
 
-	// pause the game
+	/**
+	 * Pause the game
+	 */
 	pause : function() {
 		this.pauseWidgetsGroup.show();
 		this.pauseWidgetsGroup.moveToTop();
 		app.stage.draw();
 	},
 
-	// unpause the game
+	/**
+	 * upause the game
+	 */
 	unpause : function() {
 		this.pauseWidgetsGroup.hide();
 		app.stage.draw();
 	},
 
-	// Is called when a mistake is made by the student
+	/**
+	 * Is called when a mistake is made by the student
+	 * @param {ErrorType} errorType error type of the error made
+	 */
 	errorMade : function (errorType) {
 		this.errorsCount++;
 
@@ -814,7 +884,10 @@ var AdditionGameView = new Class ({
 		}
 	},
 
-	// Finsih the game. Score: 0 for fail, 1 to 3 for stars
+	/**
+	 * Finsih the game. Score: 0 for fail, 1 to 3 for stars
+	 * @param {integer} score the score of the game result
+	 */
 	finish : function(score) {
 		var finishTitleImage = null;
 		var starsImage = null;
@@ -952,7 +1025,9 @@ var AdditionGameView = new Class ({
 		
 	},
 
-	// Drawing areas
+	/**
+	 * Drawing areas
+	 */
 	drawAreas : function() {
 		var areas = [this.viewVars.beltOnesArea, this.viewVars.beltTensArea, this.viewVars.beltHundredsArea];
 		for(var areaIndex = 0; areaIndex < areas.length; areaIndex++) {

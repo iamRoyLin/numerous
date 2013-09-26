@@ -1,14 +1,27 @@
+/**
+ * Class to help coordinate the view of level selection screen
+ */
 var MenuUnitView = new Class({
 	Extends: View,
 	
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function(controller) {
 		this.controller = controller;
 	},
 	
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 
 	},
 
+	/**
+	 * Draw title
+	 */
 	drawTitle: function() {
 		var	title = new Kinetic.Image({image: this.images.title});
 		widgetUtil.glue(title, {
@@ -20,6 +33,9 @@ var MenuUnitView = new Class({
 		app.layer.add(title);
 	},
 
+	/**
+	 * Draw the bcack button
+	 */
 	drawButtonBack: function() {
 		var	buttonBack = new Kinetic.Image({image: this.images.buttonBack});
 		widgetUtil.glue(buttonBack, {
@@ -36,6 +52,10 @@ var MenuUnitView = new Class({
 		});
 	},
 
+	/**
+	 * Draw the level selection box
+	 * @param {UnitRecordsModel} unitRecordsModel representing stars of data
+	 */
 	drawBoxes: function(unitRecordsModel) {
 		// belongs in groups
 		

@@ -1,6 +1,13 @@
+/**
+ * Class to help coordinate the view of unit selection screen
+ */
 var MenuView = new Class({
 	Extends: View,
 	
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function(controller) {
 		this.controller = controller;
 	
@@ -8,9 +15,15 @@ var MenuView = new Class({
 		this.currentUnit = 0;
 	},
 	
+	/**
+	 * Destructor
+	 */
 	finalize: function () {
 	},
 	
+	/**
+	 * Draw everything on the screen
+	 */
 	draw: function () {
 
 		// Call helper functionsthe to draw components
@@ -23,6 +36,9 @@ var MenuView = new Class({
 		app.stage.draw();
 	},
 
+	/**
+	 * Draw the title
+	 */
 	drawTitle: function() {
 		var title = new Kinetic.Image({image: this.images.numerousTitle});
 		widgetUtil.glue(title, {
@@ -34,6 +50,9 @@ var MenuView = new Class({
 		app.layer.add(title);
 	},
 
+	/**
+	 * Draw the button for backing to home screen
+	 */
 	drawHomeButton: function() {
 		var button = new Kinetic.Image({image: this.images.homeButton});
 		widgetUtil.glue(button, {
@@ -50,6 +69,9 @@ var MenuView = new Class({
 		});
 	},
 
+	/**
+	 * Draw the arrows for switch units
+	 */
 	drawArrows: function() {
 		this.arrowLeft = new Kinetic.Image({image: this.images.arrowLeft});
 		widgetUtil.glue(this.arrowLeft, {

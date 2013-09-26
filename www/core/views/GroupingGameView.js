@@ -1,6 +1,13 @@
+/**
+ * Class to help coordinate the view of the grouping games
+ */
 var GroupingGameView = new Class ({
 	Extends: View,
 	
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function (controller) {
 		this.controller = controller;
 		
@@ -50,7 +57,9 @@ var GroupingGameView = new Class ({
 	},
 	
 
-	// destructor
+	/**
+	 * Destructor
+	 */
 	finalize : function () {
 		for(var i = 0; i < this.timeOuts.length; i++) {
 			clearTimeout(this.timeOuts[i]);
@@ -58,7 +67,9 @@ var GroupingGameView = new Class ({
 		this.timeOuts = [];
 	},
 
-	// draws the rabbit
+	/**
+	 * Draw rabbit
+	 */
 	drawRabbit : function () {
 		var rabbitBody = new Kinetic.Image({image: this.images.rabbitBody});
 		widgetUtil.glue(rabbitBody, {
@@ -97,7 +108,9 @@ var GroupingGameView = new Class ({
 
 	},
 
-	//Rabbit animation
+	/**
+	 * Set animation for rabbit
+	 */
 	shakeHead : function () {
 		if(!app.view.anim1.isRunning() && !app.view.anim2.isRunning()){
 			app.view. anim1.start();
@@ -116,7 +129,9 @@ var GroupingGameView = new Class ({
 		}
 	},
 	
-	// Draws the think cloud 
+	/**
+	 * Draw the think cloud
+	 */
 	drawThinkCloud : function () {
 		
 		// think cloud
@@ -146,7 +161,11 @@ var GroupingGameView = new Class ({
 		this.displayThinkCloud("Drag " + mathUtil.convertNumberToWord(app.controller.goalNumber) + " of my easter eggs onto the belt!");
 	},
 
-	// Displays a message in the think cloud
+	/**
+	 * Displays a message in the think cloud
+	 * @param {string} message want to display
+	 * @param {integer} fontsize
+	 */
 	displayThinkCloud : function(message, fontSize) {
 		if (fontSize == null) {
 			fontSize = 25;
@@ -157,7 +176,9 @@ var GroupingGameView = new Class ({
 		app.stage.draw();
 	},
 
-	// Draws the belts
+	/**
+	 * Draws the belts
+	 */
 	drawBelts : function() {
 		var belts = new Kinetic.Image({image: this.images.belts});
 		widgetUtil.glue(belts, {
@@ -169,7 +190,9 @@ var GroupingGameView = new Class ({
 		app.layer.add(belts);
 	},
 
-	// draws the two trays (has the animation logic here)
+	/**
+	 * Draws the two trays (has the animation logic here)
+	 */
 	drawTrays : function() {
 
 		this.trays = {};
@@ -197,7 +220,10 @@ var GroupingGameView = new Class ({
 		app.layer.add(this.trays.next);
 	},
 
-	// draws the number the student needs to perform
+	/**
+	 * Draws the number the student needs to perform
+	 * @param {string} title word of number for the title place
+	 */
 	drawTitle : function(title) {
 		this.titleTextWidget = new Kinetic.Text({
 			x: dimensionUtil.decimalToActualWidth(0.15),
@@ -245,7 +271,9 @@ var GroupingGameView = new Class ({
 
 	},
 
-	// draws the done button
+	/**
+	 * Draws the done button
+	 */
 	drawDoneButton : function() {
 		var buttonDone = new Kinetic.Image({image: this.images.buttonDone});
 		widgetUtil.glue(buttonDone, {
@@ -269,7 +297,9 @@ var GroupingGameView = new Class ({
 		app.layer.add(buttonDone);
 	},
 
-	// draws the number in the "tens" and "ones" boxes
+	/**
+	 * Draws the number in the "tens" and "ones" boxes
+	 */
 	drawNumbers : function() {
 
 		// ones number
@@ -298,14 +328,19 @@ var GroupingGameView = new Class ({
 		});
 		app.layer.add(this.tensTextWidget);
 	},
-
+	
+	/**
+	 * Draws all the packs
+	 */
 	drawPacks : function () {
 		for (var i=0; i<this.viewVars.initialPackCount; i++) {
 			this.drawNewPack();
 		}
 	},
 
-	// draws one new pack
+	/**
+	 * Draws one new pack
+	 */
 	drawNewPack : function () {
 		var pack = new Kinetic.Image({
 			image: this.images.pack,
@@ -392,6 +427,10 @@ var GroupingGameView = new Class ({
 		app.stage.draw();
 	},
 
+	/**
+	 * Accept pack
+	 * @param {Kinetic.Image} pack  pack to be accepted
+	 */
 	acceptPack : function (pack) {
 		
 		// say a compliment
@@ -419,13 +458,19 @@ var GroupingGameView = new Class ({
 		app.stage.draw();
 	},
 
+	/**
+	 * Decline pack
+	 * @param {Kinetic.Image} pack  pack to be declined
+	 */
 	declinePack : function (pack) {
 		// play the decline egg sound
 		music.play(this.sounds.declineEgg);
 		widgetUtil.animateMove(pack, 0.4, this.packInitialLocations[pack.id].x, this.packInitialLocations[pack.id].y);
 	},
 
-	// draws all the pause widgets then hides them. Shows when the pause function is called
+	/**
+	 * Draws all the pause widgets then hides them. Shows when the pause function is called
+	 */
 	drawPauseWidgets : function() {
 
 		// pause button
@@ -520,20 +565,26 @@ var GroupingGameView = new Class ({
 		this.pauseWidgetsGroup.hide();
 	},
 
-	// pause the game
+	/**
+	 * Pause the game
+	 */
 	pause : function() {
 		this.pauseWidgetsGroup.show();
 		this.pauseWidgetsGroup.moveToTop();
 		app.stage.draw();
 	},
 
-	// unpause the game
+	/**
+	 * Upause the game
+	 */
 	unpause : function() {
 		this.pauseWidgetsGroup.hide();
 		app.stage.draw();
 	},
 
-	// Draws eggs in a specified area
+	/**
+	 * Draws eggs in a specified area
+	 */
 	drawEggs : function() {
 
 
@@ -572,7 +623,9 @@ var GroupingGameView = new Class ({
 		}*/
 	},
 
-	// Draws one egg in a specified area
+	/**
+	 * Draws one egg in a specified area
+	 */
 	drawNewEgg : function() {
 		var egg = new Kinetic.Image({
 			image: this.images.eggs[mathUtil.random(0, this.images.eggs.length-1)],
@@ -669,7 +722,10 @@ var GroupingGameView = new Class ({
 		app.layer.add(egg);
 	},
 
-	// accepts the egg and add it to the accepted array
+	/**
+	 * Accepts the egg and add it to the accepted array
+	 * @param {Kinetic.Image} egg egg to be accepted
+	 */
 	acceptEgg : function(egg) {
 		this.onesWidgetGroup.moveToTop();
 		
@@ -728,7 +784,10 @@ var GroupingGameView = new Class ({
 		app.stage.draw();
 	},
 
-	// declines the egg and move it back to its original spot
+	/**
+	 * Declines the egg and move it back to its original spot
+	 * @param {Kinetic.Image} egg to be declined
+	 */
 	declineEgg : function(egg) {
 
 		// play the decline egg sound
@@ -736,7 +795,9 @@ var GroupingGameView = new Class ({
 		widgetUtil.animateMove(egg, 0.4, this.eggInitialLocations[egg.id].x, this.eggInitialLocations[egg.id].y);
 	},
 
-	// Is called when the "ones" tray is full
+	/**
+	 * Is called when the "ones" tray is full
+	 */
 	trayFull : function() {
 		
 		// Disable all performable activities by user
@@ -866,7 +927,10 @@ var GroupingGameView = new Class ({
 		}, (fallCoverDurationSeconds + trayLiftDurationSeconds + shrinkTrayDurationSeconds + beltSlideDurationSeconds) * 1000);
 	},
 
-	// Is called when a mistake is made by the student
+	/**
+	 * Is called when a mistake is made by the student
+	 * @param {ErrorType} errorType error type of the error made
+	 */
 	errorMade : function (errorType) {
 		this.errorsMade++;
 
@@ -899,14 +963,18 @@ var GroupingGameView = new Class ({
 		}
 	},
 
-	// Calculate the current total the student has already performed
+	/**
+	 * Calculate the current total the student has already performed
+	 */
 	calculateTotal : function () {
 		var ones = parseInt(this.onesTextWidget.getText());
 		var tens = parseInt(this.tensTextWidget.getText() * 10);
 		return (tens + ones);
 	},
 
-	// Finsih the game. Score: 0 for fail, 1 to 3 for stars
+	/**
+	 * Finsih the game. Score: 0 for fail, 1 to 3 for stars
+	 */
 	finish : function(score) {
 		var finishTitleImage = null;
 		var starsImage = null;

@@ -1,6 +1,10 @@
 var PracticeView = new Class({
 	Extends: View,
 	
+	/**
+	 * Constructor
+	 * @param {Controller} controller control this view
+	 */
 	initialize: function (controller) {
 		this.controller = controller;
 		
@@ -8,13 +12,16 @@ var PracticeView = new Class({
 		this.mistakeMadeThisRound = false;
 	},
 	
-
-	// destructor (is automatically called when you leave the page)
+	/**
+	 * Destructor
+	 */
 	finalize: function() {
 
 	},
 
-	// draw rabbit
+	/**
+	 * Draw rabbit
+	 */
 	drawRabbit: function() {
 		var body = new Kinetic.Image({image: this.images.rabbitBody});
 		widgetUtil.glue(body, {
@@ -35,7 +42,9 @@ var PracticeView = new Class({
 		app.layer.add(head);
 	},
 
-	// draw black board
+	/**
+	 * Draw the black board
+	 */
 	drawBlackBoard: function() {
 		var board = new Kinetic.Image({image: this.images.blackBoard});
 		widgetUtil.glue(board, {
@@ -48,6 +57,9 @@ var PracticeView = new Class({
 		
 	},
 
+	/**
+	 * Draw the next button to go to the next question
+	 */
 	drawButtonNextBig: function() {
 		this.buttonNextBig = new Kinetic.Image({image: this.images.buttonNextBig});
 		widgetUtil.glue(this.buttonNextBig, {
@@ -91,7 +103,9 @@ var PracticeView = new Class({
 		this.buttonNextBig.hide();
 	},
 
-	// draw questions and optional answers
+	/**
+	 * Draw questions and optional answers
+	 */
 	drawQuestion: function() {
 
 		this.questionNumberTextWidget = new Kinetic.Text({
@@ -137,6 +151,9 @@ var PracticeView = new Class({
 		}
 	},
 
+	/**
+	 * Reset the questions on the board
+	 */
 	resetBoard: function() {
 		
 		if (this.board.widgets != null) {
@@ -147,6 +164,9 @@ var PracticeView = new Class({
 		this.board.widgets = [];
 	},
 
+	/**
+	 * Append text to the board
+	 */
 	appendTextToBoard: function(newText) {
 		var textWidget = new Kinetic.Text({
 			text: newText,
@@ -173,6 +193,9 @@ var PracticeView = new Class({
 		app.stage.draw();
 	},
 
+	/**
+	 * Append the black eggs on to the board
+	 */
 	appendPlaceHolderEggToBoard: function () {
 		// need to calc width/height AFTER creation
 		// set width and check for newline
@@ -190,6 +213,13 @@ var PracticeView = new Class({
 		this.placeHolderEgg.show();
 	},
 
+	/**
+	 * Show the next questions with refreshing the progress and keyboards
+	 * @param {string} questionText represents the text of questions
+	 * @param {string} progressText the progress of the practice (e.g. no. of question out of total number of questions)
+	 * @param {string} keyboardTexts the texts on the keyboard eggs
+	 * @param {string} the id of keyboard has the correct answer
+	 */
 	presentNextQuestion: function (questionText, progressText, keyboardTexts, correctAnswerId) {
 		this.correctAnswerId = correctAnswerId;
 		
@@ -226,7 +256,9 @@ var PracticeView = new Class({
 		app.stage.draw();
 	},
 
-
+	/**
+	 * Draw the keyboard eggs
+	 */
 	drawKeyboard: function() {
 
 		this.keyboard = {};
@@ -283,6 +315,10 @@ var PracticeView = new Class({
 		}
 	},
 
+	/**
+	 * Refresh the keyboard text
+	 * @param {array[string]} keyboardTexts the array of text should on the keyboards
+	 */
 	changeKeyboard: function(keyboardTexts) {
 		for(var i = 0; i < this.keyboard.texts.length; i++) {
 			// show every button incase they were made invisible or hidden previously
